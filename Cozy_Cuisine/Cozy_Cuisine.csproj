@@ -17,4 +17,11 @@
     <PackageReference Include="Microsoft.SqlServer.Server" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\IServices\" />
+    <Folder Include="Data\IRepositories\" />
+    <Folder Include="Data\Repositories\" />
+    <Folder Include="Data\Services\" />
+  </ItemGroup>
+
 </Project>
