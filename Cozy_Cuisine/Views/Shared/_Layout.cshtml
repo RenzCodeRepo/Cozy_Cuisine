@@ -87,6 +87,20 @@
                 $(".alert").fadeOut("slow");
             }, 3000); // Hide after 3 seconds
     </script>
+    <script>
+        function setVisitorCookie() {
+            if (!document.cookie.includes("visitor_tracked=true")) {
+                fetch('/Account/VisitorCount', { method: 'POST' }) // Call backend to log visit
+                    .then(response => response.json())
+                    .then(data => console.log("Visitor Counted:", data.success));
+
+                document.cookie = "visitor_tracked=true; path=/; max-age=86400"; // Expires in 1 day
+            }
+        }
+
+        setVisitorCookie(); // Run when page loads
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

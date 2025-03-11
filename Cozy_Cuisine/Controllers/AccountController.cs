@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Cozy_Cuisine.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Cozy_Cuisine.Models;
+using Microsoft.EntityFrameworkCore;
+using Cozy_Cuisine.Data;
 
 namespace Cozy_Cuisine.Controllers
 {
@@ -9,11 +12,13 @@ namespace Cozy_Cuisine.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -51,7 +56,23 @@ namespace Cozy_Cuisine.Controllers
             return View(model);
         }
 
-     
+
+        [HttpPost]
+        public IActionResult VisitorCount()
+        {
+            // Create a new visitor entry in the database
+            var visitor = new Visitor
+            {
+                DateVisited = DateTime.UtcNow
+            };
+
+            _context.Visitor.Add(visitor);
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

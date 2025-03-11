@@ -8,9 +8,6 @@ namespace Cozy_Cuisine.Models
     {
         [Key]
         public int StoryId { get; set; }
-
-        // The Relationship is One to Many using Navigation Property
-        // on Child and Parent Class.
         public int WikiId { get; set; }
         [ForeignKey("WikiId")]
         public virtual Wiki Wiki { get; set; }
