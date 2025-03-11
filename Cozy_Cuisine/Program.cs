@@ -27,6 +27,14 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 var app = builder.Build();
 
+// Ensure database is created and seed users
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate(); // Apply pending migrations
+    DbInitializer.SeedUsers(services).Wait(); // Call the seeding method
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
