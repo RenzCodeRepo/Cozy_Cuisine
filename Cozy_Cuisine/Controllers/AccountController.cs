@@ -51,12 +51,13 @@ namespace Cozy_Cuisine.Controllers
             return View(model);
         }
 
-        [Authorize("Admin")]
+     
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+            TempData["Success"] = "Logout successful! Come Back Later";
+            return RedirectToAction("Login", "Account");
         }
 
 
