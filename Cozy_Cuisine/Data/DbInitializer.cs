@@ -31,6 +31,7 @@ namespace Cozy_Cuisine.Data
                 ("joanffbalaca@gmail.com", "StrongPassword123!", "Admin"),
                 ("ma.velaxco@gmail.com", "StrongPassword123!", "Admin"),
                 ("cornelia.joshua@gmail.com", "StrongPassword123!", "Admin"),
+                ("jimmuelddesipolo@gmail.com", "StrongPassword123!", "Admin"),
                 ("alyssajhaneburce@gmail.com", "StrongPassword123!", "Admin")
             };
 
