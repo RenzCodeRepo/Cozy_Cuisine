@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Cozy_Cuisine.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cozy_Cuisine.Controllers
@@ -12,7 +13,7 @@ namespace Cozy_Cuisine.Controllers
         {
             _logger = logger;
         }
-
+       
         public IActionResult Index()
         {
             return View();
@@ -29,7 +30,7 @@ namespace Cozy_Cuisine.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
+   
         public IActionResult UnderConstruction()
         {
             return View();
