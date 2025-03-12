@@ -55,6 +55,12 @@ namespace Cozy_Cuisine.Data.Repositories
                 .Include(b => b.Comments)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<BugReport>> GetAllBugReports()
+        {
+            return await _context.BugReport
+                .Include(b => b.Comments)
+                .ToListAsync();
+        }
 
         public async Task<BugReport> GetBugReportByIdAsync(int bugId)
         {
@@ -117,5 +123,7 @@ namespace Cozy_Cuisine.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+
     }
 }

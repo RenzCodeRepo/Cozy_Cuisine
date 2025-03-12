@@ -13,6 +13,7 @@ namespace Cozy_Cuisine.Data.IRepositories
 
         // Bug Reports
         Task<IEnumerable<BugReport>> GetBugReportsByPatchIdAsync(int patchId);
+        Task<IEnumerable<BugReport>> GetAllBugReports();
         Task<BugReport> GetBugReportByIdAsync(int bugId);
         Task AddBugReportAsync(BugReport bugReport);
         Task UpdateBugReportAsync(BugReport bugReport);

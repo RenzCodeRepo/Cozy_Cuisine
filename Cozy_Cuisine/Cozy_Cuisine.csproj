@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="Data\IServices\" />
     <Folder Include="Data\Services\" />
+    <Folder Include="Views\Patch\" />
   </ItemGroup>
 
 </Project>
