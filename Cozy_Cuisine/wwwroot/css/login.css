@@ -1,0 +1,60 @@
+﻿body {
+    background-image: url('../img/hills free (update 3.0).png');
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+}
+.logincont {
+    width: 400px;
+    background: #D0B8A8;
+    border: 4px solid #603F26;
+}
+img{
+    width: 200px;
+}
+h2 {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #603F26;
+    text-shadow: 4px 4px #FFDBB5;
+}
+.loginbtn {
+    background: #603F26;
+    color: #FFDBB5;
+    box-shadow: 4px 4px #FFDBB5;
+    outline: none;
+    border: none;
+    font-family: "Kode Mono", monospace;
+    letter-spacing: 3px;
+}
+    .loginbtn:hover {
+        background: #6C4E31;
+    }
+.credcont {
+    background: #DFD3C3;
+}
+input, label, .norm {
+    font-family: "Inter", sans-serif;
+}
+.form-control {
+    border: 1px solid #603F26;
+    outline: none;
+}
+.form-check-input {
+    background: none;
+    border: 1px solid #603F26;
+}
+    .form-check-input:checked {
+        background-color: #603F26;
+        border-color: #603F26;
+    }
+    
+:root {
+    --bs-focus-ring-color: rgba(96, 63, 38, 0.25); 
+    --bs-focus-ring-width: 0.25rem;
+}
+
+
+
+
