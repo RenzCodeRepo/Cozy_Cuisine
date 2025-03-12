@@ -3,6 +3,8 @@ using Cozy_Cuisine.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Cozy_Cuisine.Data.IRepositories;
+using Cozy_Cuisine.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Register the repository for Dependency Injection
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IPatchRepository, PatchRepository>();
+builder.Services.AddScoped<IWikiRepository, WikiRepository>();
 
 // Add Identity services
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()

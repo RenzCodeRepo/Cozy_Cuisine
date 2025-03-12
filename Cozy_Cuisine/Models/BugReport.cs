@@ -16,6 +16,6 @@ namespace Cozy_Cuisine.Models
         public string Status { get; set; }
         public DateTime ReportDate { get; set; } = DateTime.Now;
 
-        public ICollection<Comments> Comments { get; set; }
+        public ICollection<Comments>? Comments { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace Cozy_Cuisine.Data
         public DbSet<Notice> Notice { get; set; }
         public DbSet<Patches> Patches { get; set; }
         public DbSet<StoryPlot> StoryPlot { get; set; }
+        public DbSet<Visitor> Visitor { get; set; }
         public DbSet<Wiki> Wiki { get; set; }
     }
 }
