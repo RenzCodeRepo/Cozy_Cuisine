@@ -57,20 +57,6 @@ namespace Cozy_Cuisine.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult VisitorCount()
-        {
-            // Create a new visitor entry in the database
-            var visitor = new Visitor
-            {
-                DateVisited = DateTime.UtcNow
-            };
-
-            _context.Visitor.Add(visitor);
-            _context.SaveChanges();
-
-            return Json(new { success = true });
-        }
 
 
         [HttpPost]

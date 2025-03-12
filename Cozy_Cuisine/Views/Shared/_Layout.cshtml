@@ -76,7 +76,7 @@
     <script>
         function setVisitorCookie() {
             if (!document.cookie.includes("visitor_tracked=true")) {
-                fetch('/Account/VisitorCount', { method: 'POST' }) // Call backend to log visit
+                fetch('/Manage/VisitorCount', { method: 'POST' }) // Call backend to log visit
                     .then(response => response.json())
                     .then(data => console.log("Visitor Counted:", data.success));
 
