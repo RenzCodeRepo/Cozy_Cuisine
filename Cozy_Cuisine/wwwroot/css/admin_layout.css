@@ -1,0 +1,47 @@
+﻿.side {
+    background: rgb(208, 184, 168,0.6);
+    margin-top: 58px;
+}
+.abtn {
+    border-bottom: 1px solid #D0B8A8;
+}
+.abtn:hover {
+    background: #D0B8A8;
+}
+.pgname {
+    font-family: "Inter", sans-serif;
+    color: #000000;
+}
+.i-sec {
+    width: 40px;
+}
+nav{
+    background: #603F26;
+    z-index: 1024;
+}
+.offcanvas-header {
+    background: #603F26;
+}
+
+.content {
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.offcanvas.show ~ .content {
+    margin-left: 400px;
+}
+.menu:hover, .nav-link:hover {
+    background: rgb(208, 184, 168, 0.15);
+}
+.gamename {
+    color: white;
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+}
+    .gamename:hover {
+        color: rgb(208, 184, 168);
+        text-decoration: none;
+    }
+.navbar-brand img {
+    width: 50px;
+}

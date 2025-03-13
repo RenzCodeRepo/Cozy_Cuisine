@@ -8,5 +8,9 @@ namespace Cozy_Cuisine.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
     }
 }
