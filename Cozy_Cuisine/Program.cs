@@ -28,6 +28,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IPatchRepository, PatchRepository>();
 builder.Services.AddScoped<IWikiRepository, WikiRepository>();
+builder.Services.AddScoped<IManageRepository, ManageRepository>();
+
 
 // Add Identity services
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()

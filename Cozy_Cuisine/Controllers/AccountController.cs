@@ -49,27 +49,11 @@ namespace Cozy_Cuisine.Controllers
             if (result.Succeeded)
             {
                 TempData["Success"] = "Login successful! Welcome back.";
-                return RedirectToAction("Index", "Home"); // Redirect to homepage or dashboard
+                return RedirectToAction("Dashboard", "Manage"); // Redirect to homepage or dashboard
             }
 
             TempData["Error"] = "Invalid login attempt.";
             return View(model);
-        }
-
-
-        [HttpPost]
-        public IActionResult VisitorCount()
-        {
-            // Create a new visitor entry in the database
-            var visitor = new Visitor
-            {
-                DateVisited = DateTime.UtcNow
-            };
-
-            _context.Visitor.Add(visitor);
-            _context.SaveChanges();
-
-            return Json(new { success = true });
         }
 
 
