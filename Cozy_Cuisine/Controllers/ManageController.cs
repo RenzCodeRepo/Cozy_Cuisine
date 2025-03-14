@@ -20,21 +20,6 @@ namespace Cozy_Cuisine.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> VisitorCount()
-        {
-            var visitor = new Visitor
-            {
-                DateVisited = DateTime.UtcNow
-            };
 
-            await _manageRepository.AddVisitorAsync(visitor);
-            return Json(new { success = true });
-        }
-
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
     }
 }
