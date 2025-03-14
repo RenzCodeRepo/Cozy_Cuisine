@@ -1,0 +1,120 @@
+﻿body {
+    background: #F8EDE3;
+}
+.pgnamecont{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dashboard {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #603F26;
+    text-shadow: 4px 4px #FFDBB5;
+}
+.dlcont {
+    border: 2px solid #603F26;
+    background: #DFD3C3;
+}
+.dlnum {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    background: #FFEAC5;
+    border: 2px solid #603F26;
+    width: 100% !important;
+}
+.dltext {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+.row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #603F26;
+    background: #DFD3C3;
+}
+.statsdesc {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+.statsnum {
+    font-family: "Inter", sans-serif;
+    color: #603F26;
+    background: #FFEAC5;
+    border: 2px solid #603F26;
+    font-weight: bold;
+    width: 35%;
+    text-align: center;
+}
+.iconstats{
+    width: 50px;
+    color: #603F26;
+}
+.acts {
+    border-top: 2px solid #D0B8A8;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+.recenttabs {
+    font-family: "Inter", sans-serif;
+    color: #603F26;   
+    font-weight: bold;
+}
+.recenttabs:hover {
+    color: #603F26;
+    border-bottom: 1px solid #D0B8A8 !important;
+}
+
+.recenttabs.active {
+    background-color: #D0B8A8 !important;
+    color: #603F26 !important;
+    border-bottom: 1px solid #D0B8A8 !important;
+}
+table {
+    font-family: "Inter", sans-serif;
+}
+th {
+    background: #D0B8A8 !important;
+}
+
+.recentnavtabs {
+    border-bottom: 1px solid #D0B8A8;
+}
+.actionsbtn {
+    display: block !important;
+    width: 80px;
+    text-align: start;
+    color: #603F26;
+    border: none;
+    background: #D0B8A8;
+    font-family: "Inter", sans-serif;
+}
+.actionsbtn:hover{
+    color: #D0B8A8;
+    background: #603F26;
+}
+.actionsbtn:active{
+    color: #D0B8A8 !important;
+    background: #603F26 !important;
+}
+.actionsbtn:focus {
+    box-shadow: 0 !important; 
+    outline: none !important;
+}
+:root {
+    --bs-focus-ring-color: rgba(96, 63, 38, 0);
+    --bs-focus-ring-width: 0.25rem;
+}
+td img{
+    width: 100px !important;
+}
+
+
