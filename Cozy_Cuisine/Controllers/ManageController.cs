@@ -19,7 +19,6 @@ namespace Cozy_Cuisine.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> VisitorCount()
         {
@@ -31,11 +30,5 @@ namespace Cozy_Cuisine.Controllers
             await _manageRepository.AddVisitorAsync(visitor);
             return Json(new { success = true });
         }
-
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
     }
 }
