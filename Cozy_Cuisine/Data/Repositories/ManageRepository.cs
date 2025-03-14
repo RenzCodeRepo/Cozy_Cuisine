@@ -1,14 +1,15 @@
 ﻿using Cozy_Cuisine.Data.IRepositories;
 using Cozy_Cuisine.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Cozy_Cuisine.Data.Repositories
 {
     public class ManageRepository : IManageRepository
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ManageRepository(AppDbContext context)
+        public ManageRepository(ApplicationDbContext context)
         {
             _context = context;
         }

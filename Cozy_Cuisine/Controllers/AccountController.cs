@@ -49,14 +49,12 @@ namespace Cozy_Cuisine.Controllers
             if (result.Succeeded)
             {
                 TempData["Success"] = "Login successful! Welcome back.";
-                return RedirectToAction("Index", "Home"); // Redirect to homepage or dashboard
+                return RedirectToAction("Login", "Account"); // Redirect to homepage or dashboard
             }
 
             TempData["Error"] = "Invalid login attempt.";
             return View(model);
         }
-
-
 
 
         [HttpPost]

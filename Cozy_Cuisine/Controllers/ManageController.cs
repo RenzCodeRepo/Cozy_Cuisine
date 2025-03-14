@@ -32,18 +32,5 @@ namespace Cozy_Cuisine.Controllers
             return Json(new { success = true });
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
