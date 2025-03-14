@@ -30,5 +30,10 @@ namespace Cozy_Cuisine.Controllers
             await _manageRepository.AddVisitorAsync(visitor);
             return Json(new { success = true });
         }
+
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
     }
 }
