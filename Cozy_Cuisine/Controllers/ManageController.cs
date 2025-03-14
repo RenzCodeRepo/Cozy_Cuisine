@@ -10,7 +10,7 @@ namespace Cozy_Cuisine.Controllers
     {
         private readonly IManageRepository _manageRepository;
 
-        public ManageController(IManageRepository manageRepository) 
+        public ManageController(IManageRepository manageRepository)
         {
             _manageRepository = manageRepository;
         }
@@ -30,6 +30,11 @@ namespace Cozy_Cuisine.Controllers
 
             await _manageRepository.AddVisitorAsync(visitor);
             return Json(new { success = true });
+        }
+
+        public IActionResult Dashboard()
+        {
+            return View();
         }
     }
 }
