@@ -32,17 +32,10 @@ namespace Cozy_Cuisine.Controllers
             return Json(new { success = true });
         }
 
-
-
-
-
-
-
-
-
-
-
-
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
 
 
     }
