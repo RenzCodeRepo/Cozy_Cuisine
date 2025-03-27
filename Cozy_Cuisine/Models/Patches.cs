@@ -11,6 +11,7 @@ namespace Cozy_Cuisine.Models
         public string PatchNotes { get; set; }
         public List<string> URLImageList { get; set; }
         public string URLGif { get; set; }
+        public string GameURL { get; set; }
 
         public ICollection<BugReport> BugReport { get; set; }
     }

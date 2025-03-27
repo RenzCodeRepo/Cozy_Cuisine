@@ -7,10 +7,7 @@ namespace Cozy_Cuisine.Models
     {
         [Key]
         public int ReviewId { get; set; }
-        public int DownloadId { get; set; }
-        [ForeignKey("DownloadId")]
-        public virtual GameDownloads GameDownloads { get; set; }
-        
+
         public int Rating { get; set; }
         public DateTime PostedDate { get; set; } = DateTime.Now;
         public string ReviewComment { get; set; }

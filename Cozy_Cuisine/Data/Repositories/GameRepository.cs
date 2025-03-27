@@ -16,14 +16,9 @@ namespace Cozy_Cuisine.Data.Repositories
         // Game Downloads
         public async Task<IEnumerable<GameDownloads>> GetAllDownloadsAsync()
         {
-            return await _context.GameDownloads.Include(g => g.GameReview).ToListAsync();
+            return await _context.GameDownloads.ToListAsync();
         }
 
-        public async Task<GameDownloads> GetDownloadByIdAsync(int downloadId)
-        {
-            return await _context.GameDownloads.Include(g => g.GameReview)
-                                               .FirstOrDefaultAsync(g => g.DownloadId == downloadId);
-        }
 
         public async Task AddDownloadAsync(GameDownloads download)
         {
@@ -48,10 +43,6 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // Game Reviews
-        public async Task<IEnumerable<GameReview>> GetReviewsByDownloadIdAsync(int downloadId)
-        {
-            return await _context.GameReview.Where(r => r.DownloadId == downloadId).ToListAsync();
-        }
 
         public async Task<GameReview> GetReviewByIdAsync(int reviewId)
         {
