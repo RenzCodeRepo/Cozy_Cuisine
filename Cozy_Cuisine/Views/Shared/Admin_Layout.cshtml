@@ -56,19 +56,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div> *@
             <div class="offcanvas-body p-0">
-                <a href="#" class="text-decoration-none">
+                <a asp-action="Dashboard" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-table-columns fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Dashboard</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="FAQManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-circle-question fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">FAQs</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="StoryPlotManagement" asp-controller="Wiki" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-book-open fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Story Plot Management</span>
@@ -148,10 +148,18 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
 
-
+    @* Makes all Tables to become DataTable  *@
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTables for all tables on the page
+            $('table').DataTable();
+        });
+    </script>
     @* Sweet Alert Success and Error *@
     <script>
         document.addEventListener("DOMContentLoaded", function () {

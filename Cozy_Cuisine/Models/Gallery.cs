@@ -10,6 +10,6 @@ namespace Cozy_Cuisine.Models
         public string Category { get; set; }
         public string Description { get; set; }
         public string URLGifOrVideo { get; set; }
-        public List<string> URLImageList { get; set; }
+        public string URLImageList { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Cozy_Cuisine.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cozy_Cuisine.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250329152141_makeListStringToJustStrings")]
+    partial class makeListStringToJustStrings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PatchId")
+                    b.Property<int>("PatchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReportDate")
@@ -104,7 +107,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WikiId")
+                    b.Property<int>("WikiId")
                         .HasColumnType("int");
 
                     b.HasKey("CharacterId");
@@ -122,7 +125,7 @@ namespace Cozy_Cuisine.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
-                    b.Property<int?>("BugId")
+                    b.Property<int>("BugId")
                         .HasColumnType("int");
 
                     b.Property<string>("Message")
@@ -304,7 +307,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WikiId")
+                    b.Property<int>("WikiId")
                         .HasColumnType("int");
 
                     b.HasKey("ItemId");
@@ -342,7 +345,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WikiId")
+                    b.Property<int>("WikiId")
                         .HasColumnType("int");
 
                     b.HasKey("GameMechId");
@@ -399,7 +402,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WikiId")
+                    b.Property<int>("WikiId")
                         .HasColumnType("int");
 
                     b.HasKey("LocationId");
@@ -505,7 +508,7 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WikiId")
+                    b.Property<int>("WikiId")
                         .HasColumnType("int");
 
                     b.HasKey("StoryId");
@@ -766,7 +769,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Patches", "Patches")
                         .WithMany("BugReport")
-                        .HasForeignKey("PatchId");
+                        .HasForeignKey("PatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Patches");
                 });
@@ -775,7 +780,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Wiki", "Wiki")
                         .WithMany("Characters")
-                        .HasForeignKey("WikiId");
+                        .HasForeignKey("WikiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Wiki");
                 });
@@ -784,7 +791,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.BugReport", "BugReport")
                         .WithMany("Comments")
-                        .HasForeignKey("BugId");
+                        .HasForeignKey("BugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BugReport");
                 });
@@ -793,7 +802,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Wiki", "Wiki")
                         .WithMany("GameItems")
-                        .HasForeignKey("WikiId");
+                        .HasForeignKey("WikiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Wiki");
                 });
@@ -802,7 +813,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Wiki", "Wiki")
                         .WithMany("GameMechanics")
-                        .HasForeignKey("WikiId");
+                        .HasForeignKey("WikiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Wiki");
                 });
@@ -811,7 +824,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Wiki", "Wiki")
                         .WithMany("Locations")
-                        .HasForeignKey("WikiId");
+                        .HasForeignKey("WikiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Wiki");
                 });
@@ -820,7 +835,9 @@ namespace Cozy_Cuisine.Migrations
                 {
                     b.HasOne("Cozy_Cuisine.Models.Wiki", "Wiki")
                         .WithMany("StoryPlot")
-                        .HasForeignKey("WikiId");
+                        .HasForeignKey("WikiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Wiki");
                 });

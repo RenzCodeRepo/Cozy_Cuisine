@@ -1,5 +1,6 @@
 ﻿using Cozy_Cuisine.Data.IRepositories;
 using Cozy_Cuisine.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -107,7 +108,16 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // 🔹 FAQ CRUD
-        public async Task<IEnumerable<FAQ>> GetAllFAQsAsync() => await _context.FAQ.ToListAsync();
+        public async Task<List<FAQ>> GetAllFAQsAsync()
+        {
+            if (_context == null)
+            {
+                throw new Exception("Database context is null in FAQRepository.");
+            }
+
+            return await _context.FAQ.ToListAsync();
+
+        }
         public async Task<FAQ> GetFAQByIdAsync(int id) => await _context.FAQ.FindAsync(id);
         public async Task AddFAQAsync(FAQ faq)
         {
@@ -119,14 +129,17 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.FAQ.Update(faq);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteFAQAsync(int id)
+        public async Task<bool> DeleteFAQAsync(int id)
         {
             var faq = await _context.FAQ.FindAsync(id);
-            if (faq != null)
+            if (faq == null)
             {
-                _context.FAQ.Remove(faq);
-                await _context.SaveChangesAsync();
+                return false; // Record not found
             }
+
+            _context.FAQ.Remove(faq);
+            await _context.SaveChangesAsync();
+            return true; // Successfully deleted
         }
 
         // 🔹 Notice CRUD
@@ -158,6 +171,73 @@ namespace Cozy_Cuisine.Data.Repositories
         {
             _context.Visitor.Add(visitor);
             await _context.SaveChangesAsync();
+        }
+        public async Task<int> GetDailyVisitorsAsync()
+        {
+            return await _context.Visitor
+                .CountAsync(d => d.DateVisited.Date == DateTime.Today);
+        }
+
+
+        // Game Downloads
+        public async Task<IEnumerable<GameDownloads>> GetAllDownloadsAsync()
+        {
+            return await _context.GameDownloads.ToListAsync();
+        }
+
+
+        public async Task AddDownloadAsync(GameDownloads download)
+        {
+            await _context.GameDownloads.AddAsync(download);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateDownloadAsync(GameDownloads download)
+        {
+            _context.GameDownloads.Update(download);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDownloadAsync(int downloadId)
+        {
+            var download = await _context.GameDownloads.FindAsync(downloadId);
+            if (download != null)
+            {
+                _context.GameDownloads.Remove(download);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        // Game Reviews
+
+        public async Task<GameReview> GetReviewByIdAsync(int reviewId)
+        {
+            return await _context.GameReview.FirstOrDefaultAsync(r => r.ReviewId == reviewId);
+        }
+        public async Task<IEnumerable<GameReview>> GetAllReviewsAsync()
+        {
+            return await _context.GameReview.ToListAsync();
+        }
+        public async Task AddReviewAsync(GameReview review)
+        {
+            await _context.GameReview.AddAsync(review);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateReviewAsync(GameReview review)
+        {
+            _context.GameReview.Update(review);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteReviewAsync(int reviewId)
+        {
+            var review = await _context.GameReview.FindAsync(reviewId);
+            if (review != null)
+            {
+                _context.GameReview.Remove(review);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

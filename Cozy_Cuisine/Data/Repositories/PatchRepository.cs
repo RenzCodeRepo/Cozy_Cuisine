@@ -123,7 +123,25 @@ namespace Cozy_Cuisine.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _context.Comments.CountAsync();
+        }
 
+        public async Task<List<Comments>> GetFilteredCommentsAsync(string search)
+        {
+            var query = _context.Comments.AsQueryable();
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(c => c.Message.Contains(search) || c.Username.Contains(search));
+            }
+
+            return await query.ToListAsync();
+        }
+        public async Task<List<Comments>> GetAllCommentsAsync()
+        {
+            return await _context.Comments.ToListAsync();
+        }
     }
 }

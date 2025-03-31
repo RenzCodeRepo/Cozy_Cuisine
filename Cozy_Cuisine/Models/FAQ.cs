@@ -7,7 +7,7 @@ namespace Cozy_Cuisine.Models
         [Key]
         public int FAQId { get; set; }
         public string Question { get; set; }
-        public List<string> FAQURLImageList { get; set; }
+        public string FAQURLImageList { get; set; }
         public string Answer { get; set; }
     }
 }

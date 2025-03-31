@@ -10,7 +10,7 @@ namespace Cozy_Cuisine.Models
         public DateTime PostedDate { get; set; } = DateTime.Now;
         public string Category { get; set; }
         public string Content { get; set; }
-        public List<string> URLNewsImageList { get; set; }
+        public string URLNewsImageList { get; set; }
         public string URLVideo { get; set; }
     }
 }

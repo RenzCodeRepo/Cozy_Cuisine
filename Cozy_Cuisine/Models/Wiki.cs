@@ -9,14 +9,14 @@ namespace Cozy_Cuisine.Models
         public string Title { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
-        public List<string> URLImageList { get; set; }
-        public List<string> URLGif { get; set; }
+        public string URLImageList { get; set; }
+        public string URLGif { get; set; }
 
 
-        public ICollection<StoryPlot> StoryPlot { get; set; }
-        public ICollection<GameMechanics> GameMechanics { get; set; }
-        public ICollection<Locations> Locations { get; set; }
-        public ICollection<GameItems> GameItems { get; set; }
-        public ICollection<Characters> Characters { get; set; }
+        public ICollection<StoryPlot> StoryPlot { get; set; } = new HashSet<StoryPlot>();
+        public ICollection<GameMechanics> GameMechanics { get; set; } = new HashSet<GameMechanics>();
+        public ICollection<Locations> Locations { get; set; } = new HashSet<Locations>();
+        public ICollection<GameItems> GameItems { get; set; } = new HashSet<GameItems>();
+        public ICollection<Characters> Characters { get; set; } = new HashSet<Characters>();
     }
 }

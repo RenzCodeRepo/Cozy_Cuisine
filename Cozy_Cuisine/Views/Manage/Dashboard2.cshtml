@@ -1,4 +1,4 @@
-﻿@model Cozy_Cuisine.ViewModels.DashboardVM
+﻿@model Cozy_Cuisine.ViewModels.DashboardVM2
 
 @{
     Layout = "Admin_Layout";
@@ -34,22 +34,22 @@
 </div>
 
 <div class="acts container fs-5 mt-3 pt-3">
-    Recent Activities
+    Graphs and Tables
 </div>
 
 <div class="container mt-4">
     <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Updates</button>
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Ratings</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Comments</button>
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Visitors</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab">Bug Reports</button>
+            <button class="recenttabs nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab">Commments</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button" role="tab">User Logs</button>
+            <button class="recenttabs nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button" role="tab">Bug Reports</button>
         </li>
     </ul>
     <div class="tab-content mt-3" id="myTabContent">
@@ -70,7 +70,7 @@
                 <tbody>
                     <tr>
                         <td>101</td>
-                        <td><img src="~/img/logo.png"/></td>
+                        <td><img src="~/img/logo.png" /></td>
                         <td>New Recipes Added! 🍳</td>
                         <td>Introducing 10 new recipes, including sushi & burgers!</td>
                         <td>2025-03-13</td>
@@ -168,47 +168,66 @@
         </div>
         <!--bug reports-->
         <div class="tab-pane fade" id="tab3" role="tabpanel">
-            <table class="table table-bordered table-hover table-striped">
+            <table class="table table-bordered table-hover table-striped" id="commentsTable">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        <th>Username</th>
+                        <th>BugId</th>
                         <th>Message</th>
-                        <th>Status</th>
-                        <th>Report Date</th>
+                        <th>URLImageList</th>
+                        <th>Posted Date</th>
+                        <th>Updated Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Title</td>
-                        <td>Description</td>
-                        <td>Message</td>
-                        <td>Status</td>
-                        <td>Report Date</td>
-                        <td>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i> View</button>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-pen-to-square fa-sm"></i> Edit</button>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-trash fa-sm"></i> Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>ID</td>
-                        <td>Title</td>
-                        <td>Description</td>
-                        <td>Message</td>
-                        <td>Status</td>
-                        <td>Report Date</td>
-                        <td>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i> View</button>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-pen-to-square fa-sm"></i> Edit</button>
-                            <button class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-trash fa-sm"></i> Delete</button>
-                        </td>
-                    </tr>
+                    
                 </tbody>
             </table>
+            <script>
+                $(document).ready(function() {
+                    $('#commentsTable').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: '@Url.Action("GetAllComments", "Manage")',
+                            type: 'GET'
+                        },
+                        columns: [
+                            { data: 'commentId' }, // ID
+                            { data: 'username', defaultContent: 'Anonymous' }, // Handle null usernames
+                            { data: 'bugId' }, // Bug ID
+                            { data: 'message' }, // Comment Message
+                            {
+                                data: 'urlImageList',
+                                render: function(data) {
+                                    if (data && data.length > 0) {
+                                        return data.map(url => `<img src="${url}" width="50" height="50"/>`).join(' ');
+                                    }
+                                    return 'No images';
+                                }
+                            },
+                            {
+                                data: 'postedDate',
+                                render: function(data) {
+                                    return new Date(data).toLocaleString(); // Format date
+                                }
+                            },
+                            {
+                                data: 'updatedDate',
+                                render: function(data) {
+                                    return data ? new Date(data).toLocaleString() : 'Never Updated';
+                                }
+                            }
+                        ],
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        responsive: true
+                    });
+                });
+            </script>
         </div>
         <!--user logs-->
         <div class="tab-pane fade" id="tab4" role="tabpanel">

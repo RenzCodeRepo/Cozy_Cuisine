@@ -8,14 +8,14 @@ namespace Cozy_Cuisine.Models
     {
         [Key]
         public int StoryId { get; set; }
-        public int WikiId { get; set; }
+        public int? WikiId { get; set; }
         [ForeignKey("WikiId")]
-        public virtual Wiki Wiki { get; set; }
+        public virtual Wiki? Wiki { get; set; }
 
         public string Title { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
-        public List<string> URLImageList { get; set; }
+        public string URLImageList { get; set; }
 
     }
 }

@@ -21,9 +21,12 @@ namespace Cozy_Cuisine.Data.IRepositories
 
         // Comments
         Task<IEnumerable<Comments>> GetCommentsByBugIdAsync(int bugId);
+        Task<List<Comments>> GetAllCommentsAsync();
         Task<Comments> GetCommentByIdAsync(int commentId);
         Task AddCommentAsync(Comments comment);
         Task UpdateCommentAsync(Comments comment);
         Task DeleteCommentAsync(int commentId);
+        Task<int> GetTotalCountAsync();
+        Task<List<Comments>> GetFilteredCommentsAsync(string search);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cozy_Cuisine.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cozy_Cuisine.Data.IRepositories
 {
@@ -33,11 +34,11 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task DeleteGalleryAsync(int id);
 
         // FAQ
-        Task<IEnumerable<FAQ>> GetAllFAQsAsync();
+        Task<List<FAQ>> GetAllFAQsAsync();
         Task<FAQ> GetFAQByIdAsync(int id);
         Task AddFAQAsync(FAQ faq);
         Task UpdateFAQAsync(FAQ faq);
-        Task DeleteFAQAsync(int id);
+        Task<bool> DeleteFAQAsync(int id);
 
         // Notice
         Task<IEnumerable<Notice>> GetAllNoticesAsync();
@@ -49,5 +50,20 @@ namespace Cozy_Cuisine.Data.IRepositories
         // Visitor (Only Add and Get)
         Task<IEnumerable<Visitor>> GetAllVisitorsAsync();
         Task AddVisitorAsync(Visitor visitor);
+        Task<int> GetDailyVisitorsAsync();
+
+        // Game Downloads
+        Task<IEnumerable<GameDownloads>> GetAllDownloadsAsync();
+        Task AddDownloadAsync(GameDownloads download);
+        Task UpdateDownloadAsync(GameDownloads download);
+        Task DeleteDownloadAsync(int downloadId);
+
+        // Game Reviews
+        Task<GameReview> GetReviewByIdAsync(int reviewId);
+        Task<IEnumerable<GameReview>> GetAllReviewsAsync();
+        Task AddReviewAsync(GameReview review);
+        Task UpdateReviewAsync(GameReview review);
+        Task DeleteReviewAsync(int reviewId);
+
     }
 }

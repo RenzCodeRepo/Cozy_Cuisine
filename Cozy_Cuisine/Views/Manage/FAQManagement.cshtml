@@ -1,0 +1,238 @@
+﻿@model Cozy_Cuisine.ViewModels.FAQManagementVM
+@{
+    Layout = "Admin_Layout";
+    ViewData["Title"] = "Dashboard";
+}
+@* TEMPORARY CSS LANG DASHBOARD *@
+<link href="~/css/dashboard.css" rel="stylesheet" />
+
+
+<form id="faqForm" method="post" asp-controller="Manage" asp-action="CreateFAQ" onsubmit="confirmSubmit(event)">
+    <div>
+        <label asp-for="NewFAQ.Question"></label>
+        <input type="text" asp-for="NewFAQ.Question" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>FAQ Image URLs</label>
+        <div id="imageUrlContainer">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" name="faqImageUrls" placeholder="Enter Image URL" />
+                <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addImageUrl()" class="btn btn-secondary mt-2">Add Another URL</button>
+    </div>
+
+    <!-- Hidden input to hold the final combined string -->
+    <input type="hidden" id="FAQURLImageList" asp-for="NewFAQ.FAQURLImageList" />
+
+
+    <div>
+        <label asp-for="NewFAQ.Answer"></label>
+        <textarea asp-for="NewFAQ.Answer" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>URL Image Lists</th>
+            <th>Answer</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.FAQs != null && Model.FAQs.Any())
+        {
+            @foreach (var faq in Model.FAQs)
+            {
+
+                <tr>
+                    <td>@faq.FAQId</td>
+                    <td>@faq.Question</td>
+
+                    <td>
+                        @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
+                        {
+                          
+                            var imageUrls = faq.FAQURLImageList.Split(',');
+                            foreach (var url in imageUrls)
+                            {
+                                <a href="@url" target="_blank">
+                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                           <span>No Image Uploaded</span>
+                        }
+                    </td>
+                    <td>@faq.Answer</td>
+                    <td>
+                        <a asp-action="DetailsFAQ" asp-route-id="@faq.FAQId" class="btn btn-primary">View</a>
+                        
+                        @* opens a modal popup to make the changes *@
+                        <button type="button" class="btn btn-warning btn-sm edit-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editFAQModal"
+                                data-id="@faq.FAQId"
+                                data-question="@faq.Question"
+                                data-answer="@faq.Answer"
+                                data-urls="@faq.FAQURLImageList">
+                            Edit
+                        </button>
+
+                        
+                        <form class="d-inline" id="deleteForm-@faq.FAQId" method="post" asp-action="DeleteFAQ" asp-route-id="@faq.FAQId">
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete(event, 'deleteForm-@faq.FAQId')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@* MODAL POPUP FOR EDITING RECORD *@
+<div class="modal fade" id="editFAQModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit FAQ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editFAQForm" method="post" asp-action="EditFAQ">
+                    <input type="hidden" id="faqId" name="FAQId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Question</label>
+                        <input type="text" class="form-control" id="question" name="Question" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Answer</label>
+                        <textarea class="form-control" id="answer" name="Answer" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Image URLs (one link per new line)</label>
+                        <textarea class="form-control modal-dialog-scrollable" rows="10" id="urls" name="FAQURLImageList" placeholder="Image URLs (one per new line)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+<script>
+    function addImageUrl() {
+        let container = document.getElementById("imageUrlContainer");
+
+        let div = document.createElement("div");
+        div.className = "input-group mb-2";
+
+        let input = document.createElement("input");
+        input.type = "text";
+        input.name = "faqImageUrls";
+        input.className = "form-control";
+        input.placeholder = "Enter Image URL";
+
+        let button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn btn-danger";
+        button.innerText = "Remove";
+        button.onclick = function () { removeImageUrl(button); };
+
+        div.appendChild(input);
+        div.appendChild(button);
+        container.appendChild(div);
+    }
+
+    function removeImageUrl(button) {
+        button.parentElement.remove();
+    }
+
+    function prepareFormData() {
+        let inputs = document.getElementsByName("faqImageUrls");
+        let urls = [];
+
+        // Collect all values
+        inputs.forEach(input => {
+            if (input.value.trim() !== "") {
+                urls.push(input.value.trim());
+            }
+        });
+
+        // Set the hidden input value (comma-separated string)
+        document.getElementById("FAQURLImageList").value = urls.join(",");
+    }
+
+    function confirmSubmit(event) {
+            event.preventDefault(); // Stop form submission
+            prepareFormData();
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You can always delete or edit the record later.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, submit it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                     document.getElementById("faqForm").submit();
+                }
+            });
+
+            return false; // Prevent immediate submission
+        }
+    function confirmDelete(event, formId) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            console.log("Swal result:", result); // Debugging line
+            if (result.isConfirmed) {
+                console.log("Form submission triggered:", formId); // Debugging line
+                document.getElementById(formId).submit();
+            }
+        });
+    }
+
+
+   
+</script>
+<script>
+    $(document).ready(function () {
+        $(".edit-btn").click(function () {
+            $("#faqId").val($(this).data("id"));
+            $("#question").val($(this).data("question"));
+            $("#answer").val($(this).data("answer"));
+
+            let urls = $(this).data("urls");
+            $("#urls").val(urls.replace(/,/g, "\n"));
+        });
+        $("#editFAQForm").submit(function () {
+               let formattedUrls = $("#urls").val().split("\n").map(url => url.trim()).join(",");
+               $("#urls").val(formattedUrls); // Convert back to comma-separated before submitting
+           });
+        });
+</script>
+}
