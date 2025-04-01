@@ -16,7 +16,6 @@ namespace Cozy_Cuisine.Data
         public DbSet<BugReport> BugReport { get; set; }
         public DbSet<Characters> Characters { get; set; }
         public DbSet<Comments> Comments { get; set; }
-        public DbSet<Contacts> Contacts { get; set; }
         public DbSet<Credit> Credit { get; set; }
         public DbSet<FAQ> FAQ { get; set; }
         public DbSet<Gallery> Gallery { get; set; }

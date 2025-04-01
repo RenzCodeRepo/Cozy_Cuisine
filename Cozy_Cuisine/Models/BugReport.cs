@@ -13,7 +13,7 @@ namespace Cozy_Cuisine.Models
 
         public string BugTitle { get; set; }
         public string BugDescription { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = "Open";    
         public DateTime ReportDate { get; set; } = DateTime.Now;
 
         public ICollection<Comments> Comments { get; set; } = new HashSet<Comments>();

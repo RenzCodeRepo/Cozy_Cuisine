@@ -10,7 +10,7 @@
 <form id="faqForm" method="post" asp-controller="Manage" asp-action="CreateFAQ" onsubmit="confirmSubmit(event)">
     <div>
         <label asp-for="NewFAQ.Question"></label>
-        <input type="text" asp-for="NewFAQ.Question" class="form-control" required />
+        <input type="text" asp-for="NewFAQ.Question" class="form-control" placeholder="Enter Question" required />
     </div>
 
     <div class="form-group">
@@ -30,7 +30,7 @@
 
     <div>
         <label asp-for="NewFAQ.Answer"></label>
-        <textarea asp-for="NewFAQ.Answer" class="form-control" rows="4" required></textarea>
+        <textarea asp-for="NewFAQ.Answer" class="form-control" rows="4" placeholder="Enter Answer" required></textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -75,22 +75,25 @@
                     </td>
                     <td>@faq.Answer</td>
                     <td>
-                        <a asp-action="DetailsFAQ" asp-route-id="@faq.FAQId" class="btn btn-primary">View</a>
                         
+                        <a asp-action="DetailsFAQ" asp-route-id="@faq.FAQId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+
                         @* opens a modal popup to make the changes *@
-                        <button type="button" class="btn btn-warning btn-sm edit-btn"
+                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editFAQModal"
                                 data-id="@faq.FAQId"
                                 data-question="@faq.Question"
                                 data-answer="@faq.Answer"
                                 data-urls="@faq.FAQURLImageList">
+                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
 
-                        
+
+
                         <form class="d-inline" id="deleteForm-@faq.FAQId" method="post" asp-action="DeleteFAQ" asp-route-id="@faq.FAQId">
-                            <button type="button" class="btn btn-danger" onclick="confirmDelete(event, 'deleteForm-@faq.FAQId')">Delete</button>
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@faq.FAQId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -221,18 +224,24 @@
 </script>
 <script>
     $(document).ready(function () {
-        $(".edit-btn").click(function () {
-            $("#faqId").val($(this).data("id"));
-            $("#question").val($(this).data("question"));
-            $("#answer").val($(this).data("answer"));
-
+        $(".actionsbtn").click(function () {
+            let faqId = $(this).data("id");
+            let question = $(this).data("question");
+            let answer = $(this).data("answer");
             let urls = $(this).data("urls");
-            $("#urls").val(urls.replace(/,/g, "\n"));
+
+            // Set values in the modal
+            $("#faqId").val(faqId);
+            $("#question").val(question);
+            $("#answer").val(answer);
+            $("#urls").val(urls ? urls.replace(/,/g, "\n") : ""); // Convert CSV to new lines
         });
-        $("#editFAQForm").submit(function () {
-               let formattedUrls = $("#urls").val().split("\n").map(url => url.trim()).join(",");
-               $("#urls").val(formattedUrls); // Convert back to comma-separated before submitting
-           });
+            $("#editFAQForm").submit(function () {
+            let urlimgField = $("#urls");
+            let formattedURLs = urlimgField.val().split("\n").map(url => url.trim()).filter(url => url !== "").join(",");
+            urlimgField.val(formattedURLs); // Set the value back to CSV format before submitting
         });
+    });
+
 </script>
 }

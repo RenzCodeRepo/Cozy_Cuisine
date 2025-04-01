@@ -74,19 +74,20 @@
                         <span class="pgname">Story Plot Management</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+              @*   <a href="#" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-address-book fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Contact Management</span>
                     </div>
-                </a>
-                <a href="#" class="text-decoration-none">
+                </a> *@
+                <a asp-action="CreditsManagement" asp-controller="Manage" class="text-decoration-none">
+                    
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-award fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Credits Management</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="NewsManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-newspaper fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">News Management</span>
@@ -128,7 +129,7 @@
                         <span class="pgname">Media</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="PatchManagement" asp-controller="Patch" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-screwdriver-wrench fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Patches</span>

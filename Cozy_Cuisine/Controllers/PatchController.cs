@@ -1,7 +1,9 @@
 ﻿using Cozy_Cuisine.Data.IRepositories;
+using Cozy_Cuisine.Data.Repositories;
 using Cozy_Cuisine.Models;
 using Cozy_Cuisine.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace Cozy_Cuisine.Controllers
@@ -16,71 +18,84 @@ namespace Cozy_Cuisine.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllPatches()
+        public async Task<IActionResult> PatchManagement()
         {
-            var patches = await _patchRepository.GetAllPatchesAsync();
-            return View(patches);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ViewPatch(int id)
-        {
-            var patch = await _patchRepository.GetPatchByIdAsync(id);
-            if (patch == null) return NotFound();
-            return View(patch);
-        }
-
-
-        public IActionResult CreatePatch()
-        {
-            return View();
+            var PMVM = new PatchManagementVM
+            {
+                Patches = await _patchRepository.GetAllPatchesAsync(),
+                NewPatch = null
+            };
+           return View(PMVM);
         }
 
 
         [HttpPost]      
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePatch(Patches patch)
+        public async Task<IActionResult> CreatePatch(PatchManagementVM model)
         {
-            if (ModelState.IsValid)
+            if (model.NewPatch != null)
             {
-                await _patchRepository.AddPatchAsync(patch);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(patch);
+                await _patchRepository.AddPatchAsync(model.NewPatch);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("PatchManagement");
+            };
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("PatchManagement");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdatePatch(int id, Patches patch)
+        public async Task<IActionResult> EditPatch(Patches model)
         {
-            if (id != patch.PatchId) return BadRequest();
-
-            if (ModelState.IsValid)
+            var patch = await _patchRepository.GetPatchByIdAsync(model.PatchId);
+            if (patch != null)
             {
+                patch.Version = model.Version;
+                patch.PatchNotes = model.PatchNotes;
+                patch.PatchName = model.PatchName;
+                patch.URLImageList = model.URLImageList;
+                patch.URLGif = model.URLGif;
+                patch.GameURL = model.GameURL;
+
                 await _patchRepository.UpdatePatchAsync(patch);
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Patch updated successfully.";
+                return RedirectToAction("PatchManagement");
             }
-            TempData["Error"] = "Invalid, Something went wrong.";
-            return View(patch);
+
+            TempData["Error"] = "Patch not found.";
+            return RedirectToAction("PatchManagement");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePatch(int id)
         {
-            await _patchRepository.DeletePatchAsync(id);
-            return RedirectToAction(nameof(AllPatches));
+            var isDeleted = await _patchRepository.DeletePatchAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("PatchManagement");
         }
 
-        //
-        //Bug Related Actions
-        //
-
         [HttpGet]
-        public async Task<IActionResult> BugsList()
+        public async Task<IActionResult> BugReportManagement()
         {
-            var bugList = await _patchRepository.GetAllBugReports();
-            return View(bugList);   
+            var bugReport = await _patchRepository.GetAllBugReports();
+                             
+            var BRMVM = new BugReportManagementVM
+            {
+                BugReports = bugReport,
+                NewComments = null
+            };
+            return View(BRMVM);
         }
 
         [HttpGet]
@@ -112,16 +127,33 @@ namespace Cozy_Cuisine.Controllers
             return View(bugReport);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> UpdateBug(int id)
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int bugId, string status)
         {
-            var bugReport = await _patchRepository.GetBugReportByIdAsync(id);
-            if (bugReport == null)
+            var bugReport = await _patchRepository.GetBugReportByIdAsync(bugId);
+            if (bugReport == null) 
             { 
-                TempData["Error"] = "Bug Report not Found."; 
+                TempData["Error"] = "Bug Report not found"; 
                 return NotFound(); 
-            }
-            return View(bugReport);
+            }; 
+
+            bugReport.Status = status;
+            await _patchRepository.UpdateBugReportAsync(bugReport);
+
+            TempData["Success"] = "Bug Report Updated Successfully";
+            // Return updated dropdown with new value
+            return Content($@"
+        <form method='post' 
+              hx-post='/BugReport/UpdateStatus' 
+              hx-trigger='change' 
+              hx-target='this'>
+            <input type='hidden' name='bugId' value='{bugId}' />
+            <select name='status' class='form-select'>
+                <option value='Open' {(status == "Open" ? "selected" : "")}>Open</option>
+                <option value='Fixing' {(status == "Fixing" ? "selected" : "")}>Fixing</option>
+                <option value='Resolved' {(status == "Resolved" ? "selected" : "")}>Resolved</option>
+            </select>
+        </form>", "text/html");
         }
 
         [HttpPost]

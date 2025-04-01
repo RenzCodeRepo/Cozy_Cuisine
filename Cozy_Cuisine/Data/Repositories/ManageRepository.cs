@@ -15,32 +15,14 @@ namespace Cozy_Cuisine.Data.Repositories
             _context = context;
         }
 
-        // 🔹 Contacts CRUD
-        public async Task<IEnumerable<Contacts>> GetAllContactsAsync() => await _context.Contacts.ToListAsync();
-        public async Task<Contacts> GetContactByIdAsync(int id) => await _context.Contacts.FindAsync(id);
-        public async Task AddContactAsync(Contacts contact)
-        {
-            _context.Contacts.Add(contact);
-            await _context.SaveChangesAsync();
-        }
-        public async Task UpdateContactAsync(Contacts contact)
-        {
-            _context.Contacts.Update(contact);
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteContactAsync(int id)
-        {
-            var contact = await _context.Contacts.FindAsync(id);
-            if (contact != null)
-            {
-                _context.Contacts.Remove(contact);
-                await _context.SaveChangesAsync();
-            }
-        }
-
+      
         // 🔹 Credit CRUD
-        public async Task<IEnumerable<Credit>> GetAllCreditsAsync() => await _context.Credit.ToListAsync();
-        public async Task<Credit> GetCreditByIdAsync(int id) => await _context.Credit.FindAsync(id);
+        public async Task<List<Credit>> GetAllCreditsAsync() => await _context.Credit.ToListAsync();
+        public async Task<(bool IsSuccess, Credit? CreditData)> GetCreditByIdAsync(int id)
+        {
+            var credit = await _context.Credit.FindAsync(id);
+            return credit != null ? (true, credit) : (false, null);
+        }
         public async Task AddCreditAsync(Credit credit)
         {
             _context.Credit.Add(credit);
@@ -51,18 +33,20 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.Credit.Update(credit);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteCreditAsync(int id)
+        public async Task<bool> DeleteCreditAsync(int id)
         {
             var credit = await _context.Credit.FindAsync(id);
             if (credit != null)
             {
                 _context.Credit.Remove(credit);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // 🔹 About CRUD
-        public async Task<IEnumerable<About>> GetAllAboutsAsync() => await _context.About.ToListAsync();
+        public async Task<List<About>> GetAllAboutsAsync() => await _context.About.ToListAsync();
         public async Task<About> GetAboutByIdAsync(int id) => await _context.About.FindAsync(id);
         public async Task AddAboutAsync(About about)
         {
@@ -85,7 +69,7 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // 🔹 Gallery CRUD
-        public async Task<IEnumerable<Gallery>> GetAllGalleryAsync() => await _context.Gallery.ToListAsync();
+        public async Task<List<Gallery>> GetAllGalleryAsync() => await _context.Gallery.ToListAsync();
         public async Task<Gallery> GetGalleryByIdAsync(int id) => await _context.Gallery.FindAsync(id);
         public async Task AddGalleryAsync(Gallery gallery)
         {
@@ -143,8 +127,13 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // 🔹 Notice CRUD
-        public async Task<IEnumerable<Notice>> GetAllNoticesAsync() => await _context.Notice.ToListAsync();
-        public async Task<Notice> GetNoticeByIdAsync(int id) => await _context.Notice.FindAsync(id);
+        public async Task<List<Notice>> GetAllNoticesAsync() => await _context.Notice.ToListAsync();
+        public async Task<(bool IsSuccess, Notice? NoticeData)> GetNoticeByIdAsync(int id)
+        {
+            var notice = await _context.Notice.FindAsync(id);
+            return notice != null ? (true, notice) : (false, null);
+            
+        }
         public async Task AddNoticeAsync(Notice notice)
         {
             _context.Notice.Add(notice);
@@ -166,7 +155,7 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // 🔹 Visitors (Only Add and Get)
-        public async Task<IEnumerable<Visitor>> GetAllVisitorsAsync() => await _context.Visitor.ToListAsync();
+        public async Task<List<Visitor>> GetAllVisitorsAsync() => await _context.Visitor.ToListAsync();
         public async Task AddVisitorAsync(Visitor visitor)
         {
             _context.Visitor.Add(visitor);
@@ -180,7 +169,7 @@ namespace Cozy_Cuisine.Data.Repositories
 
 
         // Game Downloads
-        public async Task<IEnumerable<GameDownloads>> GetAllDownloadsAsync()
+        public async Task<List<GameDownloads>> GetAllDownloadsAsync()
         {
             return await _context.GameDownloads.ToListAsync();
         }
@@ -214,7 +203,7 @@ namespace Cozy_Cuisine.Data.Repositories
         {
             return await _context.GameReview.FirstOrDefaultAsync(r => r.ReviewId == reviewId);
         }
-        public async Task<IEnumerable<GameReview>> GetAllReviewsAsync()
+        public async Task<List<GameReview>> GetAllReviewsAsync()
         {
             return await _context.GameReview.ToListAsync();
         }

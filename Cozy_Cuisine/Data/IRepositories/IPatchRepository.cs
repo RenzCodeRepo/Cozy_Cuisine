@@ -5,22 +5,22 @@ namespace Cozy_Cuisine.Data.IRepositories
     public interface IPatchRepository
     {
         // Patches
-        Task<IEnumerable<Patches>> GetAllPatchesAsync();
+        Task<List<Patches>> GetAllPatchesAsync();
         Task<Patches> GetPatchByIdAsync(int patchId);
         Task AddPatchAsync(Patches patch);
         Task UpdatePatchAsync(Patches patch);
-        Task DeletePatchAsync(int patchId);
+        Task <bool> DeletePatchAsync(int patchId);
 
         // Bug Reports
-        Task<IEnumerable<BugReport>> GetBugReportsByPatchIdAsync(int patchId);
-        Task<IEnumerable<BugReport>> GetAllBugReports();
+        Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId);
+        Task<List<BugReport>> GetAllBugReports();
         Task<BugReport> GetBugReportByIdAsync(int bugId);
         Task AddBugReportAsync(BugReport bugReport);
         Task UpdateBugReportAsync(BugReport bugReport);
         Task DeleteBugReportAsync(int bugId);
 
         // Comments
-        Task<IEnumerable<Comments>> GetCommentsByBugIdAsync(int bugId);
+        Task<List<Comments>> GetCommentsByBugIdAsync(int bugId);
         Task<List<Comments>> GetAllCommentsAsync();
         Task<Comments> GetCommentByIdAsync(int commentId);
         Task AddCommentAsync(Comments comment);

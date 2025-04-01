@@ -100,10 +100,11 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="btn btn-primary">View</a>
+                        
+                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                         @* opens a modal popup to make the changes *@
-                        <button type="button" class="btn btn-warning btn-sm edit-btn"
+                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editSPModal"
                                 data-id="@storyPlot.StoryId"
@@ -112,12 +113,13 @@
                                 data-description="@storyPlot.Description"
                                 data-content="@storyPlot.Content"
                                 data-urls="@storyPlot.URLImageList">
+                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
 
 
                         <form class="d-inline" id="deleteForm-@storyPlot.StoryId" method="post" asp-action="DeleteStoryPlot" asp-route-id="@storyPlot.StoryId">
-                            <button type="button" class="btn btn-danger" onclick="confirmDelete(event, 'deleteForm-@storyPlot.StoryId')">Delete</button>
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@storyPlot.StoryId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -136,7 +138,7 @@
             </div>
             <div class="modal-body">
                 <form id="editStoryPlotForm" method="post" asp-action="EditStoryPlot">
-                    <input type="hidden" id="storyid" name="Storyid">
+                    <input type="hidden" id="storyId" name="StoryId">
 
 
                     @if (Model.WikiCategories.Any())
@@ -269,21 +271,29 @@
     </script>
     <script>
         $(document).ready(function () {
-            $(".edit-btn").click(function () {
-                $("#storyid").val($(this).data("id"));
-                $("#title").val($(this).data("title"));
-                $("#description").val($(this).data("description"));
-                $("#content").val($(this).data("content"));
-
+            $(".actionsbtn").click(function () {
+                let storyId = $(this).data("id");
+                let wikiId = $(this).data("fk");
+                let title = $(this).data("title");
+                let description = $(this).data("description");
+                let content = $(this).data("content");
                 let urls = $(this).data("urls");
-                $("#urls").val(urls.replace(/,/g, "\n"));
-                 let wikiId = $(this).data("fk"); // Fetch the wikiId from the button
-                $("#wikiCategory").val(wikiId).prop("disabled", !wikiId);
+
+             
+                // Set values in the modal fields
+                $("#storyId").val(storyId);
+                $("#wikiCategory").val(wikiId).prop("disabled", !wikiId); // Set WikiId and disable if empty
+                $("#title").val(title);
+                $("#description").val(description);
+                $("#content").val(content);
+                $("#urls").val(urls ? urls.replace(/,/g, "\n") : ""); // Convert comma-separated to new lines
+
             });
-            $("#editStoryPlotForm").submit(function () {
-                   let formattedUrls = $("#urls").val().split("\n").map(url => url.trim()).join(",");
-                   $("#urls").val(formattedUrls); // Convert back to comma-separated before submitting
-               });
-            });
+             $("#editStoryPlotForm").submit(function () {
+            let urlimgField = $("#urls");
+            let formattedURLs = urlimgField.val().split("\n").map(url => url.trim()).filter(url => url !== "").join(",");
+            urlimgField.val(formattedURLs); // Set the value back to CSV format before submitting
+        });
+        });
     </script>
 }

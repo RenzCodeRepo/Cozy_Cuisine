@@ -14,7 +14,7 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // Patches
-        public async Task<IEnumerable<Patches>> GetAllPatchesAsync()
+        public async Task<List<Patches>> GetAllPatchesAsync()
         {
             return await _context.Patches.Include(p => p.BugReport).ToListAsync();
         }
@@ -37,27 +37,30 @@ namespace Cozy_Cuisine.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeletePatchAsync(int patchId)
+        public async Task <bool> DeletePatchAsync(int patchId)
         {
             var patch = await _context.Patches.FindAsync(patchId);
             if (patch != null)
             {
                 _context.Patches.Remove(patch);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // Bug Reports
-        public async Task<IEnumerable<BugReport>> GetBugReportsByPatchIdAsync(int patchId)
+        public async Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId)
         {
             return await _context.BugReport
                 .Where(b => b.PatchId == patchId)
                 .Include(b => b.Comments)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<BugReport>> GetAllBugReports()
+        public async Task<List<BugReport>> GetAllBugReports()
         {
             return await _context.BugReport
+                .Include(b => b.Patches)
                 .Include(b => b.Comments)
                 .ToListAsync();
         }
@@ -92,7 +95,7 @@ namespace Cozy_Cuisine.Data.Repositories
         }
 
         // Comments
-        public async Task<IEnumerable<Comments>> GetCommentsByBugIdAsync(int bugId)
+        public async Task<List<Comments>> GetCommentsByBugIdAsync(int bugId)
         {
             return await _context.Comments.Where(c => c.BugId == bugId).ToListAsync();
         }

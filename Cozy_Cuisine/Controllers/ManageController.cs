@@ -45,7 +45,7 @@ namespace Cozy_Cuisine.Controllers
 
             var dashboardData = new DashboardVM
             {
-                TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count(),
+                TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count,
                 Ratings = (await _manageRepository.GetAllReviewsAsync())
                             .Select(r => r.Rating)
                             .DefaultIfEmpty(0)
@@ -61,7 +61,7 @@ namespace Cozy_Cuisine.Controllers
 
             var dashboardData = new DashboardVM2
             {
-                TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count(),
+                TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count,
                 Ratings = (await _manageRepository.GetAllReviewsAsync())
                             .Select(r => r.Rating)
                             .DefaultIfEmpty(0)
@@ -148,14 +148,138 @@ namespace Cozy_Cuisine.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> ContactManagement()
+        public async Task<IActionResult> CreditsManagement()
         {
-            var FAQVM = new FAQManagementVM
+            var CVM = new CreditsManagementVM
             {
-                FAQs = await _manageRepository.GetAllFAQsAsync(),
-                NewFAQ = null
+               Credits = await _manageRepository.GetAllCreditsAsync(),
+               NewCredits = null
             };
-            return View(FAQVM);
+            return View(CVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateCredits(CreditsManagementVM model)
+        {
+            if (model.NewCredits != null)
+            {
+                await _manageRepository.AddCreditAsync(model.NewCredits);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("CreditsManagement");
+            };
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("CreditsManagement");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCredits(Credit model)
+        {
+            var (isSuccess, credit) = await _manageRepository.GetCreditByIdAsync(model.CreditId);
+            if (isSuccess)
+            {
+                credit.Name = model.Name;
+                credit.Role = model.Role;
+                credit.URLGif = model.URLGif;
+
+                await _manageRepository.UpdateCreditAsync(credit);
+                TempData["Success"] = "Credit updated successfully.";
+                return RedirectToAction("CreditsManagement");
+            }
+
+            TempData["Error"] = "Credit Record not found.";
+            return RedirectToAction("CreditsManagement");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCredit(int id)
+        {
+
+            var isDeleted = await _manageRepository.DeleteCreditAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("CreditsManagement");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> NewsManagement()
+        {
+            var NVM = new NewsManagementVM
+            {
+                Notices = await _manageRepository.GetAllNoticesAsync(),
+                NewNotice = null
+            };
+            return View(NVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateNotice(NewsManagementVM model)
+        {
+            if (model.NewNotice != null)
+            {
+                await _manageRepository.AddNoticeAsync(model.NewNotice);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("NewsManagement");
+            };
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("NewsManagement");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditNotice(Notice model)
+        {
+            var (isSuccess, notice) = await _manageRepository.GetNoticeByIdAsync(model.NoticeId);
+            if (isSuccess)
+            {
+                notice.Headline  = model.Headline;
+                notice.Category = model.Category;
+                notice.Content = model.Content;
+                notice.URLNewsImageList = model.URLNewsImageList;
+                notice.URLVideo = model.URLVideo;
+
+                await _manageRepository.UpdateNoticeAsync(notice);
+                TempData["Success"] = "News updated successfully.";
+                return RedirectToAction("NewsManagement");
+            }
+
+            TempData["Error"] = "News record not found.";
+            return RedirectToAction("NewsManagement");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteNotice(int id)
+        {
+
+            var isDeleted = await _manageRepository.DeleteCreditAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("CreditsManagement");
         }
 
     }

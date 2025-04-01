@@ -4,6 +4,7 @@ using Cozy_Cuisine.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cozy_Cuisine.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331080218_madeurlgifincreditsnullable")]
+    partial class madeurlgifincreditsnullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -407,9 +410,11 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("URLNewsImageList")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLVideo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NoticeId");
@@ -426,9 +431,6 @@ namespace Cozy_Cuisine.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatchId"));
 
                     b.Property<string>("GameURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PatchName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -440,9 +442,11 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("URLGif")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLImageList")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Version")
