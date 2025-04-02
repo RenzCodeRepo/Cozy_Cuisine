@@ -58,14 +58,16 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.About.Update(about);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAboutAsync(int id)
+        public async Task <bool> DeleteAboutAsync(int id)
         {
             var about = await _context.About.FindAsync(id);
             if (about != null)
             {
                 _context.About.Remove(about);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // 🔹 Gallery CRUD
@@ -81,14 +83,16 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.Gallery.Update(gallery);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteGalleryAsync(int id)
+        public async Task <bool> DeleteGalleryAsync(int id)
         {
             var gallery = await _context.Gallery.FindAsync(id);
             if (gallery != null)
             {
                 _context.Gallery.Remove(gallery);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // 🔹 FAQ CRUD

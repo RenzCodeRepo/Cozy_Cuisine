@@ -1,7 +1,5 @@
 ﻿using Cozy_Cuisine.Data.IRepositories;
-using Cozy_Cuisine.Data.IServices;
 using Cozy_Cuisine.Data.Repositories;
-using Cozy_Cuisine.Data.Services;
 using Cozy_Cuisine.Models;
 using Cozy_Cuisine.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +12,11 @@ namespace Cozy_Cuisine.Controllers
     public class ManageController : Controller
     {
         private readonly IManageRepository _manageRepository;
-        private readonly IManageServices _manageServices;
 
 
-        public ManageController(IManageRepository manageRepository, IManageServices manageServices)
+        public ManageController(IManageRepository manageRepository)
         {
-            _manageRepository = manageRepository;
-            _manageServices = manageServices;
-            
+            _manageRepository = manageRepository;       
         }
         public IActionResult Index()
         {
@@ -72,14 +67,7 @@ namespace Cozy_Cuisine.Controllers
             return View(dashboardData);
         }
 
-        [HttpGet]
-        public IActionResult GetAllComments()
-        {
-            var comments = _manageServices.GetAllComments();
-
-            return Json(new { data = comments });
-        }
-
+     
         [HttpGet]
         public async Task<IActionResult> FAQManagement()
         {
@@ -280,6 +268,145 @@ namespace Cozy_Cuisine.Controllers
             }
 
             return RedirectToAction("CreditsManagement");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AboutManagement()
+        {
+            var AMVM = new AboutManagementVM
+            {
+                Abouts = await _manageRepository.GetAllAboutsAsync(),
+                NewAbout = null
+            };
+            return View(AMVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAbout(AboutManagementVM model)
+        {
+            if (model.NewAbout != null)
+            {
+                await _manageRepository.AddAboutAsync(model.NewAbout);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("AboutManagement");
+            }
+            ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("AboutManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAbout(int id)
+        {
+
+            var isDeleted = await _manageRepository.DeleteAboutAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("AboutManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAbout(About model)
+        {
+            var about = await _manageRepository.GetAboutByIdAsync(model.DetailsId);
+            if (about != null)
+            {
+                about.Title = model.Title;
+                about.Description = model.Description;
+                about.URLGif = model.URLGif;
+
+                await _manageRepository.UpdateAboutAsync(about);
+                TempData["Success"] = "About updated successfully.";
+                return RedirectToAction("AboutManagement");
+            }
+
+            TempData["Error"] = "About record not found.";
+            return RedirectToAction("AboutManagement");
+
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> MediaManagement()
+        {
+            var MMVM = new MediaManagementVM
+            {
+                Galleries = await _manageRepository.GetAllGalleryAsync(),
+                NewGallery = null
+            };
+            return View(MMVM);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateMedia(MediaManagementVM model)
+        {
+            if (model.NewGallery != null)
+            {
+                await _manageRepository.AddGalleryAsync(model.NewGallery);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("MediaManagement");
+            }
+            ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("MediaManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMedia(int id)
+        {
+
+            var isDeleted = await _manageRepository.DeleteGalleryAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("MediaManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMedia(Gallery model)
+        {
+            var gallery = await _manageRepository.GetGalleryByIdAsync(model.GalleryId);
+            if (gallery != null)
+            {
+                gallery.Title = model.Title;
+                gallery.Description = model.Description;
+                gallery.Category = model.Category;
+                gallery.Description = model.Description;
+                gallery.URLGifOrVideo = model.URLGifOrVideo;
+                gallery.URLImage = model.URLImage;
+
+                await _manageRepository.UpdateGalleryAsync(gallery);
+                TempData["Success"] = "About updated successfully.";
+                return RedirectToAction("MediaManagement");
+            }
+
+            TempData["Error"] = "Gallery record not found.";
+            return RedirectToAction("MediaManagement");
+
         }
 
     }

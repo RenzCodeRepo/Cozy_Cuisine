@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Cozy_Cuisine.Data.IRepositories;
 using Cozy_Cuisine.Data.Repositories;
-using Cozy_Cuisine.Data.IServices;
-using Cozy_Cuisine.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +28,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPatchRepository, PatchRepository>();
 builder.Services.AddScoped<IWikiRepository, WikiRepository>();
 builder.Services.AddScoped<IManageRepository, ManageRepository>();
-builder.Services.AddScoped<IManageServices, ManageServices>();
 
 
 

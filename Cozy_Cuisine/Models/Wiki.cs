@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿        using System.ComponentModel.DataAnnotations;
 
 namespace Cozy_Cuisine.Models
 {
@@ -9,8 +9,8 @@ namespace Cozy_Cuisine.Models
         public string Title { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
-        public string URLImageList { get; set; }
-        public string URLGif { get; set; }
+        public string? URLImageList { get; set; }
+        public string? URLGif { get; set; }
 
 
         public ICollection<StoryPlot> StoryPlot { get; set; } = new HashSet<StoryPlot>();

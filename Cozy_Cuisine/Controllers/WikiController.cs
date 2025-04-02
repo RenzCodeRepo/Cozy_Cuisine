@@ -1,4 +1,5 @@
-﻿using Cozy_Cuisine.Data.IRepositories;
+﻿using AspNetCoreGeneratedDocument;
+using Cozy_Cuisine.Data.IRepositories;
 using Cozy_Cuisine.Data.Repositories;
 using Cozy_Cuisine.Models;
 using Cozy_Cuisine.ViewModels;
@@ -19,10 +20,82 @@ namespace Cozy_Cuisine.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> WikiManagement()
+        {
+            var WMVM = new WikiMangementVM
+            {
+                Wikis = await _wikiRepository.GetAllWikisAsync(),
+                NewWiki = null
+            };
+            return View(WMVM);
+        }
+
+
+     
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> WikiCreate(WikiMangementVM model)
+        {
+            if (model.NewWiki != null)
+            {
+                await _wikiRepository.AddWikiAsync(model.NewWiki);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("WikiManagement");
+            };
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("WikiManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteWiki(int id)
+        {
+            var isDeleted = await _wikiRepository.DeleteWikiAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("WikiManagement");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditWiki(Wiki model)
+        {
+
+            var wiki = await _wikiRepository.GetWikiByIdAsync(model.WikiId);
+            if (wiki == null)
+            {
+                TempData["Error"] = "Wiki record not found.";
+                return RedirectToAction("WikiManagement");
+            }
+
+            // Update fields
+            wiki.WikiId = model.WikiId;
+            wiki.Title = model.Title;
+            wiki.Description = model.Description;
+            wiki.URLGif = model.URLGif;
+            wiki.URLImageList = model.URLImageList;
+
+            await _wikiRepository.UpdateWikiAsync(wiki);
+
+            TempData["Success"] = "Wiki updated successfully.";
+            return RedirectToAction("WikiManagement");
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> StoryPlotManagement()
         {
-            var wikis = await _wikiRepository.GetAllWikisAsync();   
+            var wikis = await _wikiRepository.GetAllWikisAsync();
             var SPMVM = new StoryPlotManagementVM
             {
                 StoryPlots = await _wikiRepository.GetAllStoryPlotsAsync(),

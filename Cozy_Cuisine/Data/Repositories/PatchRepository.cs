@@ -13,6 +13,12 @@ namespace Cozy_Cuisine.Data.Repositories
             _context = context;
         }
 
+        public async Task<Dictionary<string, int>> GetPatchDictionaryAsync()
+        {
+            var patches = await _context.Patches.ToListAsync();
+            return patches.ToDictionary(p => p.Version, p => p.PatchId);
+        }
+
         // Patches
         public async Task<List<Patches>> GetAllPatchesAsync()
         {

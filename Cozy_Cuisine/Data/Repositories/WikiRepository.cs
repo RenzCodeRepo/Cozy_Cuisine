@@ -26,14 +26,16 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.Wiki.Update(wiki);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteWikiAsync(int id)
+        public async Task <bool> DeleteWikiAsync(int id)
         {
             var wiki = await _context.Wiki.FindAsync(id);
             if (wiki != null)
             {
                 _context.Wiki.Remove(wiki);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // STORY PLOT

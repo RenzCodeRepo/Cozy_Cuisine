@@ -4,6 +4,7 @@ using Cozy_Cuisine.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cozy_Cuisine.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250401074741_readdedContacts")]
+    partial class readdedContacts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +42,7 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLGif")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DetailsId");
@@ -237,6 +241,7 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -244,9 +249,11 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLGifOrVideo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("URLImage")
+                    b.Property<string>("URLImageList")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GalleryId");
@@ -545,9 +552,11 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLGif")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLImageList")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("WikiId");

@@ -1,4 +1,4 @@
-﻿@model Cozy_Cuisine.ViewModels.StoryPlotManagementVM
+﻿@model Cozy_Cuisine.ViewModels.WikiMangementVM
 @{
     Layout = "Admin_Layout";
     ViewData["Title"] = "Dashboard";
@@ -7,44 +7,27 @@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
 
-<form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="StoryPlotCreate" onsubmit="confirmSubmit(event)">
+<form id="wikiForm" method="post" asp-controller="Wiki" asp-action="WikiCreate" onsubmit="confirmSubmit(event)">
 
-    <label>Wiki Categories</label>
-    @if (Model.WikiCategories.Any())
-    {
-        <!-- Dropdown if categories exist -->
-        <select class="form-control" id="wikiCategory" name="WikiId" >
-            <option value="">Select a Category</option>
-            @foreach (var category in Model.WikiCategories)
-            {
-                <option value="@category.WikiId">@category.Category</option>
-            }
-        </select>
-    }
-    else
-    {
-        <!-- Textbox if no categories exist -->
-        <input type="text" class="form-control" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
-    }
     <div>
-        <label asp-for="NewStoryPlot.Title"></label>
-        <input type="text" asp-for="NewStoryPlot.Title" class="form-control" required />
+        <label asp-for="NewWiki.Title"></label>
+        <input type="text" asp-for="NewWiki.Title" class="form-control" placeholder="Enter Wiki Title" required />
     </div>
     <div>
-        <label asp-for="NewStoryPlot.Description"></label>
-         <textarea asp-for="NewStoryPlot.Description" class="form-control" rows="3" required></textarea>
+        <label asp-for="NewWiki.Category"></label>
+        <input asp-for="NewWiki.Category" class="form-control" placeholder="Enter Wiki Category" required>
     </div>
     <div>
-        <label asp-for="NewStoryPlot.Content"></label>
-        <textarea asp-for="NewStoryPlot.Content" class="form-control" rows="7" required></textarea>
+        <label asp-for="NewWiki.Description"></label>
+        <textarea asp-for="NewWiki.Description" class="form-control" rows="7" placeholder="Enter Wiki Description" required></textarea>
     </div>
 
 
     <div class="form-group">
-        <label>Story Plot Image URLs</label>
+        <label>Wiki Image URLs</label>
         <div id="imageUrlContainer">
             <div class="input-group mb-2">
-                <input type="text" class="form-control" name="storyPlotImageUrls" placeholder="Enter Image URL" required/>
+                <input type="text" class="form-control" name="URLImageList" placeholder="Enter Image URL"/>
                 <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
             </div>
         </div>
@@ -52,8 +35,11 @@
     </div>
 
     <!-- Hidden input to hold the final combined string -->
-    <input type="hidden" id="URLImageList" asp-for="NewStoryPlot.URLImageList" required />
-
+    <input type="hidden" id="URLImageList" asp-for="NewWiki.URLImageList" required />
+    <div>
+        <label asp-for="NewWiki.URLGif"></label>
+        <input type="text" asp-for="NewWiki.URLGif" class="form-control" placeholder="One GIF link only (Optional):" />
+    </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -61,33 +47,33 @@
 <table class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
-            <th>Story ID</th>
             <th>Wiki ID</th>
             <th>Title</th>
+            <th>Category</th>
             <th>Description</th>
-            <th>Content</th>
+            <th>URL Gif</th>
             <th>URL Image Lists</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.StoryPlots != null && Model.StoryPlots.Any())
+        @if (Model.Wikis != null && Model.Wikis.Any())
         {
-            @foreach (var storyPlot in Model.StoryPlots)
+            @foreach (var wiki in Model.Wikis)
             {
 
                 <tr>
-                    <td>@storyPlot.StoryId</td>
-                    <td>@storyPlot.WikiId</td>
-                    <td>@storyPlot.Title</td>
-                    <td>@storyPlot.Description</td>
-                    <td>@storyPlot.Content</td>
+                    <td>@wiki.WikiId</td>
+                    <td>@wiki.Title</td>
+                    <td>@wiki.Category</td>
+                    <td>@wiki.Description</td>
+                    <td>@wiki.URLGif</td>
 
                     <td>
-                        @if (!string.IsNullOrEmpty(storyPlot.URLImageList))
+                        @if (!string.IsNullOrEmpty(wiki.URLImageList))
                         {
 
-                            var imageUrls = storyPlot.URLImageList.Split(',');
+                            var imageUrls = wiki.URLImageList.Split(',');
                             foreach (var url in imageUrls)
                             {
                                 <a href="@url" target="_blank">
@@ -102,25 +88,24 @@
                     </td>
                     <td>
                         
-                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+                        <a asp-action="DetailStoryPlot" asp-route-id="@wiki.WikiId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                         @* opens a modal popup to make the changes *@
                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
                                 data-bs-toggle="modal"
-                                data-bs-target="#editSPModal"
-                                data-id="@storyPlot.StoryId"
-                                data-fk="@storyPlot.WikiId"
-                                data-title="@storyPlot.Title"
-                                data-description="@storyPlot.Description"
-                                data-content="@storyPlot.Content"
-                                data-urls="@storyPlot.URLImageList">
+                                data-bs-target="#editWikiModal"
+                                data-id="@wiki.WikiId"
+                                data-title="@wiki.Title"
+                                data-description="@wiki.Description"
+                                data-urlgif="@wiki.URLGif"
+                                data-urls="@wiki.URLImageList">
                             <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
 
 
-                        <form class="d-inline" id="deleteForm-@storyPlot.StoryId" method="post" asp-action="DeleteStoryPlot" asp-route-id="@storyPlot.StoryId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@storyPlot.StoryId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
+                        <form class="d-inline" id="deleteForm-@wiki.WikiId" method="post" asp-action="DeleteWiki" asp-route-id="@wiki.WikiId">
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@wiki.WikiId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -130,46 +115,28 @@
 </table>
 
 @* MODAL POPUP FOR EDITING RECORD *@
-<div class="modal fade" id="editSPModal" tabindex="-1">
+<div class="modal fade" id="editWikiModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Story Plot</h5>
+                <h5 class="modal-title">Edit Wiki</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="editStoryPlotForm" method="post" asp-action="EditStoryPlot">
-                    <input type="hidden" id="storyId" name="StoryId">
-
-
-                    @if (Model.WikiCategories.Any())
-                    {
-                        <!-- Dropdown if categories exist -->
-                        <select class="form-control" id="wikiCategory" name="WikiId" required>
-                            <option value="">Select a Category</option>
-                            @foreach (var category in Model.WikiCategories)
-                            {
-                                <option value="@category.WikiId">@category.Category</option>
-                            }
-                        </select>
-                    }
-                    else
-                    {
-                        <!-- Textbox if no categories exist -->
-                        <input type="text" class="form-control" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
-                    }
+                <form id="editWikiForm" method="post" asp-action="EditWiki">
+                    <input type="hidden" id="wikiId" name="WikiId">
 
                     <div class="mb-3">
                         <label class="form-label">Title</label>
-                        <textarea class="form-control" id="title" name="Title" required></textarea>
+                        <input class="form-control" id="title" name="Title" required>   
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="Description" required></textarea>
+                        <textarea class="form-control" id="description" name="Description" rows="8" required></textarea>
                     </div> 
                     <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea class="form-control" id="content" name="Content" required></textarea>
+                        <label class="form-label">URL Gif</label>
+                        <input class="form-control" id="urlgif" name="URLGif">
                     </div>
 
                     <div class="mb-3">
@@ -193,10 +160,9 @@
 
             let input = document.createElement("input");
             input.type = "text";
-            input.name = "storyPlotImageUrls";
+            input.name = "URLImageList";
             input.className = "form-control";
             input.placeholder = "Enter Image URL";
-            input.required = true;
 
             let button = document.createElement("button");
             button.type = "button";
@@ -214,7 +180,7 @@
         }
 
         function prepareFormData() {
-            let inputs = document.getElementsByName("storyPlotImageUrls");
+            let inputs = document.getElementsByName("URLImageList");
             let urls = [];
 
             // Collect all values
@@ -242,7 +208,7 @@
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                         document.getElementById("storyPlotForm").submit();
+                         document.getElementById("wikiForm").submit();
                     }
                 });
 
@@ -274,24 +240,22 @@
     <script>
         $(document).ready(function () {
             $(".actionsbtn").click(function () {
-                let storyId = $(this).data("id");
-                let wikiId = $(this).data("fk");
+                let wikiId = $(this).data("id");
                 let title = $(this).data("title");
                 let description = $(this).data("description");
-                let content = $(this).data("content");
+                let urlgif = $(this).data("urlgif");
                 let urls = $(this).data("urls");
 
              
                 // Set values in the modal fields
-                $("#storyId").val(storyId);
-                $("#wikiCategory").val(wikiId).prop("disabled", !wikiId); // Set WikiId and disable if empty
+                $("#wikiId").val(wikiId);
                 $("#title").val(title);
                 $("#description").val(description);
-                $("#content").val(content);
+                $("#urlgif").val(urlgif);
                 $("#urls").val(urls ? urls.replace(/,/g, "\n") : ""); // Convert comma-separated to new lines
 
             });
-             $("#editStoryPlotForm").submit(function () {
+             $("#editWikiForm").submit(function () {
             let urlimgField = $("#urls");
             let formattedURLs = urlimgField.val().split("\n").map(url => url.trim()).filter(url => url !== "").join(",");
             urlimgField.val(formattedURLs); // Set the value back to CSV format before submitting

@@ -18,14 +18,14 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task<About> GetAboutByIdAsync(int id);
         Task AddAboutAsync(About about);
         Task UpdateAboutAsync(About about);
-        Task DeleteAboutAsync(int id);
+        Task <bool>DeleteAboutAsync(int id);
 
         // Gallery
         Task<List<Gallery>> GetAllGalleryAsync();
         Task<Gallery> GetGalleryByIdAsync(int id);
         Task AddGalleryAsync(Gallery gallery);
         Task UpdateGalleryAsync(Gallery gallery);
-        Task DeleteGalleryAsync(int id);
+        Task <bool> DeleteGalleryAsync(int id);
 
         // FAQ
         Task<List<FAQ>> GetAllFAQsAsync();

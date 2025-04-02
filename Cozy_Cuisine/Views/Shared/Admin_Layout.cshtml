@@ -74,12 +74,12 @@
                         <span class="pgname">Story Plot Management</span>
                     </div>
                 </a>
-              @*   <a href="#" class="text-decoration-none">
+                <a href="#" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-address-book fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Contact Management</span>
                     </div>
-                </a> *@
+                </a>
                 <a asp-action="CreditsManagement" asp-controller="Manage" class="text-decoration-none">
                     
                     <div class="abtn container-fluid p-3">
@@ -93,16 +93,22 @@
                         <span class="pgname">News Management</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                @* <a href="#" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-users fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">User Management</span>
                     </div>
-                </a>
-                <a href="#" class="text-decoration-none">
+                </a> *@
+                <a asp-action="BugReportManagement" asp-controller="Patch" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-bug fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Bug Report</span>
+                    </div>
+                </a>
+                <a asp-action="WikiManagement" asp-controller="Wiki" class="text-decoration-none">
+                    <div class="abtn container-fluid p-3">
+                        <span><i class="i-sec fa-solid fa-book fa-xl" style="color: #603f26;"></i></span>
+                        <span class="pgname">Wiki</span>
                     </div>
                 </a>
                 <a href="#" class="text-decoration-none">
@@ -117,13 +123,13 @@
                         <span class="pgname">Character Management</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="AboutManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-circle-info fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">About</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="MediaManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-image fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Media</span>
