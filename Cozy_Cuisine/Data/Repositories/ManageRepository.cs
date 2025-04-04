@@ -15,7 +15,7 @@ namespace Cozy_Cuisine.Data.Repositories
             _context = context;
         }
 
-      
+
         // 🔹 Credit CRUD
         public async Task<List<Credit>> GetAllCreditsAsync() => await _context.Credit.ToListAsync();
         public async Task<(bool IsSuccess, Credit? CreditData)> GetCreditByIdAsync(int id)
@@ -58,7 +58,7 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.About.Update(about);
             await _context.SaveChangesAsync();
         }
-        public async Task <bool> DeleteAboutAsync(int id)
+        public async Task<bool> DeleteAboutAsync(int id)
         {
             var about = await _context.About.FindAsync(id);
             if (about != null)
@@ -83,7 +83,7 @@ namespace Cozy_Cuisine.Data.Repositories
             _context.Gallery.Update(gallery);
             await _context.SaveChangesAsync();
         }
-        public async Task <bool> DeleteGalleryAsync(int id)
+        public async Task<bool> DeleteGalleryAsync(int id)
         {
             var gallery = await _context.Gallery.FindAsync(id);
             if (gallery != null)
@@ -136,7 +136,7 @@ namespace Cozy_Cuisine.Data.Repositories
         {
             var notice = await _context.Notice.FindAsync(id);
             return notice != null ? (true, notice) : (false, null);
-            
+
         }
         public async Task AddNoticeAsync(Notice notice)
         {
@@ -231,6 +231,50 @@ namespace Cozy_Cuisine.Data.Repositories
                 _context.GameReview.Remove(review);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        // Contacts
+
+        public async Task<List<Contacts>> GetAllContactsAsync()
+        {
+            return await _context.Contacts.ToListAsync();
+        }
+
+        public async Task<Contacts> GetContactByIdAsync(int id)
+        {
+            return await _context.Contacts.FindAsync(id);
+        }
+
+        public async Task CreateContactAsync(Contacts contact)
+        {
+            _context.Contacts.Add(contact);
+            await _context.SaveChangesAsync();
+            return;
+        }
+
+        public async Task<Contacts> UpdateContactAsync(int id, Contacts contact)
+        {
+            var existingContact = await _context.Contacts.FindAsync(id);
+            if (existingContact == null)
+                return null;
+
+            existingContact.EmailAddress = contact.EmailAddress;
+            existingContact.EmailSubject = contact.EmailSubject;
+            existingContact.EmailBody = contact.EmailBody;
+
+            await _context.SaveChangesAsync();
+            return existingContact;
+        }
+
+        public async Task<bool> DeleteContactAsync(int id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
+                return false;
+
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

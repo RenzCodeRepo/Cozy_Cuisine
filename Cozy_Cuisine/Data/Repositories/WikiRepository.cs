@@ -58,7 +58,17 @@ namespace Cozy_Cuisine.Data.Repositories
         public async Task<Characters> GetCharacterByIdAsync(int id) => await _context.Characters.FindAsync(id);
         public async Task AddCharacterAsync(Characters character) { await _context.Characters.AddAsync(character); await _context.SaveChangesAsync(); }
         public async Task UpdateCharacterAsync(Characters character) { _context.Characters.Update(character); await _context.SaveChangesAsync(); }
-        public async Task DeleteCharacterAsync(int id) { var item = await _context.Characters.FindAsync(id); if (item != null) { _context.Characters.Remove(item); await _context.SaveChangesAsync(); } }
+        public async Task <bool> DeleteCharacterAsync(int id) 
+        { 
+            var item = await _context.Characters.FindAsync(id); 
+            if (item != null) 
+            { 
+                _context.Characters.Remove(item); 
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
 
         // GAME MECHANICS
         public async Task<List<GameMechanics>> GetAllGameMechanicsAsync() => await _context.GameMechanics.ToListAsync();

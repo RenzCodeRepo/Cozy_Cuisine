@@ -74,14 +74,13 @@
                         <span class="pgname">Story Plot Management</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+                <a asp-action="MessageManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-address-book fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Contact Management</span>
+                        <span class="pgname">Messages Management</span>
                     </div>
                 </a>
                 <a asp-action="CreditsManagement" asp-controller="Manage" class="text-decoration-none">
-                    
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-award fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Credits Management</span>
@@ -111,13 +110,13 @@
                         <span class="pgname">Wiki</span>
                     </div>
                 </a>
-                <a href="#" class="text-decoration-none">
+               @*  <a href="#" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-gamepad fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Game Development</span>
                     </div>
-                </a>
-                <a href="#" class="text-decoration-none">
+                </a> *@
+                <a asp-action="CharacterManagement" asp-controller="Wiki" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-masks-theater fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Character Management</span>

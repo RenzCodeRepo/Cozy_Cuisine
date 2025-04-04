@@ -7,7 +7,7 @@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
 
-<form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="StoryPlotCreate" onsubmit="confirmSubmit(event)">
+<form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="CreateStoryPlot" onsubmit="confirmSubmit(event)">
 
     <label>Wiki Categories</label>
     @if (Model.WikiCategories.Any())

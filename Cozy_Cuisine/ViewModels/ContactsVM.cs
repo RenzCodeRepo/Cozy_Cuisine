@@ -6,5 +6,7 @@ namespace Cozy_Cuisine.ViewModels
     {
         public List<FAQ> FAQs { get; set; } = new List<FAQ>();
         public Dictionary<string, int> PatchesDict { get; set; } = new Dictionary<string, int>();
+        public Contacts? NewContacts { get; set; } = new Contacts();
+        public BugReport? NewBugReport { get; set; } = new BugReport();
     }
 }

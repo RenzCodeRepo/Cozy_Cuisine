@@ -114,7 +114,7 @@ namespace Cozy_Cuisine.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> StoryPlotCreate(StoryPlotManagementVM model)
+        public async Task<ActionResult> CreateStoryPlot(StoryPlotManagementVM model)
         {
             if (model.NewStoryPlot != null)
             {
@@ -168,6 +168,79 @@ namespace Cozy_Cuisine.Controllers
 
             TempData["Success"] = "Story Plot updated successfully.";
             return RedirectToAction("StoryPlotManagement");
+
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CharacterManagement()
+        {
+            
+            var CMVM = new CharacterManagementVM
+            {
+               Characters = await _wikiRepository.GetAllCharactersAsync(),
+               NewCharacter = null
+            };
+            return View(CMVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateCharacter(CharacterManagementVM model)
+        {
+            if (model.NewCharacter != null)
+            {
+
+                await _wikiRepository.AddCharacterAsync(model.NewCharacter);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("CharacterManagement");
+            }
+            ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("CharacterManagement");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCharacter(int id)
+        {
+            var isDeleted = await _wikiRepository.DeleteCharacterAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("CharacterManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCharacter(Characters model)
+        {
+
+            var character = await _wikiRepository.GetCharacterByIdAsync(model.CharacterId);
+            if (character == null)
+            {
+                TempData["Error"] = "Character not found.";
+                return RedirectToAction("CharacterManagement");
+            }
+
+            // Update fields
+            character.WikiId = model.WikiId;
+            character.Name = model.Name;
+            character.Description = model.Description;
+            character.Category = model.Category;
+            character.URLGif = model.URLGif;
+
+            await _wikiRepository.UpdateCharacterAsync(character);
+
+            TempData["Success"] = "Character updated successfully.";
+            return RedirectToAction("CharacterManagement");
+        }
+
     }
 }

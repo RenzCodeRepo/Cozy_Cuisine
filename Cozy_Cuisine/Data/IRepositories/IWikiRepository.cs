@@ -20,7 +20,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task<Characters> GetCharacterByIdAsync(int id);
         Task AddCharacterAsync(Characters character);
         Task UpdateCharacterAsync(Characters character);
-        Task DeleteCharacterAsync(int id);
+        Task <bool> DeleteCharacterAsync(int id);
 
         Task<List<GameMechanics>> GetAllGameMechanicsAsync();
         Task<GameMechanics> GetGameMechanicByIdAsync(int id);

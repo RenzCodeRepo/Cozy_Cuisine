@@ -7,20 +7,20 @@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
 <div class="pgnamecont container mb-3 p-0">
-    <div class="dashboard display-6 m-0">Dashboard</div>
+    <div class="dashboard display-6 m-0">Dashboard</div>@* 
     <div class="dlcont text-center p-2">
         <div class="statsnum dlnum fs-3 mb-1" data-target="@Model.TotalDownloads">
             @Model.TotalDownloads
         </div>
         <div class="dltext">Downloads</div>
-    </div>
+    </div> *@
 </div>
 
 <div class="container">
     <div class="row">
         <div class="stats col-lg-3 p-3 mb-2">
-            <div class="statsdesc"><i class="iconstats fa-solid fa-user fa-2xl"></i>Active Users</div>
-            <div class="statsnum fs-3 py-2" data-target="12">0</div>
+            <div class="statsdesc"><i class="iconstats fa-solid fa-user fa-2xl"></i>Downloads</div>
+            <div class="statsnum fs-3 py-2" data-target="@Model.TotalDownloads">@Model.TotalDownloads</div>
         </div>
         <div class="stats col-lg-3 p-3 mb-2">
             <div class="statsdesc"><i class="iconstats fa-solid fa-star fa-2xl"></i>Ratings</div>
@@ -37,7 +37,7 @@
     Recent Activities
 </div>
 
-<div class="container mt-4">
+@* <div class="container mt-4">
     <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Updates</button>
@@ -238,8 +238,178 @@
             </table>
         </div>
     </div>
-</div>
+</div> *@
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Patch Updates</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Messages</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab">Bug Reports</button>
+        </li>
+        @* <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button" role="tab">User Logs</button>
+        </li> *@
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--updates-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
 
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Version</th>
+                        <th>Patch Name</th>
+                        <th>Release Date</th>
+                        <th>Patch Notes</th>
+                        <th>URL Image List</th>
+                        <th>URL Gif</th>
+                        <th>Game URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Patches != null && Model.Patches.Any())
+                    {
+                        @foreach (var patch in Model.Patches)
+                        {
+
+                            <tr>
+                                <td>@patch.PatchId</td>
+                                <td>@patch.Version</td>
+                                <td>@patch.PatchName</td>
+                                <td>@patch.ReleaseDate.ToString("MMMM dd, yyyy")</td>
+                                <td>@patch.PatchNotes</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(patch.URLImageList))
+                                    {
+
+                                        var imageUrls = patch.URLImageList.Split(',');
+                                        foreach (var url in imageUrls)
+                                        {
+                                            <a href="@url" target="_blank">
+                                                <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>No Image Uploaded</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@patch.URLGif">@patch.URLGif</a>
+                                </td>
+                                <td>
+                                    <a href="@patch.GameURL" target="_blank">@patch.Version</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <!--messages-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Message ID</th>
+                        <th>Email Subject</th>
+                        <th>Email Message</th>
+                        <th>Email Address</th>
+                        <th>Date Received</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Contacts != null && Model.Contacts.Any())
+                    {
+                        @foreach (var message in Model.Contacts)
+                        {
+
+                            <tr>
+                                <td>@message.MessageId</td>
+                                <td>@message.EmailSubject</td>
+                                <td>@message.EmailBody</td>
+                                <td>@message.EmailAddress</td>
+                                <td>@message.SentDate</td>
+
+                               
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <!--bug reports-->
+        <div class="tab-pane fade" id="tab3" role="tabpanel">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patch Version</th>
+                        <th>Report Date</th>
+                        <th>Patch Name</th>
+                        <th>Bug Title</th>
+                        <th>Bug Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.BugReport != null && Model.BugReport.Any())
+                    {
+                        @foreach (var report in Model.BugReport)
+                        {
+
+                            <tr>
+                                <td>@report.BugId</td>
+                                <td>@report.Patches?.Version</td>
+                                <td>@report.ReportDate.ToString("MMMM dd, yyyy")</td>
+                                <td>@report.Patches?.PatchName</td>
+                                <td>@report.BugTitle</td>
+                                <td>@report.BugDescription</td>
+                                <td>@report.Status</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+       @*  <!--user logs-->
+        <div class="tab-pane fade" id="tab4" role="tabpanel">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Logged In</th>
+                        <th>Logged Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>Username</td>
+                        <td>Logged In</td>
+                        <td>Logged Out</td>
+                    </tr>
+                    <tr>
+                        <td>ID</td>
+                        <td>Username</td>
+                        <td>Logged In</td>
+                        <td>Logged Out</td>
+                    </tr>
+                </tbody>
+            </table> *@
+        </div>
+    </div>
+</div>
 <script>
     function animateNumbers() {
         const statsNums = document.querySelectorAll(".statsnum");

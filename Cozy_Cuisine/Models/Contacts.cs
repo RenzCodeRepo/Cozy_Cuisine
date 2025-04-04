@@ -11,6 +11,7 @@ namespace Cozy_Cuisine.Models
         public string EmailSubject { get; set; }
 
         public string EmailBody { get; set; }
+        public DateTime SentDate { get; set; } = DateTime.UtcNow;
 
         [EmailAddress] 
         public string? EmailAddress { get; set; }

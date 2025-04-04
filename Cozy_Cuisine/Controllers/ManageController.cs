@@ -12,11 +12,13 @@ namespace Cozy_Cuisine.Controllers
     public class ManageController : Controller
     {
         private readonly IManageRepository _manageRepository;
+        private readonly IPatchRepository _patchRepository;
 
 
-        public ManageController(IManageRepository manageRepository)
+        public ManageController(IManageRepository manageRepository, IPatchRepository patchRepository)
         {
-            _manageRepository = manageRepository;       
+            _manageRepository = manageRepository;
+            _patchRepository = patchRepository;
         }
         public IActionResult Index()
         {
@@ -38,33 +40,20 @@ namespace Cozy_Cuisine.Controllers
         public async Task<IActionResult> Dashboard()
         {
 
-            var dashboardData = new DashboardVM
+            var DVM = new DashboardVM
             {
                 TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count,
                 Ratings = (await _manageRepository.GetAllReviewsAsync())
                             .Select(r => r.Rating)
                             .DefaultIfEmpty(0)
                             .Average(),
-                DailyVisits = await _manageRepository.GetDailyVisitorsAsync()
+                DailyVisits = await _manageRepository.GetDailyVisitorsAsync(),
+                BugReport = await _patchRepository.GetAllBugReports(),
+                Contacts = await _manageRepository.GetAllContactsAsync(),
+                Patches = await _patchRepository.GetAllPatchesAsync()
             };
 
-            return View(dashboardData);
-        }
-
-        public async Task<IActionResult> Dashboard2()
-        {
-
-            var dashboardData = new DashboardVM2
-            {
-                TotalDownloads = (await _manageRepository.GetAllDownloadsAsync()).Count,
-                Ratings = (await _manageRepository.GetAllReviewsAsync())
-                            .Select(r => r.Rating)
-                            .DefaultIfEmpty(0)
-                            .Average(),
-                DailyVisits = await _manageRepository.GetDailyVisitorsAsync()
-            };
-
-            return View(dashboardData);
+            return View(DVM);
         }
 
      
@@ -409,5 +398,30 @@ namespace Cozy_Cuisine.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> MessageManagement()
+        {
+            var Messages = await _manageRepository.GetAllContactsAsync();
+            return View(Messages);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+
+            var isDeleted = await _manageRepository.DeleteContactAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("MessageManagement");
+        }
     }
 }
