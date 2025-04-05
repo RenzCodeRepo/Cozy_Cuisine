@@ -32,19 +32,7 @@
                     <td>@report.BugTitle</td>
                     <td>@report.BugDescription</td>
                     <td>
-                        <form method="post"
-                              hx-post="/Patch/UpdateBugStatus"
-                              hx-trigger="change"
-                              hx-target="this">
-
-                            <input type="hidden" name="bugId" value="@report.BugId" />
-
-                            <select name="status" class="form-select">
-                                <option value="Open" selected="@(report.Status == "Open" ? "selected" : null)">Open</option>
-                                <option value="Fixing" selected="@(report.Status == "Fixing" ? "selected" : null)">Fixing</option>
-                                <option value="Resolved" selected="@(report.Status == "Resolved" ? "selected" : null)">Resolved</option>
-                            </select>
-                        </form>
+                        @await Html.PartialAsync("_BugStatusDropdown", report)
                     </td>
                     <td>
                         <a asp-action="DetailsPatch" asp-route-id="@report.PatchId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>

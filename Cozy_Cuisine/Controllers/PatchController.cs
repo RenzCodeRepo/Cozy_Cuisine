@@ -128,46 +128,20 @@ namespace Cozy_Cuisine.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(int bugId, string status)
+        public async Task<IActionResult> UpdateBugStatus(int bugId, string status)
         {
             var bugReport = await _patchRepository.GetBugReportByIdAsync(bugId);
             if (bugReport == null) 
             { 
-                TempData["Error"] = "Bug Report not found"; 
                 return NotFound(); 
             }; 
 
             bugReport.Status = status;
             await _patchRepository.UpdateBugReportAsync(bugReport);
 
-            TempData["Success"] = "Bug Report Updated Successfully";
-            // Return updated dropdown with new value
-            return Content($@"
-        <form method='post' 
-              hx-post='/BugReport/UpdateStatus' 
-              hx-trigger='change' 
-              hx-target='this'>
-            <input type='hidden' name='bugId' value='{bugId}' />
-            <select name='status' class='form-select'>
-                <option value='Open' {(status == "Open" ? "selected" : "")}>Open</option>
-                <option value='Fixing' {(status == "Fixing" ? "selected" : "")}>Fixing</option>
-                <option value='Resolved' {(status == "Resolved" ? "selected" : "")}>Resolved</option>
-            </select>
-        </form>", "text/html");
+            // Return the updated partial view (just this dropdown gets re-rendered)
+            return PartialView("_BugStatusDropdown", bugReport);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateBug(BugReport bugReport)
-        {
-            if (ModelState.IsValid)
-            {
-                await _patchRepository.UpdateBugReportAsync(bugReport);
-                TempData["Error"] = "Bug Report Changes Saved Successfully!";
-                return RedirectToAction(nameof(BugReport));
-            }
-            TempData["Error"] = "Invalid, Something went wrong.";
-            return View(bugReport);
-        }
     }
 }

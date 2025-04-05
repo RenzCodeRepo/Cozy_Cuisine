@@ -1,0 +1,16 @@
+﻿@model Cozy_Cuisine.Models.BugReport
+
+<form method="post"
+      hx-post="/Patch/UpdateBugStatus"
+      hx-trigger="change"
+      hx-target="this"
+      hx-swap="outerHTML">
+
+    <input type="hidden" name="bugId" value="@Model.BugId" />
+
+    <select name="status" class="form-select form-select-sm">
+        <option value="Open" selected="@(Model.Status == "Open" ? "selected" : null)">Open</option>
+        <option value="Fixing" selected="@(Model.Status == "Fixing" ? "selected" : null)">Fixing</option>
+        <option value="Resolved" selected="@(Model.Status == "Resolved" ? "selected" : null)">Resolved</option>
+    </select>
+</form>
