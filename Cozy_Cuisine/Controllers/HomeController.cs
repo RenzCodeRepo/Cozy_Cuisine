@@ -29,7 +29,30 @@ namespace Cozy_Cuisine.Controllers
         {
             return View();
         }
-
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Gallery()
+        {
+            return View();
+        }
+        public IActionResult News()
+        {
+            return View();
+        }
+        public IActionResult Credits()
+        {
+            return View();
+        }
+        public IActionResult Wiki()
+        {
+            return View();
+        }
+        public IActionResult Download()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

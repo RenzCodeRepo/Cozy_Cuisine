@@ -1,8 +1,403 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcomes part 3</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="cont1 container-fluid">
+    <div class="container p-5">
+        <div class="pwrow row">
+            <div class="pw col-lg-7 rounded-3 px-4 py-5">
+                <div class="pw1 fs-1">
+                    Cozy Cuisine
+                </div>
+                <div class="pw2 fs-2">
+                    Your Cozy Kiosk Awaits!
+                </div>
+                <div class="pwbtncont mt-3">
+                    <a href="#" class="pwbtn btn btn-lg btn-link fs-3">PLAY NOW</a>
+                    <a href="#" class="pwbtn btn btn-lg btn-link fs-3">WATCH TRAILER</a>
+                </div>
+            </div>
+            <div class="col-lg-4 rounded-3 text-center">
+                <div>
+                    <img src="~/img/meow.png" class="img-fluid meowww" alt="Alternate Text" />
+                </div>
+                <div class="pwdl rounded-3">
+                    <div class="display-2">1200+</div>
+                    <div class="display-5">Downloads</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="~/img/bgbgbg.jpg" class="cont1-bg img-fluid" alt="Background Image" />
+</div>
+
+
+<!--how-->
+<div class="cont2 container-fluid p-5">
+    <div class="container">
+        <div class="sectitle display-4 mb-3">
+            HOW TO PLAY
+        </div>
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7" aria-label="Slide 8"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 1: Shop for Ingredients
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Head to the market and pick the fresh ingredients you’ll need.
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 2: Prep the Kitchen
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Check out and return to the kitchen to start preparing.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 3: Choose a Recipe
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Open the cookbook and select a dish like Chicken Adobo.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 4: Start Cooking
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Tap the oven to cook once you have all the ingredients.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 5: Serve Customers
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Serve dishes quickly and watch the patience bar.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 6: Earn Coins
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Make customers happy to earn tips and reach your goal.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 7: Upgrade & Expand
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Use coins to upgrade Cozy Cuisine or unlock new recipes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="~/img/howpic.jpg" class="img-fluid rounded-3" alt="...">
+                        </div>
+                        <div class="steptxt col-lg-6 m-auto">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Step 8: Face Challenges
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Look out for VIPs, special requests, and busy rush hours!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--game items-->
+<div class="cont3 container-fluid p-5">
+    <div class="container">
+        <div class="sectitle display-4 mb-3">
+            GAME ITEMS
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-3">
+                <div class="container mt-4">
+                    <ul class="recentnavtabs nav nav-tabs fs-4" id="myTab" role="tablist">
+                        <li class="nav-item me-2" role="presentation">
+                            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">Food</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Ingredients</button>
+                        </li>
+
+                    </ul>
+                    <div class="tabcont tab-content" id="myTabContent">
+                        <!--food-->
+                        <div class="tab-pane fade show active p-4" id="tab1" role="tabpanel">
+                            <div class="titletabb fs-3">
+                                Meals
+                            </div>
+                            <div class="meals row mb-3">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meals row">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="titletabb fs-3 mt-3">
+                                Ingredients
+                            </div>
+                            <div class="meals row mb-3">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meals row">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ingredients-->
+                        <div class="tab-pane fade p-4" id="tab2" role="tabpanel">
+                            <div class="titletabb fs-3">
+                                Ingredients
+                            </div>
+                            <div class="meals row mb-3">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meals row">
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="fudcol btn rounded-0">
+                                        <img src="~/img/fudsamp.png" class="img-fluid" alt="...">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="fudpiccont container m-0 p-0 h-100">
+                    <div class="p-4 text-center">
+                        <img src="~/img/fudsamp.png" class="img-fluid fudpic" alt="...">
+                    </div>
+                    <div class="text-end">
+                        <span class="fudname fs-1 p-3">Food Name</span>
+                    </div>
+                    <div class="fuddesc p-3 m-3 fs-5">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
 </div>

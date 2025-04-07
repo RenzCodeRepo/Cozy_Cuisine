@@ -4,87 +4,212 @@
     Layout = "_Layout"; 
     ViewData["Title"] = "Contacts";
 }
-<div class="accordion" id="faqAccordion">
-    @if (Model.FAQs != null && Model.FAQs.Any())
-    {
-        @foreach (var faq in Model.FAQs)
-        {
-            <div class="accordion-item mb-3">
-                <h2 class="accordion-header" id="heading-@faq.FAQId">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@faq.FAQId" aria-expanded="false" aria-controls="collapse-@faq.FAQId">
-                        @faq.Question
-                    </button>
-                </h2>
-                <div id="collapse-@faq.FAQId" class="accordion-collapse collapse" aria-labelledby="heading-@faq.FAQId" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        <p>@faq.Answer</p>
-
-                        @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
-                        {
-                            <div class="mt-2">
-                                <strong>Related Links:</strong>
-                                <ul class="list-unstyled">
-                                    @foreach (var url in faq.FAQURLImageList.Split(','))
-                                    {
-                                        <li>
-                                            <a href="@url" target="_blank">@url</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-                    </div>
+<!--need help-->
+<div class="cont1 container-fluid">
+    <div class="container text-center p-5">
+        <div>
+            <img src="~/img/meow.png" alt="Alternate Text" />
+        </div>
+        <div class="outercont p-5">
+            <div class="innercont p-5">
+                <div class="nidhelp mb-3">
+                    Need Help?
                 </div>
-                
+                <div class="">
+                    <form action="/" method="post" class="d-flex justify-content-center align-content-center">
+                        <input type="search" name="name" value="" class="nidhelpinput form-control"/>
+                        <button class="btnneed btn"><i class="fa-solid fa-magnifying-glass fa-2xl" style="color: #FFEAC5;"></i></button>
+                    </form>
+                </div>
             </div>
-        }
-    }
+        </div>
+    </div>
+    <img src="~/img/bgbgbg.jpg" class="cont1-bg img-fluid" alt="Background Image" />
 </div>
 
-<h4>Contact</h4>
-<form id="messageForm" method="post" asp-controller="Home" asp-action="SendMessage" onsubmit="confirmSubmit(event, 'messageForm')">
-    <div>
-        <label asp-for="NewContacts.EmailSubject">Subject</label>
-        <input type="text" asp-for="NewContacts.EmailSubject" class="form-control" placeholder="Enter Subject Message" required />
-    </div>
-    <div>
-        <label asp-for="NewContacts.EmailBody">Message</label>
-        <textarea type="text" asp-for="NewContacts.EmailBody" class="form-control" rows="5" placeholder="Enter Message" required ></textarea>
-    </div>
+<!--faq-->
+<div class="cont2 container-fluid mb-5">
+    <div class="container p-5">
+        <div class="sectitle display-4 mb-3">
+            FAQS
+        </div>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="accordion" id="faqAccordion">
+                    @if (Model.FAQs != null && Model.FAQs.Any())
+                    {
+                        @foreach (var faq in Model.FAQs)
+                        {
+                            <div class="accordion-item mb-3">
+                                <h2 class="accordion-header" id="heading-@faq.FAQId">
+                                    <button class="accordion-button collapsed fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@faq.FAQId" aria-expanded="false" aria-controls="collapse-@faq.FAQId">
+                                        @faq.Question
+                                    </button>
+                                </h2>
+                                <div id="collapse-@faq.FAQId" class="accordion-collapse collapse" aria-labelledby="heading-@faq.FAQId" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body fs-5">
+                                        <p class="anss p-3 rounded-3">@faq.Answer</p>
 
-    <div>
-        <label asp-for="NewContacts.EmailAddress"></label>
-        <input type="text" asp-for="NewContacts.EmailAddress" class="form-control" placeholder="Enter your email address if you're expecting a reply (Optional):" />
+                                        @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
+                                        {
+                                            <div class="mt-2 px-3">
+                                                Related Links:
+                                                <ul class="list-unstyled">
+                                                    @foreach (var url in faq.FAQURLImageList.Split(','))
+                                                    {
+                                                        <li>
+                                                            <a href="@url" target="_blank" class="sampurl">@url  <i class="ms-2 fa-solid fa-arrow-up-right-from-square fa-sm" style="color: #5D4037;"></i></a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="bc col-lg-5 p-3 rounded-3">
+                        <div class="ffftitle">
+                            Game Help
+                        </div>
+                        <div class="fffdescrip">
+                            lorem ipsum lorem ipsum
+                            lorem ipsum lorem ipsum
+                        </div>
+                        <div class="mt-3">
+                            <button class="vabtn btn btn-link px-3 rounded-3">View Article</button>
+                        </div>
+                    </div>
+                    <div class="bc col-lg-5 p-3 rounded-3">
+                        <div class="ffftitle">
+                            Community Help
+                        </div>
+                        <div class="fffdescrip">
+                            lorem ipsum lorem ipsum
+                            lorem ipsum lorem ipsum
+                        </div>
+                        <div class="mt-3">
+                            <button class="vabtn btn btn-link px-3 rounded-3">View Article</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="bc col-lg-5 p-3 rounded-3">
+                        <div class="ffftitle">
+                            Game Help
+                        </div>
+                        <div class="fffdescrip">
+                            lorem ipsum lorem ipsum
+                            lorem ipsum lorem ipsum
+                        </div>
+                        <div class="mt-3">
+                            <button class="vabtn btn btn-link px-3 rounded-3">View Article</button>
+                        </div>
+                    </div>
+                    <div class="bc col-lg-5 p-3 rounded-3">
+                        <div class="ffftitle">
+                            Community Help
+                        </div>
+                        <div class="fffdescrip">
+                            lorem ipsum lorem ipsum
+                            lorem ipsum lorem ipsum
+                        </div>
+                        <div class="mt-3">
+                            <button class="vabtn btn btn-link px-3 rounded-3">View Article</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
     </div>
+</div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<!--bug and contact-->
+<div class="cont3 container-fluid my-5">
+    <div class="container p-5">
+        <div class="d-flex align-items-start">
+            <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="bug-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bug" type="button" role="tab" aria-controls="v-pills-bug" aria-selected="true">Bug</button>
+                <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#v-pills-contact" type="button" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact</button>
+            </div>
+            <div class="gptabcontent tab-content p-5" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-bug" role="tabpanel" aria-labelledby="bug-tab" tabindex="0">
+                    <div class="patchtitle fs-3">
+                        BUG REPORT
+                    </div>
+                    <div class="patchdate fs-5">
+                        Let us know
+                    </div>
+                    <div class="patchdescrip mt-3 fs-4">
+                        <form id="bugReportForm" method="post" asp-controller="Home" asp-action="SendBugReport" onsubmit="confirmSubmit(event, 'bugReportForm')">
 
+                            <div>
+                                <label asp-for="NewBugReport.PatchId">Patch Version</label>
+                                <select asp-for="NewBugReport.PatchId" class="fcbug form-control mb-2" required>
+                                    <option value="">Select Patch Version</option>
+                                    @foreach (var patch in Model.PatchesDict)
+                                    {
+                                        <option value="@patch.Value">@patch.Key</option>
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label asp-for="NewBugReport.BugTitle">Issue</label>
+                                <input type="text" asp-for="NewBugReport.BugTitle" class="fcbug form-control mb-2" placeholder="Enter the Issue/Bug" required />
+                            </div>
+                            <div>
+                                <label asp-for="NewBugReport.BugDescription">Description</label>
+                                <textarea type="text" asp-for="NewBugReport.BugDescription" class="fcbug form-control mb-2" rows="5" placeholder="Describe the issue..." required></textarea>
+                            </div>
 
-<h4>Bug Report</h4>
-<form id="bugReportForm" method="post" asp-controller="Home" asp-action="SendBugReport" onsubmit="confirmSubmit(event, 'bugReportForm')">
+                            <button type="submit" class="bugbtn btn fs-4 px-3 mt-3 shadow">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    <div class="patchtitle fs-3">
+                        Contact
+                    </div>
+                    <div class="patchdate fs-5">
+                        Let us know
+                    </div>
 
-    <div>
-        <label asp-for="NewBugReport.PatchId">Patch Version</label>
-        <select asp-for="NewBugReport.PatchId" class="form-control" required>
-            <option value="">Select Patch Version</option>
-            @foreach (var patch in Model.PatchesDict)
-            {
-                <option value="@patch.Value">@patch.Key</option>
-            }
-        </select>
+                    <div class="patchdescrip mt-3 fs-4">
+                        <form id="messageForm" method="post" asp-controller="Home" asp-action="SendMessage" onsubmit="confirmSubmit(event, 'messageForm')">
+                            <div>
+                                <label asp-for="NewContacts.EmailSubject">Subject</label>
+                                <input type="text" asp-for="NewContacts.EmailSubject" class="fcbug form-control mb-2" placeholder="Enter Subject Message" required />
+                            </div>
+                            <div>
+                                <label asp-for="NewContacts.EmailBody">Message</label>
+                                <textarea type="text" asp-for="NewContacts.EmailBody" class="fcbug form-control mb-2" rows="5" placeholder="Enter Message" required></textarea>
+                            </div>
+
+                            <div>
+                                <label asp-for="NewContacts.EmailAddress"></label>
+                                <input type="text" asp-for="NewContacts.EmailAddress" class="fcbug form-control mb-2" placeholder="Enter your email address if you're expecting a reply (Optional):" />
+                            </div>
+
+                            <button type="submit" class="bugbtn btn fs-4 px-3 mt-3 shadow">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+                
+            </div>
+        </div>
     </div>
-    <div>
-        <label asp-for="NewBugReport.BugTitle">Issue</label>
-        <input type="text" asp-for="NewBugReport.BugTitle" class="form-control" placeholder="Enter the Issue/Bug" required />
-    </div>
-    <div>
-        <label asp-for="NewBugReport.BugDescription">Description</label>
-        <textarea type="text" asp-for="NewBugReport.BugDescription" class="form-control" rows="5" placeholder="Describe the issue..." required></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
 @section Scripts{
 <script>
