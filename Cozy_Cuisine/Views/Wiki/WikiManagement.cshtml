@@ -67,18 +67,47 @@
                     <td>@wiki.Title</td>
                     <td>@wiki.Category</td>
                     <td>@wiki.Description</td>
-                    <td>@wiki.URLGif</td>
+                    <td>
+                        @{
+                            var imageUrl = wiki.URLGif; // assuming this contains a full GDrive URL
+                            var fileId = "";
+                            var parts = imageUrl?.Split('/');
+                            if (parts != null && parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                            }
 
+                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                        }
+
+                        @if (!string.IsNullOrEmpty(fileId))
+                        {
+                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
                     <td>
                         @if (!string.IsNullOrEmpty(wiki.URLImageList))
                         {
-
                             var imageUrls = wiki.URLImageList.Split(',');
                             foreach (var url in imageUrls)
                             {
-                                <a href="@url" target="_blank">
-                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                </a>
+                                // Extract File ID from Google Drive URL
+                                var imgfileId = "";
+                                var imgparts = url.Split('/');
+                                if (imgparts.Length >= 6)
+                                {
+                                    imgfileId = imgparts[5];
+                                }
+
+                                if (!string.IsNullOrEmpty(fileId))
+                                {
+                                    var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
+                                    <iframe src="@imgpreviewUrl" width="300" height="200" style="margin-right: 10px; border: none;"></iframe>
+                                }
                             }
                         }
                         else

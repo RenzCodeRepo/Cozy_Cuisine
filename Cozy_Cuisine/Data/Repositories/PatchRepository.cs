@@ -12,11 +12,17 @@ namespace Cozy_Cuisine.Data.Repositories
         {
             _context = context;
         }
-
+        
         public async Task<Dictionary<string, int>> GetPatchDictionaryAsync()
         {
             var patches = await _context.Patches.ToListAsync();
             return patches.ToDictionary(p => p.Version, p => p.PatchId);
+        }
+
+        public async Task<Patches> GetLatestPatch()
+        {
+            var patches = await _context.Patches.OrderByDescending(p => p.ReleaseDate).LastAsync();
+            return patches;
         }
 
         // Patches

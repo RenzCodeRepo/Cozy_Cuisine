@@ -26,13 +26,13 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task<GameMechanics> GetGameMechanicByIdAsync(int id);
         Task AddGameMechanicAsync(GameMechanics gameMechanic);
         Task UpdateGameMechanicAsync(GameMechanics gameMechanic);
-        Task DeleteGameMechanicAsync(int id);
+        Task <bool> DeleteGameMechanicAsync(int id);
 
         Task<List<GameItems>> GetAllGameItemsAsync();
         Task<GameItems> GetGameItemByIdAsync(int id);
         Task AddGameItemAsync(GameItems gameItem);
         Task UpdateGameItemAsync(GameItems gameItem);
-        Task DeleteGameItemAsync(int id);
+        Task <bool> DeleteGameItemAsync(int id);
 
         Task<List<Locations>> GetAllLocationsAsync();
         Task<Locations> GetLocationByIdAsync(int id);

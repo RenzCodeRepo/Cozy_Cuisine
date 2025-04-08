@@ -5,6 +5,8 @@ namespace Cozy_Cuisine.Data.IRepositories
     public interface IPatchRepository
     {
         Task<Dictionary<string, int>> GetPatchDictionaryAsync();
+        Task<Patches> GetLatestPatch();
+
         // Patches
         Task<List<Patches>> GetAllPatchesAsync();
         Task<Patches> GetPatchByIdAsync(int patchId);

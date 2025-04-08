@@ -19,6 +19,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddAboutAsync(About about);
         Task UpdateAboutAsync(About about);
         Task <bool>DeleteAboutAsync(int id);
+        Task <About> GetLatestAbout();
 
         // Gallery
         Task<List<Gallery>> GetAllGalleryAsync();

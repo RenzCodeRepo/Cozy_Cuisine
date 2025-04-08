@@ -118,7 +118,6 @@ namespace Cozy_Cuisine.Controllers
         {
             if (model.NewStoryPlot != null)
             {
-
                 await _wikiRepository.AddStoryPlotAsync(model.NewStoryPlot);
                 TempData["Success"] = "Data was submitted successfully.";
                 return RedirectToAction("StoryPlotManagement");
@@ -242,5 +241,118 @@ namespace Cozy_Cuisine.Controllers
             return RedirectToAction("CharacterManagement");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GameplayManagement()
+        {
+
+            var GMVM = new GameplayManagementVM
+            {
+                GameMechanics = await _wikiRepository.GetAllGameMechanicsAsync(),
+                NewGameMechanic = null
+            };
+            return View(GMVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateGameplay(GameplayManagementVM model)
+        {
+            if (model.NewGameMechanic != null)
+            {
+                model.NewGameMechanic.Category = "Game Mechanic";
+                await _wikiRepository.AddGameMechanicAsync(model.NewGameMechanic);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("GameplayManagement");
+            }
+           ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("GameplayManagement");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameplay(int id)
+        {
+            var isDeleted = await _wikiRepository.DeleteGameMechanicAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("GameplayManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGameplay(GameMechanics model)
+        {
+
+            var gameplay = await _wikiRepository.GetGameMechanicByIdAsync(model.GameMechId);
+            if (gameplay == null)
+            {
+                TempData["Error"] = "Gameplay not found.";
+                return RedirectToAction("GameplayManagement");
+            }
+
+            // Update fields
+            gameplay.GMName = model.GMName;
+            gameplay.Description = model.Description;
+            gameplay.URLImageList = model.URLImageList;
+
+            await _wikiRepository.UpdateGameMechanicAsync(gameplay);
+
+            TempData["Success"] = "Gameplay updated successfully.";
+            return RedirectToAction("GameplayManagement");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GameItemsManagement()
+        {
+
+            var GIMVM = new GameItemsManagementVM
+            {
+                GameItems = await _wikiRepository.GetAllGameItemsAsync(),
+                NewGameItems = null
+            };
+            return View(GIMVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateGameItem(GameItemsManagementVM model)
+        {
+            if (model.NewGameItems != null)
+            {
+                await _wikiRepository.AddGameItemAsync(model.NewGameItems);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("GameItemsManagement");
+            }
+           ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("GameItemsManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameItem(int id)
+        {
+            var isDeleted = await _wikiRepository.DeleteGameItemAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("GameItemsManagement");
+        }
     }
 }

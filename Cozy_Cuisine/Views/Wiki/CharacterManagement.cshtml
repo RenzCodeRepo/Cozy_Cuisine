@@ -55,7 +55,28 @@
                     <td>@characters.Name</td>
                     <td>@characters.Category</td>
                     <td>@characters.Description</td>
-                    <td>@characters.URLGif</td>
+                    <td>
+                        @{
+                            var imageUrl = characters.URLGif; // assuming this contains a full GDrive URL
+                            var fileId = "";
+                            var parts = imageUrl?.Split('/');
+                            if (parts != null && parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                            }
+
+                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                        }
+
+                        @if (!string.IsNullOrEmpty(fileId))
+                        {
+                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
                     <td>
 
                         <a asp-action="DetailStoryPlot" asp-route-id="@characters.CharacterId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>

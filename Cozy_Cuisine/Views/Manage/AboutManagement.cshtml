@@ -45,7 +45,28 @@
                     <td>@about.DetailsId</td>
                     <td>@about.Title</td>
                     <td>@about.Description</td>
-                    <td>@about.URLGif</td>
+                    <td>
+                        @{
+                            var imageUrl = about.URLGif; // assuming this contains a full GDrive URL
+                            var fileId = "";
+                            var parts = imageUrl?.Split('/');
+                            if (parts != null && parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                            }
+
+                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                        }
+
+                        @if (!string.IsNullOrEmpty(fileId))
+                        {
+                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
                     <td>
 
                         <a asp-action="DetailsAbout" asp-route-id="@about.DetailsId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
@@ -98,7 +119,7 @@
 
                     <div>
                         <label class="form-label">URL Gif</label>
-                        <input type="text" class="form-control" id="urlgif" placeholder="One GIF link only (Optional):" />
+                        <input type="text" class="form-control" id="urlgif" name="URLGif" placeholder="One GIF link only (Optional):" />
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>

@@ -45,7 +45,29 @@
                     <td>@credit.CreditId</td>
                     <td>@credit.Name</td>
                     <td>@credit.Role</td>
-                    <td>@credit.URLGif</td>
+                    <td>
+                        @{
+                            var imageUrl = credit.URLGif; // assuming this contains a full GDrive URL
+                            var fileId = "";
+                            var parts = imageUrl?.Split('/');
+                            if (parts != null && parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                            }
+
+                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                        }
+
+                        @if (!string.IsNullOrEmpty(fileId))
+                        {
+                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
+
                     <td>@credit.DateAdded.ToString("MMMM dd, yyyy")</td>
                     <td>
                         <a asp-action="DetailsCredit" asp-route-id="@credit.CreditId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>

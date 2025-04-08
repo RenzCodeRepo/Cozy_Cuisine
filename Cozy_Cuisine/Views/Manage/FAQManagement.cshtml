@@ -59,20 +59,30 @@
                     <td>
                         @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
                         {
-                          
                             var imageUrls = faq.FAQURLImageList.Split(',');
                             foreach (var url in imageUrls)
                             {
-                                <a href="@url" target="_blank">
-                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                </a>
+                                // Extract File ID from Google Drive URL
+                                var fileId = "";
+                                var parts = url.Split('/');
+                                if (parts.Length >= 6)
+                                {
+                                    fileId = parts[5];
+                                }
+
+                                if (!string.IsNullOrEmpty(fileId))
+                                {
+                                    var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                                    <iframe src="@previewUrl" width="300" height="200" style="margin-right: 10px; border: none;"></iframe>
+                                }
                             }
                         }
                         else
                         {
-                           <span>No Image Uploaded</span>
+                            <span>No Image Uploaded</span>
                         }
                     </td>
+
                     <td>@faq.Answer</td>
                     <td>
                         

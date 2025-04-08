@@ -75,16 +75,32 @@
                     <td>@patch.PatchName</td>
                     <td>@patch.ReleaseDate.ToString("MMMM dd, yyyy")</td>
                     <td>@patch.PatchNotes</td>
+                    <!-- Images (possibly multiple from Google Drive) -->
                     <td>
                         @if (!string.IsNullOrEmpty(patch.URLImageList))
                         {
-
                             var imageUrls = patch.URLImageList.Split(',');
                             foreach (var url in imageUrls)
                             {
-                                <a href="@url" target="_blank">
-                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                </a>
+                                var imgfileId = "";
+                                var imgparts = url.Split('/');
+                                if (imgparts.Length >= 6)
+                                {
+                                    imgfileId = imgparts[5];
+                                }
+
+                                var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
+
+                                if (!string.IsNullOrEmpty(imgfileId))
+                                {
+                                    <iframe src="@imgpreviewUrl" width="300" height="auto" style="border: none; margin-right: 5px;"></iframe>
+                                }
+                                else
+                                {
+                                    <a href="@url" target="_blank">
+                                        <img src="@url" alt="Image" style="width: 100px; height: auto; margin-right: 5px;" />
+                                    </a>
+                                }
                             }
                         }
                         else
@@ -92,9 +108,57 @@
                             <span>No Image Uploaded</span>
                         }
                     </td>
+
+                    <!-- GIF / Video -->
                     <td>
-                        <a href="@patch.URLGif">@patch.URLGif</a>
+                        @{
+                            var videoUrl = patch.URLGif;
+                            var embedUrl = "";
+                            var fileId = "";
+
+                            if (!string.IsNullOrEmpty(videoUrl))
+                            {
+                                if (videoUrl.Contains("youtube.com/watch?v="))
+                                {
+                                    var parts = videoUrl.Split("watch?v=");
+                                    var videoId = parts.Length > 1 ? parts[1] : "";
+                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                                }
+                                else if (videoUrl.Contains("youtu.be/"))
+                                {
+                                    var parts = videoUrl.Split("youtu.be/");
+                                    var videoId = parts.Length > 1 ? parts[1] : "";
+                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                                }
+                                else if (videoUrl.Contains("drive.google.com/file/d/"))
+                                {
+                                    var parts = videoUrl.Split('/');
+                                    if (parts.Length >= 6)
+                                    {
+                                        fileId = parts[5];
+                                        embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                                    }
+                                }
+                            }
+                        }
+
+                        @if (!string.IsNullOrEmpty(embedUrl))
+                        {
+                            <iframe width="300" height="170" src="@embedUrl" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                            </iframe>
+                        }
+                        else if (!string.IsNullOrEmpty(videoUrl))
+                        {
+                            <a href="@videoUrl" target="_blank">@videoUrl</a>
+                        }
+                        else
+                        {
+                            <span>No Video Uploaded</span>
+                        }
                     </td>
+
                     <td>
                         <a href="@patch.GameURL" target="_blank">@patch.Version</a>
                     </td>

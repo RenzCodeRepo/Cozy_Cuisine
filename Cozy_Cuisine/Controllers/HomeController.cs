@@ -16,22 +16,39 @@ namespace Cozy_Cuisine.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IManageRepository _manageRepository;
         private readonly IPatchRepository _patchRepository;
+        private readonly IWikiRepository _wikiRepository;
         private readonly IEmailService _emailService;
-        public HomeController(ILogger<HomeController> logger, IManageRepository manageRepository, IPatchRepository patchRepository, IEmailService emailService)
+        public HomeController(ILogger<HomeController> logger, 
+            IManageRepository manageRepository, 
+            IPatchRepository patchRepository, 
+            IEmailService emailService,
+            IWikiRepository wikiRepository)
         {
             _logger = logger;
             _manageRepository = manageRepository;
             _patchRepository = patchRepository;
             _emailService = emailService;
+            _wikiRepository = wikiRepository;
         }
        
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var IPVM = new IndexPageVM
+            {
+                Patches = await _patchRepository.GetLatestPatch(),
+                GameItems = await _wikiRepository.GetAllGameItemsAsync()
+            };
+            return View(IPVM);
         }
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
-            return View();
+
+            var APVM = new AboutPageVM
+            {
+                LatestAbout = await _manageRepository.GetLatestAbout(),
+                GameMechanics = await _wikiRepository.GetAllGameMechanicsAsync()
+            };
+            return View(APVM);
         }
         public IActionResult Gallery()
         {
@@ -41,9 +58,10 @@ namespace Cozy_Cuisine.Controllers
         {
             return View();
         }
-        public IActionResult Credits()
+        public async Task<IActionResult> Credits()
         {
-            return View();
+            var peeps = await _manageRepository.GetAllCreditsAsync();
+            return View(peeps);
         }
         public IActionResult Wiki()
         {

@@ -1,4 +1,4 @@
-﻿@model Cozy_Cuisine.ViewModels.StoryPlotManagementVM
+﻿@model Cozy_Cuisine.ViewModels.GameplayManagementVM
 @{
     Layout = "Admin_Layout";
     ViewData["Title"] = "Dashboard";
@@ -6,45 +6,20 @@
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
-
-<form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="CreateStoryPlot" onsubmit="confirmSubmit(event)">
-
-    <label>Wiki Categories</label>
-    @if (Model.WikiCategories.Any())
-    {
-        <!-- Dropdown if categories exist -->
-        <select class="form-control" id="wikiCategory" name="WikiId" >
-            <option value="">Select a Category</option>
-            @foreach (var category in Model.WikiCategories)
-            {
-                <option value="@category.WikiId">@category.Category</option>
-            }
-        </select>
-    }
-    else
-    {
-        <!-- Textbox if no categories exist -->
-        <input type="text" class="form-control" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
-    }
+<form id="gameplayForm" method="post" asp-controller="Wiki" asp-action="CreateGameplay" onsubmit="confirmSubmit(event)">
     <div>
-        <label asp-for="NewStoryPlot.Title"></label>
-        <input type="text" asp-for="NewStoryPlot.Title" class="form-control" required />
+        <label asp-for="NewGameMechanic.GMName"></label>
+        <input type="text" asp-for="NewGameMechanic.GMName" class="form-control" required />
     </div>
     <div>
-        <label asp-for="NewStoryPlot.Description"></label>
-         <textarea asp-for="NewStoryPlot.Description" class="form-control" rows="3" required></textarea>
+        <label asp-for="NewGameMechanic.Description"></label>
+        <textarea asp-for="NewGameMechanic.Description" class="form-control" rows="3" required></textarea>
     </div>
-    <div>
-        <label asp-for="NewStoryPlot.Content"></label>
-        <textarea asp-for="NewStoryPlot.Content" class="form-control" rows="7" required></textarea>
-    </div>
-
-
     <div class="form-group">
-        <label>Story Plot Image URLs</label>
+        <label>FAQ Image URLs</label>
         <div id="imageUrlContainer">
             <div class="input-group mb-2">
-                <input type="text" class="form-control" name="storyPlotImageUrls" placeholder="Enter Image URL" required/>
+                <input type="text" class="form-control" name="gameplayImageUrls" placeholder="Enter Image URL" />
                 <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
             </div>
         </div>
@@ -52,41 +27,37 @@
     </div>
 
     <!-- Hidden input to hold the final combined string -->
-    <input type="hidden" id="URLImageList" asp-for="NewStoryPlot.URLImageList" required />
-
+    <input type="hidden" id="URLImageList" asp-for="NewGameMechanic.URLImageList" />
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+
+
 <table class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
-            <th>Story ID</th>
-            <th>Wiki ID</th>
-            <th>Title</th>
+            <th>Game Mechanics ID</th>
+            <th>Mechanics Name</th>
             <th>Description</th>
-            <th>Content</th>
-            <th>URL Image Lists</th>
+            <th>URL Images</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.StoryPlots != null && Model.StoryPlots.Any())
+        @if (Model.GameMechanics != null && Model.GameMechanics.Any())
         {
-            @foreach (var storyPlot in Model.StoryPlots)
+            @foreach (var gameMechanics in Model.GameMechanics)
             {
 
                 <tr>
-                    <td>@storyPlot.StoryId</td>
-                    <td>@storyPlot.WikiId</td>
-                    <td>@storyPlot.Title</td>
-                    <td>@storyPlot.Description</td>
-                    <td>@storyPlot.Content</td>
-
+                    <td>@gameMechanics.GameMechId</td>
+                    <td>@gameMechanics.GMName</td>
+                    <td>@gameMechanics.Description</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(storyPlot.URLImageList))
+                        @if (!string.IsNullOrEmpty(gameMechanics.URLImageList))
                         {
-                            var imageUrls = storyPlot.URLImageList.Split(',');
+                            var imageUrls = gameMechanics.URLImageList.Split(',');
                             foreach (var url in imageUrls)
                             {
                                 // Extract File ID from Google Drive URL
@@ -109,28 +80,25 @@
                             <span>No Image Uploaded</span>
                         }
                     </td>
-
                     <td>
-                        
-                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+
+                        <a asp-action="DetailStoryPlot" asp-route-id="@gameMechanics.GameMechId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                         @* opens a modal popup to make the changes *@
                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
                                 data-bs-toggle="modal"
-                                data-bs-target="#editSPModal"
-                                data-id="@storyPlot.StoryId"
-                                data-fk="@storyPlot.WikiId"
-                                data-title="@storyPlot.Title"
-                                data-description="@storyPlot.Description"
-                                data-content="@storyPlot.Content"
-                                data-urls="@storyPlot.URLImageList">
+                                data-bs-target="#editGameplayModal"
+                                data-id="@gameMechanics.GameMechId"
+                                data-name="@gameMechanics.GMName"
+                                data-description="@gameMechanics.Description"
+                                data-urls="@gameMechanics.URLImageList">
                             <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
 
 
-                        <form class="d-inline" id="deleteForm-@storyPlot.StoryId" method="post" asp-action="DeleteStoryPlot" asp-route-id="@storyPlot.StoryId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@storyPlot.StoryId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
+                        <form class="d-inline" id="deleteForm-@gameMechanics.GameMechId" method="post" asp-action="DeleteGameplay" asp-route-id="@gameMechanics.GameMechId">
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@gameMechanics.GameMechId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -138,31 +106,26 @@
         }
     </tbody>
 </table>
-
 @* MODAL POPUP FOR EDITING RECORD *@
-<div class="modal fade" id="editSPModal" tabindex="-1">
+<div class="modal fade" id="editGameplayModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Story Plot</h5>
+                <h5 class="modal-title">Edit Gameplay</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="editStoryPlotForm" method="post" asp-action="EditStoryPlot">
-                    <input type="hidden" id="storyId" name="StoryId">
+                <form id="editGameplayForm" method="post" asp-action="EditGameplay">
+                    <input type="hidden" id="gamemechid" name="GameMechId">
+
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <textarea class="form-control" id="title" name="Title" required></textarea>
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="GMName" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="Description" required></textarea>
-                    </div> 
-                    <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea class="form-control" id="content" name="Content" required></textarea>
+                        <textarea class="form-control" id="description" name="Description" rows="8" required></textarea>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Image URLs (one link per new line)</label>
                         <textarea class="form-control modal-dialog-scrollable" rows="10" id="urls" name="URLImageList" placeholder="Image URLs (one per new line)"></textarea>
@@ -174,6 +137,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
         function addImageUrl() {
@@ -184,10 +148,9 @@
 
             let input = document.createElement("input");
             input.type = "text";
-            input.name = "storyPlotImageUrls";
+            input.name = "gameplayImageUrls";
             input.className = "form-control";
             input.placeholder = "Enter Image URL";
-            input.required = true;
 
             let button = document.createElement("button");
             button.type = "button";
@@ -205,7 +168,7 @@
         }
 
         function prepareFormData() {
-            let inputs = document.getElementsByName("storyPlotImageUrls");
+            let inputs = document.getElementsByName("gameplayImageUrls");
             let urls = [];
 
             // Collect all values
@@ -233,7 +196,7 @@
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                         document.getElementById("storyPlotForm").submit();
+                         document.getElementById("gameplayForm").submit();
                     }
                 });
 
@@ -265,28 +228,23 @@
     <script>
         $(document).ready(function () {
             $(".actionsbtn").click(function () {
-                let storyId = $(this).data("id");
-                let wikiId = $(this).data("fk");
-                let title = $(this).data("title");
+                let gameid = $(this).data("id");
+                let name = $(this).data("name");
                 let description = $(this).data("description");
-                let content = $(this).data("content");
                 let urls = $(this).data("urls");
 
-             
-                // Set values in the modal fields
-                $("#storyId").val(storyId);
-                $("#wikiCategory").val(wikiId).prop("disabled", !wikiId); // Set WikiId and disable if empty
-                $("#title").val(title);
+                // Set values in the modal
+                $("#gamemechid").val(gameid);
+                $("#name").val(name);
                 $("#description").val(description);
-                $("#content").val(content);
-                $("#urls").val(urls ? urls.replace(/,/g, "\n") : ""); // Convert comma-separated to new lines
-
+                $("#urls").val(urls ? urls.replace(/,/g, "\n") : ""); // Convert CSV to new lines
             });
-             $("#editStoryPlotForm").submit(function () {
-            let urlimgField = $("#urls");
-            let formattedURLs = urlimgField.val().split("\n").map(url => url.trim()).filter(url => url !== "").join(",");
-            urlimgField.val(formattedURLs); // Set the value back to CSV format before submitting
+                $("#editGameplayForm").submit(function () {
+                let urlimgField = $("#urls");
+                let formattedURLs = urlimgField.val().split("\n").map(url => url.trim()).filter(url => url !== "").join(",");
+                urlimgField.val(formattedURLs); // Set the value back to CSV format before submitting
+            });
         });
-        });
+
     </script>
 }

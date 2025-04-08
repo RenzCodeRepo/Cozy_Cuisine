@@ -48,6 +48,7 @@ namespace Cozy_Cuisine.Data.Repositories
         // 🔹 About CRUD
         public async Task<List<About>> GetAllAboutsAsync() => await _context.About.ToListAsync();
         public async Task<About> GetAboutByIdAsync(int id) => await _context.About.FindAsync(id);
+        public async Task<About> GetLatestAbout() => await _context.About.FirstAsync();
         public async Task AddAboutAsync(About about)
         {
             _context.About.Add(about);

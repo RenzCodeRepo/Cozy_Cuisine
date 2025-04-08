@@ -1,4 +1,5 @@
-﻿@model Cozy_Cuisine.ViewModels.MediaManagementVM
+﻿@model Cozy_Cuisine.ViewModels.GameItemsManagementVM
+
 @{
     Layout = "Admin_Layout";
     ViewData["Title"] = "Dashboard";
@@ -6,36 +7,34 @@
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
-
-<form id="mediaForm" method="post" asp-controller="Manage" asp-action="CreateMedia" onsubmit="confirmSubmit(event)">
+<form id="gameItemForm" method="post" asp-controller="Wiki" asp-action="CreateGameItem" onsubmit="confirmSubmit(event)">
     <div>
-        <label asp-for="NewGallery.Title"></label>
-        <input type="text" asp-for="NewGallery.Title" class="form-control" placeholder="Enter Title" required />
+        <label asp-for="NewGameItems.ItemName"></label>
+        <input type="text" asp-for="NewGameItems.ItemName" class="form-control" placeholder="Enter Item Name" required />
+    </div>
+    <div>
+        <label asp-for="NewGameItems.Description"></label>
+        <textarea  asp-for="NewGameItems.Description" class="form-control" rows="8" placeholder="Enter Item Description" required></textarea>
     </div>
 
     <div>
-        <label asp-for="NewGallery.Category"></label>
-        <select asp-for="NewGallery.Category" class="form-control" required>
+        <label asp-for="NewGameItems.Category"></label>
+        <select asp-for="NewGameItems.Category" class="form-control" required>
             <option value="">Select Category</option>
-            <option value="Videos">Videos</option>
-            <option value="Images">Images</option>
-            <option value="Characters">Characters</option>
-            <option value="Locations">Locations</option>
+            <option value="Meals">Meals</option>
+            <option value="Ingredients">Ingredients</option>
+            <option value="Equipments">Equipments</option>
         </select>
     </div>
     <div>
-        <label asp-for="NewGallery.Description"></label>
-        <input type="text" asp-for="NewGallery.Description" class="form-control" placeholder="Description" />
+        <label asp-for="NewGameItems.URLImageList"></label>
+        <input type="text" asp-for="NewGameItems.URLImageList" class="form-control" placeholder="Enter the item image url" required/>
     </div>
     <div>
-        <label asp-for="NewGallery.URLGifOrVideo"></label>
-        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control" placeholder="Enter URL Gif or Video (Optional)" />
+        <label asp-for="NewGameItems.URLGif"></label>
+        <input type="text" asp-for="NewGameItems.URLGif" class="form-control" placeholder="Enter URL Gif (Optional)" />
     </div>
-     <div>
-        <label asp-for="NewGallery.URLImage"></label>
-        <input type="text" asp-for="NewGallery.URLImage" class="form-control" placeholder="Enter One URL Image link only (Optional):" />
-    </div>
-
+    
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
@@ -43,7 +42,7 @@
     <thead>
         <tr>
             <th>Details ID</th>
-            <th>Title</th>
+            <th>Item Name</th>
             <th>Category</th>
             <th>Description</th>
             <th>URL GIF or Video</th>
@@ -52,20 +51,20 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Galleries != null && Model.Galleries.Any())
+        @if (Model.GameItems != null && Model.GameItems.Any())
         {
-            @foreach (var gallery in Model.Galleries)
+            @foreach (var items in Model.GameItems)
             {
 
                 <tr>
-                    <td>@gallery.GalleryId</td>
-                    <td>@gallery.Title</td>
-                    <td>@gallery.Category   </td>
-                    <td>@gallery.Description</td>
+                    <td>@items.ItemId</td>
+                    <td>@items.ItemName</td>
+                    <td>@items.Category</td>
+                    <td>@items.Description</td>
                     <!-- Video / GIF Preview -->
                     <td>
                         @{
-                            var videoUrl = gallery.URLGifOrVideo;
+                            var videoUrl = items.URLGif;
                             var embedUrl = "";
                             var fileId = "";
 
@@ -111,7 +110,7 @@
                     <!-- Image Preview -->
                     <td>
                         @{
-                            var imageUrl = gallery.URLImage;
+                            var imageUrl = items.URLImageList;
                             var imgFileId = "";
 
                             if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
@@ -137,26 +136,26 @@
                     </td>
                     <td>
 
-                        <a asp-action="DetailsMedia" asp-route-id="@gallery.GalleryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+                        <a asp-action="DetailsGameItems" asp-route-id="@items.ItemId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                         @* opens a modal popup to make the changes *@
                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
                                 data-bs-toggle="modal"
-                                data-bs-target="#editMediaModal"
-                                data-id="@gallery.GalleryId"
-                                data-title="@gallery.Title"
-                                data-description="@gallery.Description"
-                                data-category="@gallery.Category"
-                                data-urlgifvid="@gallery.URLGifOrVideo"
-                                data-urlimg="@gallery.URLImage">
+                                data-bs-target="#editItemModal"
+                                data-id="@items.WikiId"
+                                data-name="@items.ItemName"
+                                data-description="@items.Description"
+                                data-category="@items.Category"
+                                data-urlgif="@items.URLGif"
+                                data-urlimg="@items.URLImageList">
                             <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
 
 
 
-                        <form class="d-inline" id="deleteForm-@gallery.GalleryId" method="post" asp-action="DeleteMedia" asp-route-id="@gallery.GalleryId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@gallery.GalleryId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
+                        <form class="d-inline" id="deleteForm-@items.ItemId" method="post" asp-action="DeleteGameItem" asp-route-id="@items.ItemId">
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@items.ItemId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -166,30 +165,29 @@
 </table>
 
 @* MODAL POPUP FOR EDITING RECORD *@
-<div class="modal fade" id="editMediaModal" tabindex="-1">
+<div class="modal fade" id="editItemModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit About</h5>
+                <h5 class="modal-title">Edit Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="editMediaForm" method="post" asp-action="EditMedia">
-                    <input type="hidden" id="galleryId" name="GalleryId">
+                <form id="editItemForm" method="post" asp-action="EditMedia">
+                    <input type="hidden" id="itemid" name="ItemId">
 
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="Title" required>
+                        <label class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="name" name="ItemName" required>
                     </div>
 
                     <div>
                         <label class="form-label">Category</label>
                         <select id="category" class="form-control" name="Category" required>
                             <option value="">Select Category</option>
-                            <option value="Videos">Videos</option>
-                            <option value="Images">Images</option>
-                            <option value="Characters">Characters</option>
-                            <option value="Locations">Locations</option>
+                            <option value="Meals">Meals</option>
+                            <option value="Ingredients">Ingredients</option>
+                            <option value="Equipments">Equipments</option>
                         </select>
                     </div>
 
@@ -200,12 +198,12 @@
 
 
                     <div>
-                        <label class="form-label">URL Gif/Video</label>
-                        <input type="text" class="form-control" id="urlgifvid" name="URLGifOrVideo" />
+                        <label class="form-label">URL Gif</label>
+                        <input type="text" class="form-control" id="urlgif" name="URLGif" />
                     </div>
                     <div>
                         <label class="form-label">URL Image</label>
-                        <input type="text" class="form-control" id="urlimg" name="URLImage" />
+                        <input type="text" class="form-control" id="urlimg" name="URLImageList" required/>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -214,6 +212,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
         function confirmSubmit(event) {
@@ -229,7 +228,7 @@
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                         document.getElementById("mediaForm").submit();
+                         document.getElementById("gameItemForm").submit();
                     }
                 });
 
@@ -259,19 +258,19 @@
     <script>
         $(document).ready(function () {
             $(".actionsbtn").click(function () {
-                let galleryId = $(this).data("id");
-                let title = $(this).data("title");
+                let itemid = $(this).data("id");
+                let name = $(this).data("name");
                 let category = $(this).data("category");
                 let description = $(this).data("description");
-                let urlgifvid = $(this).data("urlgifvid");
+                let urlgif = $(this).data("urlgif");
                 let urlimg = $(this).data("urlimg");
 
                 // Set values in the modal
-                $("#galleryId").val(galleryId);
-                $("#title").val(title);
+                $("#itemid").val(itemid);
+                $("#name").val(name);
                 $("#description").val(description);
                 $("#category").val(category);
-                $("#urlgifvid").val(urlgifvid);
+                $("#urlgif").val(urlgif);
                 $("#urlimg").val(urlimg);
             });
         });
