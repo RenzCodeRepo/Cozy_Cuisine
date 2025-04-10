@@ -28,6 +28,10 @@
         <label asp-for="NewCharacter.URLGif"></label>
         <input asp-for="NewCharacter.URLGif" class="form-control" placeholder="One GIF link only (Optional):">
     </div>
+    <div>
+        <label asp-for="NewCharacter.URLImage"></label>
+        <input asp-for="NewCharacter.URLImage" class="form-control" placeholder="One image link only" required>
+    </div>
 
 
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -41,6 +45,7 @@
             <th>Category</th>
             <th>Description</th>
             <th>URL Gif</th>
+            <th>URL Image</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -57,24 +62,50 @@
                     <td>@characters.Description</td>
                     <td>
                         @{
-                            var imageUrl = characters.URLGif; // assuming this contains a full GDrive URL
-                            var fileId = "";
-                            var parts = imageUrl?.Split('/');
-                            if (parts != null && parts.Length >= 6)
+                            var gifUrl = characters.URLGif; // assuming this contains a full GDrive URL
+                            var giffileId = "";
+                            var gifparts = gifUrl?.Split('/');
+                            if (gifparts != null && gifparts.Length >= 6)
                             {
-                                fileId = parts[5];
+                                giffileId = gifparts[5];
                             }
 
-                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                            var gifpreviewUrl = $"https://drive.google.com/file/d/{giffileId}/preview";
                         }
 
-                        @if (!string.IsNullOrEmpty(fileId))
+                        @if (!string.IsNullOrEmpty(giffileId))
                         {
-                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                            <iframe src="@gifpreviewUrl" width="300" height="200" style="border: none;"></iframe>
                         }
                         else
                         {
                             <span>No Image Uploaded</span>
+                        }
+                    </td>
+                    <td>
+                        @{
+                            var imageUrl = characters.URLImage;
+                            var imgFileId = "";
+
+                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                            {
+                                var parts = imageUrl.Split('/');
+                                if (parts.Length >= 6)
+                                {
+                                    imgFileId = parts[5];
+                                }
+                            }
+
+                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+                        }
+
+                        @if (!string.IsNullOrEmpty(imgFileId))
+                        {
+                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
+                        }
+                        else
+                        {
+                            <span>No image available</span>
                         }
                     </td>
                     <td>
@@ -90,7 +121,8 @@
                                 data-name="@characters.Name"
                                 data-category="@characters.Category"
                                 data-description="@characters.Description"
-                                data-url="@characters.URLGif">
+                                data-urlimg="@characters.URLImage"
+                                data-urlgif="@characters.URLGif">
                             <i class="fa-solid fa-pen-to-square fa-sm"></i>
                             Edit
                         </button>
@@ -138,7 +170,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">URLGif</label>
-                        <textarea class="form-control" id="urlgif" name="URLGif" placeholder="One GIF link only (Optional):"></textarea>
+                        <input class="form-control" id="urlgif" name="URLGif" placeholder="One GIF link only (Optional):">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">URL Image</label>
+                        <input type="text" class="form-control" id="urlimg" name="URlImage" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -197,14 +233,16 @@
                 let name = $(this).data("name");
                 let category = $(this).data("category");
                 let description = $(this).data("description");
-                let url = $(this).data("url");
+                let urlgif = $(this).data("urlgif");
+                let urlimg = $(this).data("urlimg");
 
                 // Set values in the modal
                 $("#characterId").val(characterId);
                 $("#name").val(name);
                 $("#description").val(description);
                 $("#category").val(category);
-                $("#url").val(url);
+                $("#urlgif").val(urlgif);
+                $("#urlimg").val(urlimg);
             });
         });
 

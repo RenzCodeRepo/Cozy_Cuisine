@@ -213,83 +213,72 @@
                             <div class="titletabb fs-3">
                                 Meals
                             </div>
-                            <div id="mealCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    @if (meals.Any())
+                            <div class="swiper meal-swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach (var item in meals)
                                     {
-                                        var isActive = true;
-                                        <!-- Flag to set first item as active -->
-                                        @foreach (var item in meals)
+                                        var imageUrl = item.URLImageList;
+                                        var imgFileId = "";
+
+                                        if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
                                         {
-                                            var imageUrl = item.URLImageList;
-                                            var imgFileId = "";
-
-                                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                                            var parts = imageUrl.Split('/');
+                                            if (parts.Length >= 6)
                                             {
-                                                var parts = imageUrl.Split('/');
-                                                if (parts.Length >= 6)
-                                                {
-                                                    imgFileId = parts[5];
-                                                }
+                                                imgFileId = parts[5];
                                             }
-
-                                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-
-                                            <div class="carousel-item @(isActive ? "active" : "")">
-                                                <div class="d-flex justify-content-center align-items-center p-3">
-                                                    <button class="fudcol btn rounded-0"
-                                                            data-name="@item.ItemName"
-                                                            data-desc="@item.Description"
-                                                            data-img="@previewImgUrl"
-                                                            data-item-id="@item.ItemId">
-                                                        @if (!string.IsNullOrEmpty(imgFileId))
-                                                        {
-                                                            <iframe src="@previewImgUrl"
-                                                                    width="200"
-                                                                    height="200"
-                                                                    style="border: none;">
-                                                            </iframe>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span>No image available</span>
-                                                        }
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            isActive = false;
-                                            <!-- Set to false after the first item -->
                                         }
+
+                                        var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+                                        <div class="swiper-slide">
+                                            <div class="d-flex justify-content-center align-items-center p-3">
+                                                <button class="fudcol btn rounded-0"
+                                                        data-name="@item.ItemName"
+                                                        data-desc="@item.Description"
+                                                        data-img="@previewImgUrl"
+                                                        data-item-id="@item.ItemId">
+                                                    @if (!string.IsNullOrEmpty(imgFileId))
+                                                    {
+                                                        <iframe src="@previewImgUrl"
+                                                                width="200"
+                                                                height="200"
+                                                                style="border: none;">
+                                                        </iframe>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No image available</span>
+                                                    }
+                                                </button>
+                                            </div>
+                                        </div>
                                     }
                                 </div>
 
-                                <!-- Custom Previous Button -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#mealCarousel" data-bs-slide="prev">
+                                <!-- Navigation buttons -->
+                                <button class="carousel-control-prev meal-prev" type="button">
                                     <span class="howbtn p-3 rounded-3" aria-hidden="true">
                                         <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
                                     </span>
-                                    <span class="visually-hidden">Previous</span>
                                 </button>
 
-                                <!-- Custom Next Button -->
-                                <button class="carousel-control-next" type="button" data-bs-target="#mealCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next meal-next" type="button">
                                     <span class="howbtn p-3 rounded-3" aria-hidden="true">
                                         <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
                                     </span>
-                                    <span class="visually-hidden">Next</span>
                                 </button>
+
                             </div>
+
 
                             <div class="titletabb fs-3 mt-3">
                                 Ingredients
                             </div>
-                            <div id="ingredientCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
+                            <div class="swiper ingredient-swiper">
+                                <div class="swiper-wrapper">
                                     @if (ingredients.Any())
                                     {
-                                        var isActive = true;
-                                        @foreach (var item in ingredients)
+                                        foreach (var item in ingredients)
                                         {
                                             var imageUrl = item.URLImageList;
                                             var imgFileId = "";
@@ -305,7 +294,7 @@
 
                                             var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
 
-                                            <div class="carousel-item @(isActive ? "active" : "")">
+                                            <div class="swiper-slide">
                                                 <div class="d-flex justify-content-center align-items-center p-3">
                                                     <button class="fudcol btn rounded-0"
                                                             data-name="@item.ItemName"
@@ -327,41 +316,35 @@
                                                     </button>
                                                 </div>
                                             </div>
-
-                                            isActive = false;
-                                            <!-- Set to false after the first item -->
                                         }
                                     }
                                 </div>
+                            
 
-                                <!-- Custom Previous Button for Ingredients -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#ingredientCarousel" data-bs-slide="prev">
-                                    <span class="howbtn p-3 rounded-3" aria-hidden="true">
-                                        <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
-                                    </span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
+                            <!-- Custom Prev/Next Buttons for Swiper -->
+                            <button class="carousel-control-prev ingredient-prev" type="button">
+                                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                                    <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
+                                </span>
+                            </button>
 
-                                <!-- Custom Next Button for Ingredients -->
-                                <button class="carousel-control-next" type="button" data-bs-target="#ingredientCarousel" data-bs-slide="next">
-                                    <span class="howbtn p-3 rounded-3" aria-hidden="true">
-                                        <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
-                                    </span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
+                            <button class="carousel-control-next ingredient-next" type="button">
+                                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                                    <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
+                                </span>
+                            </button>
                         </div>
+                    </div>
 
                         <!-- Equipments -->
                         <div class="tab-pane fade p-4" id="tab2" role="tabpanel">
                             <div class="titletabb fs-3">
                                 Equipments
                             </div>
-                            <div id="equipmentCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
+                            <div class="swiper equipments-swiper">
+                                <div class="swiper-wrapper">
                                     @if (equipments.Any())
                                     {
-                                        var isActive = true;
                                         @foreach (var item in equipments)
                                         {
                                             var imageUrl = item.URLImageList;
@@ -378,7 +361,7 @@
 
                                             var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
 
-                                            <div class="carousel-item @(isActive ? "active" : "")">
+                                            <div class="swiper-slide">
                                                 <div class="d-flex justify-content-center align-items-center p-3">
                                                     <button class="fudcol btn rounded-0"
                                                             data-name="@item.ItemName"
@@ -400,28 +383,23 @@
                                                     </button>
                                                 </div>
                                             </div>
-
-                                            isActive = false;
-                                            <!-- Set to false after the first item -->
                                         }
                                     }
                                 </div>
 
                                 <!-- Custom Previous Button for Equipments -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#equipmentCarousel" data-bs-slide="prev">
+                                <button class="carousel-control-prev equipment-prev" type="button">
                                     <span class="howbtn p-3 rounded-3" aria-hidden="true">
                                         <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
                                     </span>
-                                    <span class="visually-hidden">Previous</span>
                                 </button>
 
-                                <!-- Custom Next Button for Equipments -->
-                                <button class="carousel-control-next" type="button" data-bs-target="#equipmentCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next equipment-next" type="button">
                                     <span class="howbtn p-3 rounded-3" aria-hidden="true">
                                         <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
                                     </span>
-                                    <span class="visually-hidden">Next</span>
                                 </button>
+                            
                             </div>
                         </div>
                     </div>

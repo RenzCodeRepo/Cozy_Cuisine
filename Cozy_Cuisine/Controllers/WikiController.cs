@@ -233,6 +233,7 @@ namespace Cozy_Cuisine.Controllers
             character.Name = model.Name;
             character.Description = model.Description;
             character.Category = model.Category;
+            character.URLImage = model.URLImage;
             character.URLGif = model.URLGif;
 
             await _wikiRepository.UpdateCharacterAsync(character);

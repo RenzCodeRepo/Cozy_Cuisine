@@ -50,9 +50,15 @@ namespace Cozy_Cuisine.Controllers
             };
             return View(APVM);
         }
-        public IActionResult Gallery()
+        public async Task<IActionResult> Gallery()
         {
-            return View();
+            var GPVM = new GalleryPageVM
+            {
+                Galleries = await _manageRepository.GetAllGalleryAsync(),
+                Locations = await _wikiRepository.GetAllLocationsAsync(),
+                Characters = await _wikiRepository.GetAllCharactersAsync()
+            };
+            return View(GPVM);
         }
         public IActionResult News()
         {

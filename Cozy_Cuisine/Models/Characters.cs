@@ -1,6 +1,4 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cozy_Cuisine.Models
@@ -15,6 +13,7 @@ namespace Cozy_Cuisine.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        public string? URLImage { get; set; }
         public string? URLGif { get; set; }
 
     }

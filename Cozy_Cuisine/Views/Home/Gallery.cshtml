@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Cozy_Cuisine.ViewModels.GalleryPageVM
+
+@{
     ViewData["Title"] = "Gallery";
 }
 <!--gallery-->
@@ -7,73 +9,136 @@
         <div class="sectitle display-4 mb-3">
             VIDEOS
         </div>
-        <div class="vidimgrow row">
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
+        <div id="videoCarousel" class="swiper-container video-swiper position-relative">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.Galleries)
+                {
+                    var videoUrl = item.URLGifOrVideo;
+                    var embedUrl = "";
+                    var fileId = "";
 
-            </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
+                    if (!string.IsNullOrEmpty(videoUrl))
+                    {
+                        if (videoUrl.Contains("youtube.com/watch?v="))
+                        {
+                            var parts = videoUrl.Split("watch?v=");
+                            var videoId = parts.Length > 1 ? parts[1] : "";
+                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                        }
+                        else if (videoUrl.Contains("youtu.be/"))
+                        {
+                            var parts = videoUrl.Split("youtu.be/");
+                            var videoId = parts.Length > 1 ? parts[1] : "";
+                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                        }
+                        else if (videoUrl.Contains("drive.google.com/file/d/"))
+                        {
+                            var parts = videoUrl.Split('/');
+                            if (parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                                embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                            }
+                        }
+                    }
 
-            </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
+                    if (!string.IsNullOrEmpty(embedUrl))
+                    {
+                        <div class="swiper-slide text-center mb-4">
+                            <a class="vidbtn btn btn-link p-0 shadow" href="@embedUrl" target="_blank">
+                                <div class="vid-thumbnail position-relative">
+                                    <iframe src="@embedUrl" width="200" height="200" style="border: none;" class="rounded-top-4"></iframe>
+                                    <div class="overlay"></div>
+                                    <div class="play-icon">
+                                        <i class="fa-solid fa-play fa-2xl"></i>
+                                    </div>
+                                </div>
+                                <div class="vidtitle p-3 rounded-bottom-4">
+                                    <div class="vidtitletxt">@item.Title</div>
+                                    <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
+                    }
+                }
             </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
-            </div>
+            <!-- Custom Navigation Buttons -->
+            <button class="swiper-button-prev video-prev" type="button">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </button>
+            <button class="swiper-button-next video-next" type="button">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </button>
+            <style>
+                .swiper-button-next::after,
+                .swiper-button-prev::after {
+                    display: none;
+                }
+            </style>
         </div>
         <div class="sectitle display-4 mb-3 mt-5">
+            IMAGES
+        </div>
+
+        <div class="swiper-container image-swiper position-relative">
+            <div class="swiper-wrapper">
+                @foreach (var gallery in Model.Galleries)
+                {
+                    var imageUrl = gallery.URLImage;
+                    var imgFileId = "";
+                    var hasImage = false;
+
+                    if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                    {
+                        var parts = imageUrl.Split('/');
+                        if (parts.Length >= 6)
+                        {
+                            imgFileId = parts[5];
+                            hasImage = true;
+                        }
+                    }
+
+                    var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+
+                    if (hasImage)
+                    {
+                        <div class="swiper-slide text-center mb-4">
+                            <a class="vidbtn btn btn-link p-0 shadow" href="@previewImgUrl" target="_blank">
+                                <div class="vid-thumbnail position-relative">
+                                    <iframe src="@previewImgUrl" width="200" height="200" style="border: none;" class="rounded-top-4"></iframe>
+                                </div>
+                                <div class="vidtitle p-3 rounded-bottom-4">
+                                    <div class="vidtitletxt">@gallery.Title</div>
+                                    <div>
+                                        <i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="swiper-button-prev image-prev">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </div>
+            <div class="swiper-button-next image-next">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </div>
+        </div>
+
+
+    
+
+        @* <div class="sectitle display-4 mb-3 mt-5">
             IMAGES
         </div>
         <div class="vidimgrow row">
@@ -127,7 +192,7 @@
                 </a>
 
             </div>
-        </div>
+        </div> *@
     </div>
 </div>
 
