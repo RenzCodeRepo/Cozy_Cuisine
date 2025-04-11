@@ -110,7 +110,17 @@ namespace Cozy_Cuisine.Data.Repositories
         public async Task<Locations> GetLocationByIdAsync(int id) => await _context.Locations.FindAsync(id);
         public async Task AddLocationAsync(Locations location) { await _context.Locations.AddAsync(location); await _context.SaveChangesAsync(); }
         public async Task UpdateLocationAsync(Locations location) { _context.Locations.Update(location); await _context.SaveChangesAsync(); }
-        public async Task DeleteLocationAsync(int id) { var item = await _context.Locations.FindAsync(id); if (item != null) { _context.Locations.Remove(item); await _context.SaveChangesAsync(); } }
+        public async Task <bool> DeleteLocationAsync(int id) 
+        {
+            var item = await _context.Locations.FindAsync(id); 
+            if (item != null) 
+            {
+                _context.Locations.Remove(item); 
+                await _context.SaveChangesAsync();
+                return true;
+            } 
+            return false;
+        }
     }
 
 }

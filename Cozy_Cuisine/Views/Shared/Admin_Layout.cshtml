@@ -50,14 +50,14 @@
        
     </header>
     <div class="d-flex">
-        <div class="side offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
+        <div class="side offcanvas offcanvas-start show" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false" data-bs-scroll="true">
             @* <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div> *@
             <div class="offcanvas-body p-0">
                 <a asp-action="Dashboard" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-table-columns fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Dashboard</span>
                     </div>
@@ -92,12 +92,6 @@
                         <span class="pgname">News Management</span>
                     </div>
                 </a>
-                @* <a href="#" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
-                        <span><i class="i-sec fa-solid fa-users fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">User Management</span>
-                    </div>
-                </a> *@
                 <a asp-action="BugReportManagement" asp-controller="Patch" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-bug fa-xl" style="color: #603f26;"></i></span>
@@ -128,6 +122,12 @@
                         <span class="pgname">Character Management</span>
                     </div>
                 </a>
+                <a asp-action="LocationManagement" asp-controller="Wiki" class="text-decoration-none">
+                    <div class="abtn container-fluid p-3">
+                        <span><i class="i-sec fa-solid fa-location-dot fa-xl" style="color: #603f26;"></i></span>
+                        <span class="pgname">Location Management</span>
+                    </div>
+                </a>
                 <a asp-action="AboutManagement" asp-controller="Manage" class="text-decoration-none">
                     <div class="abtn container-fluid p-3">
                         <span><i class="i-sec fa-solid fa-circle-info fa-xl" style="color: #603f26;"></i></span>
@@ -149,8 +149,8 @@
             </div>
         </div>
 
-        <div class="content flex-grow-1 p-3">
-            <main role="main" class="pb-3 mt-5 pt-2">
+        <div class="content flex-grow-1 p-3 mt-3">
+            <main role="main" class="pb-3 mt-5 pt-2 ">
                 @RenderBody()
             </main>
         </div>
@@ -181,7 +181,10 @@
                     title: "Success!",
                     text: message,
                     icon: "success",
-                    confirmButtonText: "OK"
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    confirmButtonText: "OK",
                 });
             }
         });

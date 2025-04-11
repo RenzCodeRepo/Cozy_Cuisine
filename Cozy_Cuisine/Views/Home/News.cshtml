@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Cozy_Cuisine.ViewModels.NewsPageVM
+
+@{
     ViewData["Title"] = "News";
 }
 
@@ -8,7 +10,59 @@
         <div class="sectitle display-4 mb-3">
             FEATURED
         </div>
+
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @foreach (var newsItem in Model.FeaturedNews)
+                {
+                    var imageUrl = newsItem.URLNewsImageList?.Split(',').FirstOrDefault();
+                    var hasImage = false;
+                    var imgFileId = "";
+
+                    if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                    {
+                        var parts = imageUrl.Split('/');
+                        if (parts.Length >= 6)
+                        {
+                            imgFileId = parts[5];
+                            hasImage = true;
+                        }
+                    }
+
+                    var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+                    <div class="fcaritem carousel-item @(newsItem == Model.FeaturedNews.First() ? "active" : "")">
+                        @if (hasImage)
+                        {
+                            <iframe src="@previewImgUrl"
+                                    class="newsimg w-100"
+                                    style="aspect-ratio: 16/9;"
+                                    frameborder="0"
+                                    allowfullscreen>
+                            </iframe>
+                        }
+                        else
+                        {
+                            <div class="bg-secondary text-white text-center py-5">No preview available</div>
+                        }
+                        <div class="ccmed carousel-caption d-none d-md-block">
+                            <h5 class="charname display-6">@newsItem.Headline</h5>
+                            <p class="chardescrip fs-5">@newsItem.Content</p>
+                            @* <a class="chardescrip fs-5 text-white text-center" href="@newsItem.Link">LEARN MORE <i class="fa-solid fa-arrow-up-right-from-square" style="color: #FFFFFF"></i></a> *@
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <button class="medcar carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="medcar carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        @* <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="fcaritem carousel-item active">
                     <img src="~/img/opening.png" class="fpic d-block w-100" alt="...">
@@ -43,7 +97,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-
+ *@
     </div>
 </div>
 
@@ -56,82 +110,71 @@
         <div class="row">
             <div class="col-lg-7">
                 <div class="row">
-                    <div class="col-lg-5">
-                        <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none" href="#">
-                            <div class="news-thumbnail position-relative">
-                                <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                                <div class="newstxt p-3">
-                                    <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">News</span>
-                                    <span class="newsdescrip fs-6 d-block">Lorem Ipsum dolor sit amet consectetur.</span>
+                    @foreach (var news in Model.FourLatestNews)
+                    {
+                        var imageUrl = news.URLNewsImageList?.Split(',').FirstOrDefault();
+                        var hasImage = false;
+                        var imgFileId = "";
+
+                        if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                        {
+                            var parts = imageUrl.Split('/');
+                            if (parts.Length >= 6)
+                            {
+                                imgFileId = parts[5];
+                                hasImage = true;
+                            }
+                        }
+
+                        var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+
+                        <div class="col-lg-5 mb-4">
+                            <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none" href="#">
+                                <div class="news-thumbnail position-relative">
+                                    @if (hasImage)
+                                    {
+                                        <iframe src="@previewImgUrl"
+                                                class="newsimg w-100"
+                                                style="aspect-ratio: 16/9;"
+                                                frameborder="0"
+                                                allowfullscreen>
+                                        </iframe>
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-secondary text-white text-center py-5">No preview available</div>
+                                    }
+
+                                    <div class="newstxt p-3">
+                                        <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">@news.Headline</span>
+                                        <span class="newsdescrip fs-6 d-block" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                            @news.Content
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-5">
-                        <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none" href="#">
-                            <div class="news-thumbnail position-relative">
-                                <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                                <div class="newstxt p-3">
-                                    <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">News</span>
-                                    <span class="newsdescrip fs-6 d-block">Lorem Ipsum dolor sit amet consectetur.</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-5">
-                        <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none" href="#">
-                            <div class="news-thumbnail position-relative">
-                                <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                                <div class="newstxt p-3">
-                                    <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">News</span>
-                                    <span class="newsdescrip fs-6 d-block">Lorem Ipsum dolor sit amet consectetur.</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-5">
-                        <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none" href="#">
-                            <div class="news-thumbnail position-relative">
-                                <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                                <div class="newstxt p-3">
-                                    <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">News</span>
-                                    <span class="newsdescrip fs-6 d-block">Lorem Ipsum dolor sit amet consectetur.</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
+                    }
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="upcont container rounded-4 p-5 shadow-lg">
-                    <div class="uptitle fs-3">
-                        UPDATES
-                    </div>
-                    <div class="uptype fs-4">
-                        Bug Fixes and Improvements:
-                    </div>
-                    <div class="updesc fs-5">
-                        <ol>
-                            <li>
-                                Fixed an issue where customer
-                                orders wouldn’t appear correctly
-                                during rush hour.
-                            </li>
-                            <li>
-                                Resolved a bug causing
-                                ingredients to get stuck on the
-                                chopping board.
-                            </li>
-                            <li>
-                                Adjusted the cooking timer to
-                                be more accurate during multitasking.
-                            </li>
-                        </ol>
-                    </div>
-                </div>
 
+            <div class="col-lg-4">
+                @if (Model.LatestUpdate != null)
+                {
+                    <div class="upcont container rounded-4 p-5 shadow-lg">
+                        <div class="uptitle fs-3">UPDATES</div>
+                        <div class="uptype fs-4">@Model.LatestUpdate.Headline</div>
+                        <div class="updesc fs-5">
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                @foreach (var update in Model.LatestUpdate.Content.Split('\n'))
+                                {
+                                    <li>@update</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 
@@ -145,6 +188,91 @@
             PATCH NOTES
         </div>
         <div class="d-flex align-items-start">
+            <!-- Tab navigation for patch categories -->
+            <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                @foreach (var patch in Model.Patches)
+                {
+                    <button class="nav-link @(patch.Version == Model.Patches.First().Version ? "active" : "")"
+                            id="@patch.Version.ToLower()"
+                            data-bs-toggle="pill"
+                            data-bs-target="#v-pills-@patch.PatchId"
+                            type="button"
+                            role="tab"
+                            aria-controls="v-pills-@patch.PatchId"
+                            aria-selected="true">
+                        @patch.Version
+                    </button>
+                }
+            </div>
+
+            <!-- Tab content for patch details -->
+            <div class="gptabcontent tab-content p-5" id="v-pills-tabContent">
+                @foreach (var patch in Model.Patches)
+                {
+                    <div class="tab-pane fade @(patch.Version == Model.Patches.First().Version ? "show active" : "")"
+                         id="v-pills-@patch.PatchId"
+                         role="tabpanel"
+                         aria-labelledby="v-pills-@patch.PatchId-tab"
+                         tabindex="0">
+
+                        <!-- Patch title -->
+                        <div class="patchtitle fs-3">
+                            Patch @patch.Version Notes
+                        </div>
+
+                        <!-- Patch date -->
+                        <div class="patchdate fs-5">
+                            <span>Game Updates</span>
+                            <span> | </span>
+                            <span>@patch.ReleaseDate.ToString("M/d/yyyy")</span>
+                        </div>
+
+                        <!-- Image preview from Google Drive -->
+                        <div class="gppiccont container text-center w-100 p-3 my-2">
+                            @{
+                                var fileId = "";
+                                var parts = patch.URLImageList?.Split('/');
+                                if (parts != null && parts.Length >= 6)
+                                {
+                                    fileId = parts[5];
+                                }
+
+                                var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                            }
+
+                            @if (!string.IsNullOrEmpty(fileId))
+                            {
+                                <iframe src="@previewUrl" width="100%" height="400" style="border: none;" allowfullscreen></iframe>
+                            }
+                            else
+                            {
+                                <span>No Image Available</span>
+                            }
+                        </div>
+
+                        <!-- Patch description -->
+                        <div class="patchdescrip mt-3 fs-4">
+                            <ul>
+                                @foreach (var note in patch.PatchNotes.Split('\n'))
+                                {
+                                    <li>@note</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <!-- Learn more button -->
+                        <div class="text-end mt-2">
+                            <button class="learnmorebtn btn p-3">
+                                LEARN MORE
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        @* <div class="d-flex align-items-start">
             <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <button class="nav-link active" id="v14" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Version 1.04</button>
                 <button class="nav-link" id="v13" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Version 1.03</button>
@@ -255,6 +383,6 @@
                 </div>
 
             </div>
-        </div>
+        </div> *@
     </div>
 </div>

@@ -355,5 +355,101 @@ namespace Cozy_Cuisine.Controllers
 
             return RedirectToAction("GameItemsManagement");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGameItem(GameItems model)
+        {
+
+            var gameitem = await _wikiRepository.GetGameItemByIdAsync(model.ItemId);
+            if (gameitem == null)
+            {
+                TempData["Error"] = "Game Item not found.";
+                return RedirectToAction("GameItemsManagement");
+            }
+
+            // Update fields
+            gameitem.ItemName = model.ItemName;
+            gameitem.Description = model.Description;
+            gameitem.Category = model.Category;
+            gameitem.URLGif= model.URLGif;
+            gameitem.URLImageList = model.URLImageList;
+
+            await _wikiRepository.UpdateGameItemAsync(gameitem);
+
+            TempData["Success"] = "Game Item updated successfully.";
+            return RedirectToAction("GameItemsManagement");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LocationManagement()
+        {
+
+            var LMVM = new LocationManagementVM
+            {
+                Locations = await _wikiRepository.GetAllLocationsAsync(),
+                NewLocation = null
+            };
+            return View(LMVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateLocation(LocationManagementVM model)
+        {
+            if (model.NewLocation != null)
+            {
+                await _wikiRepository.AddLocationAsync(model.NewLocation);
+                TempData["Success"] = "Data was submitted successfully.";
+                return RedirectToAction("LocationManagement");
+            }
+           ;
+
+            TempData["Error"] = "Something has gone wrong and data was not added.";
+            return RedirectToAction("LocationManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteLocation(int id)
+        {
+            var isDeleted = await _wikiRepository.DeleteLocationAsync(id);
+
+            if (!isDeleted)
+            {
+                TempData["Error"] = "Record does not exist.";
+            }
+            else
+            {
+                TempData["Success"] = "Record deleted successfully.";
+            }
+
+            return RedirectToAction("LocationManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLocation(Locations model)
+        {
+
+            var location = await _wikiRepository.GetLocationByIdAsync(model.LocationId);
+            if (location == null)
+            {
+                TempData["Error"] = "Location not found.";
+                return RedirectToAction("LocationManagement");
+            }
+
+            // Update fields
+            location.Name = model.Name;
+            location.Description = model.Description;
+            location.URLGif = model.URLGif;
+            location.URLImageList = model.URLImageList;
+
+            await _wikiRepository.UpdateLocationAsync(location);
+
+            TempData["Success"] = "Location updated successfully.";
+            return RedirectToAction("LocationManagement");
+        }
+
     }
 }

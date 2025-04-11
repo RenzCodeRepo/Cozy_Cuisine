@@ -11,7 +11,6 @@ namespace Cozy_Cuisine.Models
         [ForeignKey("WikiId")]
         public virtual Wiki? Wiki { get; set; }
         public string Name { get; set; }
-        public string Category { get; set; }
         public string Description { get; set; }
         public string? URLImageList { get; set; }
         public string? URLGif { get; set; }

@@ -60,7 +60,10 @@ namespace Cozy_Cuisine.Data.Repositories
             }
             return false;
         }
-
+        public async Task <List<Patches>> LatestFourPatches()
+        {
+            return await _context.Patches.OrderByDescending(p => p.ReleaseDate).Take(3).ToListAsync();
+        }
         // Bug Reports
         public async Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId)
         {

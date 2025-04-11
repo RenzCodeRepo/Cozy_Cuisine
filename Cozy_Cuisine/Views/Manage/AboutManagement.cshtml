@@ -5,124 +5,157 @@
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">About</div>
+</div>
 
 
-<form id="aboutForm" method="post" asp-controller="Manage" asp-action="CreateAbout" onsubmit="confirmSubmit(event)">
-    <div>
-        <label asp-for="NewAbout.Title"></label>
-        <input type="text" asp-for="NewAbout.Title" class="form-control" placeholder="Enter Title" required />
-    </div>
-   
-    <div>
-        <label asp-for="NewAbout.Description"></label>
-        <textarea asp-for="NewAbout.Description" class="form-control" rows="7" placeholder="Enter Description" required></textarea>
-    </div>
-    <div>
-        <label asp-for="NewAbout.URLGif"></label>
-        <input type="text" asp-for="NewAbout.URLGif" class="form-control" placeholder="One GIF link only (Optional):" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Details ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>URLGif</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Abouts != null && Model.Abouts.Any())
-        {
-            @foreach (var about in Model.Abouts)
-            {
-
-                <tr>
-                    <td>@about.DetailsId</td>
-                    <td>@about.Title</td>
-                    <td>@about.Description</td>
-                    <td>
-                        @{
-                            var imageUrl = about.URLGif; // assuming this contains a full GDrive URL
-                            var fileId = "";
-                            var parts = imageUrl?.Split('/');
-                            if (parts != null && parts.Length >= 6)
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Details ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>GIF URL</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Abouts != null && Model.Abouts.Any())
+                        {
+                            @foreach (var about in Model.Abouts)
                             {
-                                fileId = parts[5];
+
+                                <tr>
+                                    <td>@about.DetailsId</td>
+                                    <td>@about.Title</td>
+                                    <td>@about.Description</td>
+                                    <td>
+                                        @{
+                                            var imageUrl = about.URLGif; // assuming this contains a full GDrive URL
+                                            var fileId = "";
+                                            var parts = imageUrl?.Split('/');
+                                            if (parts != null && parts.Length >= 6)
+                                            {
+                                                fileId = parts[5];
+                                            }
+
+                                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(fileId))
+                                        {
+                                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No Image Uploaded</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="DetailsAbout" asp-route-id="@about.DetailsId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editAboutModal"
+                                                data-id="@about.DetailsId"
+                                                data-title="@about.Title"
+                                                data-description="@about.Description"
+                                                data-urlgif="@about.URLGif">
+                                            <i class="fa-solid fa-pen-to-square fa-sm"></i> Edit
+                                        </button>
+
+
+
+                                        <form class="d-inline" id="deleteForm-@about.DetailsId" method="post" asp-action="DeleteAbout" asp-route-id="@about.DetailsId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@about.DetailsId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
-
-                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
                         }
+                    </tbody>
+                </table>
 
-                        @if (!string.IsNullOrEmpty(fileId))
-                        {
-                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
-                        }
-                        else
-                        {
-                            <span>No Image Uploaded</span>
-                        }
-                    </td>
-                    <td>
+            </div>
 
-                        <a asp-action="DetailsAbout" asp-route-id="@about.DetailsId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+        </div>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="aboutForm" method="post" asp-controller="Manage" asp-action="CreateAbout" onsubmit="confirmSubmit(event)">
+                    <div>
+                        <label asp-for="NewAbout.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewAbout.Title" class="form-control mb-3 focus-ring" placeholder="Enter Title" required />
+                    </div>
 
-                        @* opens a modal popup to make the changes *@
-                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editAboutModal"
-                                data-id="@about.DetailsId"
-                                data-title="@about.Title"
-                                data-description="@about.Description"
-                                data-urlgif="@about.URLGif">
-                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
-                            Edit
-                        </button>
+                    <div>
+                        <label asp-for="NewAbout.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea asp-for="NewAbout.Description" class="form-control mb-3 focus-ring" rows="7" placeholder="Enter Description" required></textarea>
+                    </div>
+                    <div>
+                        <label asp-for="NewAbout.URLGif" class="form-label">GIF URL</label>
+                        <input type="text" asp-for="NewAbout.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
+                    </div>
 
+                </form>
 
+            </div>
 
-                        <form class="d-inline" id="deleteForm-@about.DetailsId" method="post" asp-action="DeleteAbout" asp-route-id="@about.DetailsId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@about.DetailsId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+        </div>
+
+    </div>
+</div>
+
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editAboutModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header rounded-top-4">
                 <h5 class="modal-title">Edit About</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
                 <form id="editAboutForm" method="post" asp-action="EditAbout">
                     <input type="hidden" id="detailsId" name="DetailsId">
 
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="Title" required>
+                        <label class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input type="text" class="form-control focus-ring" id="title" name="Title" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="8" name="Description" required></textarea>
+                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea class="form-control focus-ring" id="description" rows="8" name="Description" required></textarea>
                     </div>
 
-                    <div>
-                        <label class="form-label">URL Gif</label>
-                        <input type="text" class="form-control" id="urlgif" name="URLGif" placeholder="One GIF link only (Optional):" />
+                    <div class="mb-3">
+                        <label class="form-label">GIF URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlgif" placeholder="Enter GIF URL" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -138,8 +171,10 @@
                     text: "You can always delete or edit the record later.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    cancelButtonColor: "#8D493A",
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -157,8 +192,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line

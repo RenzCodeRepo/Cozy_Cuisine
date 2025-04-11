@@ -158,7 +158,21 @@ namespace Cozy_Cuisine.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Notice>> GetLatestFourNews()
+        {
+            var latestNotice = await _context.Notice.Where(n => n.Category == "News")
+                .OrderByDescending(n => n.PostedDate).Take(4).ToListAsync();
+            return latestNotice;
+        }
 
+        public async Task<Notice> GetLatestUpdate()
+        {
+          return await _context.Notice.Where(n => n.Category == "Update").OrderByDescending(n => n.PostedDate).FirstAsync();
+        }
+        public async Task<List<Notice>> GetFeaturedNews()
+        {
+            return await _context.Notice.Where(n => n.Category == "Feature").OrderByDescending(n => n.PostedDate).Take(5).ToListAsync();
+        }
         // 🔹 Visitors (Only Add and Get)
         public async Task<List<Visitor>> GetAllVisitorsAsync() => await _context.Visitor.ToListAsync();
         public async Task AddVisitorAsync(Visitor visitor)

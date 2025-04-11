@@ -59,9 +59,9 @@
             }
         }
     });
-    new Swiper(".image-swiper", {
+    new Swiper("#imageCarousel", {
         slidesPerView: 3,
-        spaceBetween: 5,
+        spaceBetween: 20,
         loop: false,
         centeredSlides: false,  
         navigation: {

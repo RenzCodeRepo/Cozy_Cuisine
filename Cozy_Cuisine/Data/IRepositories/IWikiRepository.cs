@@ -38,7 +38,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task<Locations> GetLocationByIdAsync(int id);
         Task AddLocationAsync(Locations location);
         Task UpdateLocationAsync(Locations location);
-        Task DeleteLocationAsync(int id);
+        Task <bool> DeleteLocationAsync(int id);
     }
 
 }

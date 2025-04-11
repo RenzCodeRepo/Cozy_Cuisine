@@ -60,9 +60,16 @@ namespace Cozy_Cuisine.Controllers
             };
             return View(GPVM);
         }
-        public IActionResult News()
+        public async Task<IActionResult> News()
         {
-            return View();
+            var NPVM = new NewsPageVM
+            {
+                Patches = await _patchRepository.GetAllPatchesAsync(),
+                FourLatestNews = await _manageRepository.GetLatestFourNews(),
+                LatestUpdate = await _manageRepository.GetLatestUpdate(),
+                FeaturedNews = await _manageRepository.GetFeaturedNews()
+            };
+            return View(NPVM);
         }
         public async Task<IActionResult> Credits()
         {
@@ -73,9 +80,14 @@ namespace Cozy_Cuisine.Controllers
         {
             return View();
         }
-        public IActionResult Download()
+        public async Task<IActionResult> Download()
         {
-            return View();
+            var DPVM = new DownloadPageVM
+            {
+                Patches = await _patchRepository.LatestFourPatches(),
+                LatestPatch = await _patchRepository.GetLatestPatch()
+            };
+            return View(DPVM);
         }
         public IActionResult Privacy()
         {

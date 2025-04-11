@@ -13,6 +13,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddPatchAsync(Patches patch);
         Task UpdatePatchAsync(Patches patch);
         Task <bool> DeletePatchAsync(int patchId);
+        Task <List<Patches>> LatestFourPatches();
 
         // Bug Reports
         Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId);

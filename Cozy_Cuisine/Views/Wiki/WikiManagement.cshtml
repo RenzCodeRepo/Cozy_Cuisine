@@ -6,179 +6,220 @@
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
-
-<form id="wikiForm" method="post" asp-controller="Wiki" asp-action="WikiCreate" onsubmit="confirmSubmit(event)">
-
-    <div>
-        <label asp-for="NewWiki.Title"></label>
-        <input type="text" asp-for="NewWiki.Title" class="form-control" placeholder="Enter Wiki Title" required />
-    </div>
-    <div>
-        <label asp-for="NewWiki.Category"></label>
-        <input asp-for="NewWiki.Category" class="form-control" placeholder="Enter Wiki Category" required>
-    </div>
-    <div>
-        <label asp-for="NewWiki.Description"></label>
-        <textarea asp-for="NewWiki.Description" class="form-control" rows="7" placeholder="Enter Wiki Description" required></textarea>
-    </div>
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">Wiki</div>
+</div>
 
 
-    <div class="form-group">
-        <label>Wiki Image URLs</label>
-        <div id="imageUrlContainer">
-            <div class="input-group mb-2">
-                <input type="text" class="form-control" name="URLImageList" placeholder="Enter Image URL"/>
-                <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Wiki ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>GIF URL</th>
+                            <th>Image List URLs</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Wikis != null && Model.Wikis.Any())
+                        {
+                            @foreach (var wiki in Model.Wikis)
+                            {
+
+                                <tr>
+                                    <td>@wiki.WikiId</td>
+                                    <td>@wiki.Title</td>
+                                    <td>@wiki.Category</td>
+                                    <td>@wiki.Description</td>
+                                    <td>
+                                        @{
+                                            var imageUrl = wiki.URLGif; // assuming this contains a full GDrive URL
+                                            var fileId = "";
+                                            var parts = imageUrl?.Split('/');
+                                            if (parts != null && parts.Length >= 6)
+                                            {
+                                                fileId = parts[5];
+                                            }
+
+                                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(fileId))
+                                        {
+                                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No Image Uploaded</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(wiki.URLImageList))
+                                        {
+                                            var imageUrls = wiki.URLImageList.Split(',');
+                                            foreach (var url in imageUrls)
+                                            {
+                                                // Extract File ID from Google Drive URL
+                                                var imgfileId = "";
+                                                var imgparts = url.Split('/');
+                                                if (imgparts.Length >= 6)
+                                                {
+                                                    imgfileId = imgparts[5];
+                                                }
+
+                                                if (!string.IsNullOrEmpty(fileId))
+                                                {
+                                                    var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
+                                                    <iframe src="@imgpreviewUrl" width="300" height="200" style="margin-right: 10px; border: none;"></iframe>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>No Image Uploaded</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="DetailStoryPlot" asp-route-id="@wiki.WikiId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editWikiModal"
+                                                data-id="@wiki.WikiId"
+                                                data-title="@wiki.Title"
+                                                data-description="@wiki.Description"
+                                                data-urlgif="@wiki.URLGif"
+                                                data-urls="@wiki.URLImageList">
+                                            <i class="fa-solid fa-pen-to-square fa-sm"></i> Edit
+                                        </button>
+
+
+                                        <form class="d-inline" id="deleteForm-@wiki.WikiId" method="post" asp-action="DeleteWiki" asp-route-id="@wiki.WikiId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@wiki.WikiId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
             </div>
+
+
         </div>
-        <button type="button" onclick="addImageUrl()" class="btn btn-secondary mt-2">Add Another URL</button>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="wikiForm" method="post" asp-controller="Wiki" asp-action="WikiCreate" onsubmit="confirmSubmit(event)">
+
+                    <div>
+                        <label asp-for="NewWiki.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewWiki.Title" class="form-control mb-3 focus-ring" placeholder="Enter Wiki Title" required />
+                    </div>
+                    <div>
+                        <label asp-for="NewWiki.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <input asp-for="NewWiki.Category" class="form-control mb-3 focus-ring" placeholder="Enter Wiki Category" required>
+                    </div>
+                    <div>
+                        <label asp-for="NewWiki.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea asp-for="NewWiki.Description" class="form-control mb-3 focus-ring" rows="7" placeholder="Enter Wiki Description" required></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="form-label">Wiki Image URLs</label>
+                        <div id="imageUrlContainer">
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control mb-1 focus-ring" name="URLImageList" placeholder="Enter Image URL" />
+                                <button type="button" class="addremovebtn focus-ring btn mb-1" onclick="removeImageUrl(this)"><i class="fa-solid fa-trash"></i> Remove</button>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" onclick="addImageUrl()" class="addremovebtn focus-ring btn mb-3">Add Another URL</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Hidden input to hold the final combined string -->
+                    <input type="hidden" id="URLImageList" asp-for="NewWiki.URLImageList" required />
+                    <div>
+                        <label asp-for="NewWiki.URLGif" class="form-label">GIF URL</label>
+                        <input type="text" asp-for="NewWiki.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
     </div>
-
-    <!-- Hidden input to hold the final combined string -->
-    <input type="hidden" id="URLImageList" asp-for="NewWiki.URLImageList" required />
-    <div>
-        <label asp-for="NewWiki.URLGif"></label>
-        <input type="text" asp-for="NewWiki.URLGif" class="form-control" placeholder="One GIF link only (Optional):" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Wiki ID</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>URL Gif</th>
-            <th>URL Image Lists</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Wikis != null && Model.Wikis.Any())
-        {
-            @foreach (var wiki in Model.Wikis)
-            {
-
-                <tr>
-                    <td>@wiki.WikiId</td>
-                    <td>@wiki.Title</td>
-                    <td>@wiki.Category</td>
-                    <td>@wiki.Description</td>
-                    <td>
-                        @{
-                            var imageUrl = wiki.URLGif; // assuming this contains a full GDrive URL
-                            var fileId = "";
-                            var parts = imageUrl?.Split('/');
-                            if (parts != null && parts.Length >= 6)
-                            {
-                                fileId = parts[5];
-                            }
-
-                            var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
-                        }
-
-                        @if (!string.IsNullOrEmpty(fileId))
-                        {
-                            <iframe src="@previewUrl" width="300" height="200" style="border: none;"></iframe>
-                        }
-                        else
-                        {
-                            <span>No Image Uploaded</span>
-                        }
-                    </td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(wiki.URLImageList))
-                        {
-                            var imageUrls = wiki.URLImageList.Split(',');
-                            foreach (var url in imageUrls)
-                            {
-                                // Extract File ID from Google Drive URL
-                                var imgfileId = "";
-                                var imgparts = url.Split('/');
-                                if (imgparts.Length >= 6)
-                                {
-                                    imgfileId = imgparts[5];
-                                }
-
-                                if (!string.IsNullOrEmpty(fileId))
-                                {
-                                    var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
-                                    <iframe src="@imgpreviewUrl" width="300" height="200" style="margin-right: 10px; border: none;"></iframe>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            <span>No Image Uploaded</span>
-                        }
-                    </td>
-                    <td>
-                        
-                        <a asp-action="DetailStoryPlot" asp-route-id="@wiki.WikiId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
-
-                        @* opens a modal popup to make the changes *@
-                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editWikiModal"
-                                data-id="@wiki.WikiId"
-                                data-title="@wiki.Title"
-                                data-description="@wiki.Description"
-                                data-urlgif="@wiki.URLGif"
-                                data-urls="@wiki.URLImageList">
-                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
-                            Edit
-                        </button>
+</div>
 
 
-                        <form class="d-inline" id="deleteForm-@wiki.WikiId" method="post" asp-action="DeleteWiki" asp-route-id="@wiki.WikiId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@wiki.WikiId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editWikiModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header rounded-top-4">
                 <h5 class="modal-title">Edit Wiki</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
                 <form id="editWikiForm" method="post" asp-action="EditWiki">
                     <input type="hidden" id="wikiId" name="WikiId">
 
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input class="form-control" id="title" name="Title" required>   
+                        <label class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input class="form-control focus-ring" id="title" name="Title" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="Description" rows="8" required></textarea>
-                    </div> 
+                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea class="form-control focus-ring" id="description" name="Description" rows="8" required></textarea>
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label">URL Gif</label>
-                        <input class="form-control" id="urlgif" name="URLGif">
+                        <label class="form-label">GIF URL</label>
+                        <input class="form-control focus-ring" id="urlgif" name="URLGif">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Image URLs (one link per new line)</label>
-                        <textarea class="form-control modal-dialog-scrollable" rows="10" id="urls" name="URLImageList" placeholder="Image URLs (one per new line)"></textarea>
+                        <textarea class="form-control focus-ring modal-dialog-scrollable" rows="10" id="urls" name="URLImageList" placeholder="Image URLs (one per new line)"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
         function addImageUrl() {
@@ -190,13 +231,13 @@
             let input = document.createElement("input");
             input.type = "text";
             input.name = "URLImageList";
-            input.className = "form-control";
+            input.className = "form-control mb-1 focus-ring";
             input.placeholder = "Enter Image URL";
 
             let button = document.createElement("button");
             button.type = "button";
-            button.className = "btn btn-danger";
-            button.innerText = "Remove";
+            button.className = "addremovebtn focus-ring btn mb-1";
+            button.innerHTML = '<i class="fa-solid fa-trash"></i> Remove';
             button.onclick = function () { removeImageUrl(button); };
 
             div.appendChild(input);
@@ -232,8 +273,10 @@
                     text: "You can always delete or edit the record later.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    cancelButtonColor: "#8D493A",
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -251,8 +294,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line

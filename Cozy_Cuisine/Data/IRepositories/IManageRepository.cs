@@ -41,6 +41,9 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddNoticeAsync(Notice notice);
         Task UpdateNoticeAsync(Notice notice);
         Task DeleteNoticeAsync(int id);
+        Task <List<Notice>> GetLatestFourNews();
+        Task <Notice> GetLatestUpdate();
+        Task <List<Notice>> GetFeaturedNews();
 
         // Visitor (Only Add and Get)
         Task<List<Visitor>> GetAllVisitorsAsync();
