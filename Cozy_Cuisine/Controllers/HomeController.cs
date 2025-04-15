@@ -50,6 +50,7 @@ namespace Cozy_Cuisine.Controllers
             };
             return View(APVM);
         }
+
         public async Task<IActionResult> Gallery()
         {
             var GPVM = new GalleryPageVM
@@ -58,7 +59,7 @@ namespace Cozy_Cuisine.Controllers
                 Locations = await _wikiRepository.GetAllLocationsAsync(),
                 Characters = await _wikiRepository.GetAllCharactersAsync()
             };
-            return View(GPVM);
+                return View(GPVM);
         }
         public async Task<IActionResult> News()
         {
@@ -85,7 +86,8 @@ namespace Cozy_Cuisine.Controllers
             var DPVM = new DownloadPageVM
             {
                 Patches = await _patchRepository.LatestFourPatches(),
-                LatestPatch = await _patchRepository.GetLatestPatch()
+                LatestPatch = await _patchRepository.GetLatestPatch(),
+                GameReview = null
             };
             return View(DPVM);
         }
@@ -139,7 +141,7 @@ namespace Cozy_Cuisine.Controllers
                 {
                     body += $"\n\nReply email: {model.NewContacts.EmailAddress}";
                 }
-
+                await Task.Delay(2000);
                 // Send email
                 await _emailService.SendEmailAsync(recipientEmail, subject, body);
 
@@ -172,7 +174,7 @@ namespace Cozy_Cuisine.Controllers
                 string recipientEmail = "unlibugs938@gmail.com"; // Your email
                 string subject = model.NewBugReport.BugTitle;
                 string body = model.NewBugReport.BugDescription;
-
+                await Task.Delay(2000); 
                 // Send email
                 await _emailService.SendEmailAsync(recipientEmail, subject, body);
 
@@ -187,6 +189,20 @@ namespace Cozy_Cuisine.Controllers
             }
 
             return RedirectToAction("Contacts");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SubmitReview(GameReview model)
+        {
+            if (model != null)
+            {
+                await _manageRepository.AddReviewAsync(model);
+                TempData["Success"] = "Review Submitted. Thank you for sending us a Review.";
+                return RedirectToAction("Download");
+            }
+            TempData["Error"] = "Review not Submitted. Something went wrong.";
+            return RedirectToAction("Download");
         }
     }
 

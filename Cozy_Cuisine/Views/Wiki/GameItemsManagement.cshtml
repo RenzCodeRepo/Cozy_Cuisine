@@ -6,184 +6,219 @@
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
-
-<form id="gameItemForm" method="post" asp-controller="Wiki" asp-action="CreateGameItem" onsubmit="confirmSubmit(event)">
-    <div>
-        <label asp-for="NewGameItems.ItemName"></label>
-        <input type="text" asp-for="NewGameItems.ItemName" class="form-control" placeholder="Enter Item Name" required />
-    </div>
-    <div>
-        <label asp-for="NewGameItems.Description"></label>
-        <textarea  asp-for="NewGameItems.Description" class="form-control" rows="8" placeholder="Enter Item Description" required></textarea>
-    </div>
-
-    <div>
-        <label asp-for="NewGameItems.Category"></label>
-        <select asp-for="NewGameItems.Category" class="form-control" required>
-            <option value="">Select Category</option>
-            <option value="Meals">Meals</option>
-            <option value="Ingredients">Ingredients</option>
-            <option value="Equipments">Equipments</option>
-        </select>
-    </div>
-    <div>
-        <label asp-for="NewGameItems.URLImageList"></label>
-        <input type="text" asp-for="NewGameItems.URLImageList" class="form-control" placeholder="Enter the item image url" required/>
-    </div>
-    <div>
-        <label asp-for="NewGameItems.URLGif"></label>
-        <input type="text" asp-for="NewGameItems.URLGif" class="form-control" placeholder="Enter URL Gif (Optional)" />
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Details ID</th>
-            <th>Item Name</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>URL GIF or Video</th>
-            <th>URL Image</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.GameItems != null && Model.GameItems.Any())
-        {
-            @foreach (var items in Model.GameItems)
-            {
-
-                <tr>
-                    <td>@items.ItemId</td>
-                    <td>@items.ItemName</td>
-                    <td>@items.Category</td>
-                    <td>@items.Description</td>
-                    <!-- Video / GIF Preview -->
-                    <td>
-                        @{
-                            var videoUrl = items.URLGif;
-                            var embedUrl = "";
-                            var fileId = "";
-
-                            if (!string.IsNullOrEmpty(videoUrl))
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">Game Items</div>
+</div>
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Details ID</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>GIF/Video URL</th>
+                            <th>Image URL</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.GameItems != null && Model.GameItems.Any())
+                        {
+                            @foreach (var items in Model.GameItems)
                             {
-                                if (videoUrl.Contains("youtube.com/watch?v="))
-                                {
-                                    var parts = videoUrl.Split("watch?v=");
-                                    var videoId = parts.Length > 1 ? parts[1] : "";
-                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                                }
-                                else if (videoUrl.Contains("youtu.be/"))
-                                {
-                                    var parts = videoUrl.Split("youtu.be/");
-                                    var videoId = parts.Length > 1 ? parts[1] : "";
-                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                                }
-                                else if (videoUrl.Contains("drive.google.com/file/d/"))
-                                {
-                                    var parts = videoUrl.Split('/');
-                                    if (parts.Length >= 6)
-                                    {
-                                        fileId = parts[5];
-                                        embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
-                                    }
-                                }
+
+                                <tr>
+                                    <td>@items.ItemId</td>
+                                    <td>@items.ItemName</td>
+                                    <td>@items.Category</td>
+                                    <td>@items.Description</td>
+                                    <!-- Video / GIF Preview -->
+                                    <td>
+                                        @{
+                                            var videoUrl = items.URLGif;
+                                            var embedUrl = "";
+                                            var fileId = "";
+
+                                            if (!string.IsNullOrEmpty(videoUrl))
+                                            {
+                                                if (videoUrl.Contains("youtube.com/watch?v="))
+                                                {
+                                                    var parts = videoUrl.Split("watch?v=");
+                                                    var videoId = parts.Length > 1 ? parts[1] : "";
+                                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                                                }
+                                                else if (videoUrl.Contains("youtu.be/"))
+                                                {
+                                                    var parts = videoUrl.Split("youtu.be/");
+                                                    var videoId = parts.Length > 1 ? parts[1] : "";
+                                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                                                }
+                                                else if (videoUrl.Contains("drive.google.com/file/d/"))
+                                                {
+                                                    var parts = videoUrl.Split('/');
+                                                    if (parts.Length >= 6)
+                                                    {
+                                                        fileId = parts[5];
+                                                        embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(embedUrl))
+                                        {
+                                            <iframe width="300" height="170" src="@embedUrl" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen>
+                                            </iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No preview available</span>
+                                        }
+                                    </td>
+
+                                    <!-- Image Preview -->
+                                    <td>
+                                        @{
+                                            var imageUrl = items.URLImageList;
+                                            var imgFileId = "";
+
+                                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                                            {
+                                                var parts = imageUrl.Split('/');
+                                                if (parts.Length >= 6)
+                                                {
+                                                    imgFileId = parts[5];
+                                                }
+                                            }
+
+                                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(imgFileId))
+                                        {
+                                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No image available</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="DetailsGameItems" asp-route-id="@items.ItemId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editItemModal"
+                                                data-id="@items.WikiId"
+                                                data-name="@items.ItemName"
+                                                data-description="@items.Description"
+                                                data-category="@items.Category"
+                                                data-urlgif="@items.URLGif"
+                                                data-urlimg="@items.URLImageList">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Edit
+                                        </button>
+
+
+
+                                        <form class="d-inline" id="deleteForm-@items.ItemId" method="post" asp-action="DeleteGameItem" asp-route-id="@items.ItemId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@items.ItemId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
                         }
+                    </tbody>
+                </table>
 
-                        @if (!string.IsNullOrEmpty(embedUrl))
-                        {
-                            <iframe width="300" height="170" src="@embedUrl" frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen>
-                            </iframe>
-                        }
-                        else
-                        {
-                            <span>No preview available</span>
-                        }
-                    </td>
-
-                    <!-- Image Preview -->
-                    <td>
-                        @{
-                            var imageUrl = items.URLImageList;
-                            var imgFileId = "";
-
-                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
-                            {
-                                var parts = imageUrl.Split('/');
-                                if (parts.Length >= 6)
-                                {
-                                    imgFileId = parts[5];
-                                }
-                            }
-
-                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-                        }
-
-                        @if (!string.IsNullOrEmpty(imgFileId))
-                        {
-                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
-                        }
-                        else
-                        {
-                            <span>No image available</span>
-                        }
-                    </td>
-                    <td>
-
-                        <a asp-action="DetailsGameItems" asp-route-id="@items.ItemId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
-
-                        @* opens a modal popup to make the changes *@
-                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editItemModal"
-                                data-id="@items.WikiId"
-                                data-name="@items.ItemName"
-                                data-description="@items.Description"
-                                data-category="@items.Category"
-                                data-urlgif="@items.URLGif"
-                                data-urlimg="@items.URLImageList">
-                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
-                            Edit
-                        </button>
+            </div>
 
 
+        </div>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
 
-                        <form class="d-inline" id="deleteForm-@items.ItemId" method="post" asp-action="DeleteGameItem" asp-route-id="@items.ItemId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@items.ItemId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="gameItemForm" method="post" asp-controller="Wiki" asp-action="CreateGameItem" onsubmit="confirmSubmit(event)">
+                    <div>
+                        <label asp-for="NewGameItems.ItemName" class="form-label">Item Name <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewGameItems.ItemName" class="form-control mb-3 focus-ring" placeholder="Enter Item Name" required />
+                    </div>
+                    <div>
+                        <label asp-for="NewGameItems.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <select asp-for="NewGameItems.Category" class="form-control mb-3 focus-ring" required>
+                            <option value="">Select Category</option>
+                            <option value="Meals">Meals</option>
+                            <option value="Ingredients">Ingredients</option>
+                            <option value="Equipments">Equipments</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="NewGameItems.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea asp-for="NewGameItems.Description" class="form-control mb-3 focus-ring" rows="8" placeholder="Enter Item Description" required></textarea>
+                    </div>
+
+
+                    <div>
+                        <label asp-for="NewGameItems.URLImageList" class="form-label">Image URL <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewGameItems.URLImageList" class="form-control mb-3 focus-ring" placeholder="Enter the item image url" required />
+                    </div>
+                    <div>
+                        <label asp-for="NewGameItems.URLGif" class="form-label">GIF URL</label>
+                        <input type="text" asp-for="NewGameItems.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter URL Gif" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn mb-3">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editItemModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header rounded-top-4">
                 <h5 class="modal-title">Edit Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
                 <form id="editItemForm" method="post" asp-action="EditGameItem">
                     <input type="hidden" id="itemid" name="ItemId">
 
                     <div class="mb-3">
                         <label class="form-label">Item Name</label>
-                        <input type="text" class="form-control" id="name" name="ItemName" required>
+                        <input type="text" class="form-control focus-ring" id="name" name="ItemName" required>
                     </div>
 
-                    <div>
+                    <div class="mb-3">
                         <label class="form-label">Category</label>
-                        <select id="category" class="form-control" name="Category" required>
+                        <select id="category" class="form-control focus-ring" name="Category" required>
                             <option value="">Select Category</option>
                             <option value="Meals">Meals</option>
                             <option value="Ingredients">Ingredients</option>
@@ -193,20 +228,22 @@
 
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="8" name="Description" required></textarea>
+                        <textarea class="form-control focus-ring" id="description" rows="8" name="Description" required></textarea>
                     </div>
 
 
-                    <div>
-                        <label class="form-label">URL Gif</label>
-                        <input type="text" class="form-control" id="urlgif" name="URLGif" />
+                    <div class="mb-3">
+                        <label class="form-label">GIF URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlgif" name="URLGif" />
                     </div>
-                    <div>
-                        <label class="form-label">URL Image</label>
-                        <input type="text" class="form-control" id="urlimg" name="URLImageList" required/>
+                    <div class="mb-3">
+                        <label class="form-label">Image URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlimg" name="URLImageList" required />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -223,8 +260,10 @@
                     text: "You can always delete or edit the record later.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    cancelButtonColor: "#8D493A",
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -242,8 +281,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line

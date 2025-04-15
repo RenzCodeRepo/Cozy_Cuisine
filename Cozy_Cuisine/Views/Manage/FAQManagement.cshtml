@@ -74,12 +74,12 @@
 
                                         @* opens a modal popup to make the changes *@
                                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editFAQModal"
-                                                data-id="@faq.FAQId"
-                                                data-question="@faq.Question"
-                                                data-answer="@faq.Answer"
-                                                data-urls="@faq.FAQURLImageList">
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editFAQModal"
+                                        data-id="@faq.FAQId"
+                                        data-question="@faq.Question"
+                                        data-answer="@faq.Answer"
+                                        data-urls="@faq.FAQURLImageList">
                                             <i class="fa-solid fa-pen-to-square"></i> Edit
                                         </button>
 
@@ -139,7 +139,18 @@
 
     </div>
 </div>
+@{
+    var thumbnailUrl = "https://drive.google.com/thumbnail?id=1vLQbbDiQZ-Zsy1X18dONOQwqLWaYpArD";
 
+<img src="@thumbnailUrl" width="300" height="200" style="margin-right: 10px; border: none;">
+}
+
+<img src="https://drive.google.com/thumbnail?id=16g-qtZkzjwDFyxQGnzEnnP0Ev2_PzPUV
+" width="300" height="200" style="margin-right: 10px; border: none;">
+<img src="https://drive.google.com/thumbnail?id=1vLQbbDiQZ-Zsy1X18dONOQwqLWaYpArD"
+     width="200"
+     alt="Google Drive Thumbnail"
+     style="border-radius: 12px;" />
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editFAQModal" tabindex="-1">

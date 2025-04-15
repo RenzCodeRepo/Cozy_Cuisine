@@ -21,7 +21,7 @@ namespace Cozy_Cuisine.Data.Repositories
 
         public async Task<Patches> GetLatestPatch()
         {
-            var patches = await _context.Patches.OrderByDescending(p => p.ReleaseDate).LastAsync();
+            var patches = await _context.Patches.OrderBy(p => p.ReleaseDate).LastAsync();
             return patches;
         }
 
@@ -62,7 +62,7 @@ namespace Cozy_Cuisine.Data.Repositories
         }
         public async Task <List<Patches>> LatestFourPatches()
         {
-            return await _context.Patches.OrderByDescending(p => p.ReleaseDate).Take(3).ToListAsync();
+            return await _context.Patches.OrderByDescending(p => p.ReleaseDate).Skip(1).Take(3).ToListAsync();
         }
         // Bug Reports
         public async Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId)

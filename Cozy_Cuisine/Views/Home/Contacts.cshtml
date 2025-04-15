@@ -150,6 +150,187 @@
                     </div>
                     <div class="patchdescrip mt-3 fs-4">
                         <form id="bugReportForm" method="post" asp-controller="Home" asp-action="SendBugReport" onsubmit="confirmSubmit(event, 'bugReportForm')">
+                            <div>
+                                <label asp-for="NewBugReport.PatchId">Patch Version</label>
+                                <select asp-for="NewBugReport.PatchId" class="fcbug form-control mb-2" required>
+                                    <option value="">Select Patch Version</option>
+                                    @foreach (var patch in Model.PatchesDict)
+                                    {
+                                        <option value="@patch.Value">@patch.Key</option>
+                                    }
+                                </select>
+                            </div>
+                            <div>
+                                <label asp-for="NewBugReport.BugTitle">Issue</label>
+                                <input type="text" asp-for="NewBugReport.BugTitle" class="fcbug form-control mb-2" placeholder="Enter the Issue/Bug" required />
+                            </div>
+                            <div>
+                                <label asp-for="NewBugReport.BugDescription">Description</label>
+                                <textarea type="text" asp-for="NewBugReport.BugDescription" class="fcbug form-control mb-2" rows="5" placeholder="Describe the issue..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="bugbtn btn fs-4 px-3 mt-3 shadow">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    <div class="patchtitle fs-3">
+                        Contact
+                    </div>
+                    <div class="patchdate fs-5">
+                        Let us know
+                    </div>
+
+                    <div class="patchdescrip mt-3 fs-4">
+                        <form id="messageForm" method="post" asp-controller="Home" asp-action="SendMessage" onsubmit="confirmSubmit(event, 'messageForm')">
+                            <div>
+                                <label asp-for="NewContacts.EmailSubject">Subject</label>
+                                <input type="text" asp-for="NewContacts.EmailSubject" class="fcbug form-control mb-2" placeholder="Enter Subject Message" required />
+                            </div>
+                            <div>
+                                <label asp-for="NewContacts.EmailBody">Message</label>
+                                <textarea type="text" asp-for="NewContacts.EmailBody" class="fcbug form-control mb-2" rows="5" placeholder="Enter Message" required></textarea>
+                            </div>
+
+                            <div>
+                                <label asp-for="NewContacts.EmailAddress"></label>
+                                <input type="text" asp-for="NewContacts.EmailAddress" class="fcbug form-control mb-2" placeholder="Enter your email address if you're expecting a reply (Optional):" />
+                            </div>
+
+                            <button type="submit" class="bugbtn btn fs-4 px-3 mt-3 shadow">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function confirmSubmit(event, formId) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to proceed with this submission?",
+                icon: "warning",
+                showCancelButton: true,
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
+                confirmButtonText: "Yes, submit it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    Swal.fire({
+                        title: "Submitting...",
+                        html: `
+                            <div style="width: 100%; text-align: center; background: #f8f4f1; color: #603f26;">
+                                <progress id="formProgress" value="0" max="100"
+                                    style="width: 100%; height: 20px; background-color: #f8f4f1; color: #603f26; border: none;">
+                                </progress>
+                                <div id="progressText" style="margin-top: 10px; color: #603f26;">0%</div>
+                            </div>
+                        `,
+                        background: "#f8f4f1",
+                        color: "#603f26",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        didOpen: () => {
+                            const formData = new FormData(document.getElementById(formId));
+                            const xhr = new XMLHttpRequest();
+                            const url = formId === 'bugReportForm' ? '/Home/SendBugReport' : '/Home/SendMessage';
+
+                            xhr.open("POST", url, true);
+
+                            let percent = 0;
+                            const interval = setInterval(() => {
+                                if (percent < 90) {
+                                    percent += Math.random() * 6;
+                                    document.getElementById("formProgress").value = percent;
+                                    document.getElementById("progressText").textContent = Math.round(percent) + "%";
+                                }
+                            }, 200);
+
+                            xhr.onload = function () {
+                                clearInterval(interval);
+                                document.getElementById("formProgress").value = 100;
+                                document.getElementById("progressText").textContent = "100%";
+
+                                if (xhr.status === 200) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Submitted!',
+                                        text: 'Your submission was successful.',
+                                        background: "#f8f4f1",
+                                        color: "#603f26",
+                                        confirmButtonColor: '#603f26'
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'There was an error during submission.',
+                                        background: "#f8f4f1",
+                                        color: "#603f26",
+                                        confirmButtonColor: '#8D493A'
+                                    });
+                                }
+                            };
+
+                            xhr.send(formData);
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}
+
+
+<style>
+    progress::-webkit-progress-value {
+        background-color: #603f26;
+    }
+
+    progress::-moz-progress-bar {
+        background-color: #603f26;
+    }
+
+    progress {
+        background-color: #f8f4f1;
+        border: none;
+        height: 20px;
+        width: 100%;
+    }
+</style>
+
+@* <!--bug and contact-->
+<div class="cont3 container-fluid my-5">
+    <div class="container p-5">
+        <div class="d-flex align-items-start">
+            <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="bug-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bug" type="button" role="tab" aria-controls="v-pills-bug" aria-selected="true">Bug</button>
+                <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#v-pills-contact" type="button" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact</button>
+            </div>
+            <div class="gptabcontent tab-content p-5" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-bug" role="tabpanel" aria-labelledby="bug-tab" tabindex="0">
+                    <div class="patchtitle fs-3">
+                        BUG REPORT
+                    </div>
+                    <div class="patchdate fs-5">
+                        Let us know
+                    </div>
+                    <div class="patchdescrip mt-3 fs-4">
+                        <form id="bugReportForm" method="post" asp-controller="Home" asp-action="SendBugReport" onsubmit="confirmSubmit(event, 'bugReportForm')">
 
                             <div>
                                 <label asp-for="NewBugReport.PatchId">Patch Version</label>
@@ -210,6 +391,9 @@
             </div>
         </div>
     </div>
+</div>
+<progress id="formProgress" value="0" max="100" style="display: none;"></progress>
+<span id="progressText" style="display: none;">0%</span>
 
 @section Scripts{
 <script>
@@ -221,8 +405,10 @@
             text: "Do you want to proceed with this submission?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            background: "#f8f4f1",
+            color: "#603f26",
+            confirmButtonColor: "#603f26",
+            cancelButtonColor: "#8D493A",
             confirmButtonText: "Yes, submit it!"
         }).then((result) => {
             if (result.isConfirmed) {
@@ -230,5 +416,52 @@
             }
         });
     }
+            // Shared Progress Bar Update Function
+        function updateProgressBar(loaded, total) {
+            if (total > 0) {
+                let percent = (loaded / total) * 100;
+                document.getElementById("formProgress").value = percent;
+                document.getElementById("progressText").textContent = Math.round(percent) + "%";
+            }
+        }
+
+        // Form Submit Handler (intercepts both forms)
+        function confirmSubmit(event, formId) {
+            event.preventDefault(); // Prevent normal form submission
+
+            // Show the progress bar
+            document.getElementById("formProgress").style.display = "block";
+            document.getElementById("progressText").style.display = "block";
+
+            let formData = new FormData(document.getElementById(formId));
+            let xhr = new XMLHttpRequest();
+            let url = formId === 'bugReportForm' ? '/Home/SendBugReport' : '/Home/SendMessage';  // Change based on form
+
+            xhr.open("POST", url, true);
+
+            // Monitor the upload progress
+            xhr.upload.addEventListener("progress", function (e) {
+                if (e.lengthComputable) {
+                    updateProgressBar(e.loaded, e.total);
+                }
+            });
+
+            // On completion, hide the progress bar
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    alert("Submission successful!");
+                } else {
+                    alert("There was an error during submission.");
+                }
+
+                // Hide progress bar
+                document.getElementById("formProgress").style.display = "none";
+                document.getElementById("progressText").style.display = "none";
+            };
+
+            // Send the form data via AJAX
+            xhr.send(formData);
+        }
+
 </script>
-}
+} *@
