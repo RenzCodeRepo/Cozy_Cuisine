@@ -1,6 +1,7 @@
 ﻿.side {
     background: rgb(208, 184, 168,0.6);
-    margin-top: 58px;
+    margin-top: 56px;
+    width: 250px !important;
 }
 .abtn {
     border-bottom: 1px solid #D0B8A8;
@@ -28,8 +29,9 @@ nav{
 }
 
 .offcanvas.show ~ .content {
-    margin-left: 400px;
+    margin-left: 260px;
 }
+
 .menu:hover, .nav-link:hover {
     background: rgb(208, 184, 168, 0.15);
 }
@@ -45,3 +47,28 @@ nav{
 .navbar-brand img {
     width: 50px;
 }
+.abtn.active {
+    background: #D0B8A8;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(208, 184, 168, 0.4); 
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(96, 63, 38, 0.5); 
+    border-radius: 10px;
+    border: 2px solid rgba(208, 184, 168, 0.6); 
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #5a3924; 
+    }
+
+
+

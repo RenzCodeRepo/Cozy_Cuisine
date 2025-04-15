@@ -26,7 +26,7 @@
                 </a>
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/img/logo.png" alt="Logo" class="me-2">
-                    <span class="gamename">Cozy Cuisine</span>
+                    @* <span class="gamename">Cozy Cuisine</span> *@
                 </a>
 
                 <div class="d-flex align-items-center ms-auto">
@@ -50,100 +50,89 @@
        
     </header>
     <div class="d-flex">
-        <div class="side offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
+        <div class="side offcanvas offcanvas-start show" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false" data-bs-scroll="true">
             @* <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div> *@
             <div class="offcanvas-body p-0">
                 <a asp-action="Dashboard" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-table-columns fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Dashboard</span>
                     </div>
                 </a>
                 <a asp-action="FAQManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "FAQManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-circle-question fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">FAQs</span>
                     </div>
                 </a>
                 <a asp-action="StoryPlotManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "StoryPlotManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-book-open fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Story Plot Management</span>
+                        <span class="pgname">Story Plot</span>
                     </div>
                 </a>
                 <a asp-action="MessageManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "MessageManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-address-book fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Messages Management</span>
+                        <span class="pgname">Messages</span>
                     </div>
                 </a>
                 <a asp-action="CreditsManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "CreditsManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-award fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Credits Management</span>
+                        <span class="pgname">Credits</span>
                     </div>
                 </a>
                 <a asp-action="NewsManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "NewsManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-newspaper fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">News Management</span>
+                        <span class="pgname">News</span>
                     </div>
                 </a>
-                @* <a href="#" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
-                        <span><i class="i-sec fa-solid fa-users fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">User Management</span>
-                    </div>
-                </a> *@
                 <a asp-action="BugReportManagement" asp-controller="Patch" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "BugReportManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-bug fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Bug Report</span>
                     </div>
                 </a>
                 <a asp-action="WikiManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "WikiManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-book fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Wiki</span>
                     </div>
                 </a>
-               @*  <a href="#" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
-                        <span><i class="i-sec fa-solid fa-gamepad fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Game Development</span>
-                    </div>
-                </a> *@
                 <a asp-action="CharacterManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "CharacterManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-masks-theater fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Character Management</span>
+                        <span class="pgname">Characters</span>
                     </div>
                 </a>
                 <a asp-action="AboutManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "AboutManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-circle-info fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">About</span>
                     </div>
                 </a>
                 <a asp-action="MediaManagement" asp-controller="Manage" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "MediaManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-image fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Media</span>
                     </div>
                 </a>
                 <a asp-action="PatchManagement" asp-controller="Patch" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3">
+                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "PatchManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-screwdriver-wrench fa-xl" style="color: #603f26;"></i></span>
                         <span class="pgname">Patches</span>
                     </div>
                 </a>
+
             </div>
         </div>
 
-        <div class="content flex-grow-1 p-3">
+        <div class="content flex-grow-1 p-3 mt-3">
             <main role="main" class="pb-3 mt-5 pt-2">
                 @RenderBody()
             </main>
@@ -175,6 +164,10 @@
                     title: "Success!",
                     text: message,
                     icon: "success",
+                    background: "#f8f4f1",  
+                    color: "#603f26",  
+                    confirmButtonColor: "#603f26",
+                    confirmButtonText: "OK", 
                     confirmButtonText: "OK"
                 });
             }

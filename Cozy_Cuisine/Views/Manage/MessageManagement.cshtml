@@ -1,47 +1,51 @@
 ﻿@model List<Cozy_Cuisine.Models.Contacts>
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Messages";
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
-
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Message ID</th>
-            <th>Email Subject</th>
-            <th>Email Message</th>
-            <th>Email Address</th>
-            <th>Date Received</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var message in Model)
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">Messages</div>
+</div>
+<div class="container">
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Message ID</th>
+                <th>Email Subject</th>
+                <th>Email Message</th>
+                <th>Email Address</th>
+                <th>Date Received</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
             {
+                @foreach (var message in Model)
+                {
 
-                <tr>
-                    <td>@message.MessageId</td>
-                    <td>@message.EmailSubject</td>
-                    <td>@message.EmailBody</td>
-                    <td>@message.EmailAddress</td>
-                    <td>@message.SentDate</td>
+                    <tr>
+                        <td>@message.MessageId</td>
+                        <td>@message.EmailSubject</td>
+                        <td>@message.EmailBody</td>
+                        <td>@message.EmailAddress</td>
+                        <td>@message.SentDate</td>
 
-                    <td>
+                        <td>
 
-                        <form class="d-inline" id="deleteForm-@message.MessageId" method="post" asp-action="DeleteMessage" asp-route-id="@message.MessageId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@message.MessageId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                            <form class="d-inline" id="deleteForm-@message.MessageId" method="post" asp-action="DeleteMessage" asp-route-id="@message.MessageId">
+                                <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@message.MessageId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+</div>
 
 @section Scripts {
     <script>
@@ -54,8 +58,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line

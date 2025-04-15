@@ -1,119 +1,153 @@
 ﻿@model Cozy_Cuisine.ViewModels.MediaManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Media";
 }
-@* TEMPORARY CSS LANG DASHBOARD *@
+
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">Media</div>
+</div>
 
-<form id="mediaForm" method="post" asp-controller="Manage" asp-action="CreateMedia" onsubmit="confirmSubmit(event)">
-    <div>
-        <label asp-for="NewGallery.Title"></label>
-        <input type="text" asp-for="NewGallery.Title" class="form-control" placeholder="Enter Title" required />
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Details ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>GIF/Video URL</th>
+                            <th>Image URL</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Galleries != null && Model.Galleries.Any())
+                        {
+                            @foreach (var gallery in Model.Galleries)
+                            {
+
+                                <tr>
+                                    <td>@gallery.GalleryId</td>
+                                    <td>@gallery.Title</td>
+                                    <td>@gallery.Category   </td>
+                                    <td>@gallery.Description</td>
+                                    <td>@gallery.URLGifOrVideo</td>
+                                    <td>@gallery.URLImage</td>
+                                    <td>
+
+                                        <a asp-action="DetailsMedia" asp-route-id="@gallery.GalleryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editMediaModal"
+                                                data-id="@gallery.GalleryId"
+                                                data-title="@gallery.Title"
+                                                data-description="@gallery.Description"
+                                                data-category="@gallery.Category"
+                                                data-urlgifvid="@gallery.URLGifOrVideo"
+                                                data-urlimg="@gallery.URLImage">
+                                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                                        </button>
+
+
+
+                                        <form class="d-inline" id="deleteForm-@gallery.GalleryId" method="post" asp-action="DeleteMedia" asp-route-id="@gallery.GalleryId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@gallery.GalleryId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="mediaForm" method="post" asp-controller="Manage" asp-action="CreateMedia" onsubmit="confirmSubmit(event)">
+                    <div>
+                        <label asp-for="NewGallery.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewGallery.Title" class="form-control mb-3 focus-ring" placeholder="Enter Title" required />
+                    </div>
+
+                    <div>
+                        <label asp-for="NewGallery.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <select asp-for="NewGallery.Category" class="form-control mb-3 focus-ring" required>
+                            <option value="">Select Category</option>
+                            <option value="Videos">Videos</option>
+                            <option value="Images">Images</option>
+                            <option value="Characters">Characters</option>
+                            <option value="Locations">Locations</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="NewGallery.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewGallery.Description" class="form-control mb-3 focus-ring" placeholder="Description" />
+                    </div>
+                    <div>
+                        <label asp-for="NewGallery.URLGifOrVideo" class="form-label">GIF/Video URL</label>
+                        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control mb-3 focus-ring" placeholder="Enter GIF or Video URL" />
+                    </div>
+                    <div>
+                        <label asp-for="NewGallery.URLImage" class="form-label">Image URL</label>
+                        <input type="text" asp-for="NewGallery.URLImage" class="form-control mb-3 focus-ring" placeholder="Enter Image URL" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
-
-    <div>
-        <label asp-for="NewGallery.Category"></label>
-        <select asp-for="NewGallery.Category" class="form-control" required>
-            <option value="">Select Category</option>
-            <option value="Videos">Videos</option>
-            <option value="Images">Images</option>
-            <option value="Characters">Characters</option>
-            <option value="Locations">Locations</option>
-        </select>
-    </div>
-    <div>
-        <label asp-for="NewGallery.Description"></label>
-        <input type="text" asp-for="NewGallery.Description" class="form-control" placeholder="Description" />
-    </div>
-    <div>
-        <label asp-for="NewGallery.URLGifOrVideo"></label>
-        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control" placeholder="Enter URL Gif or Video (Optional)" />
-    </div>
-     <div>
-        <label asp-for="NewGallery.URLImage"></label>
-        <input type="text" asp-for="NewGallery.URLImage" class="form-control" placeholder="Enter One URL Image link only (Optional):" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Details ID</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>URL GIF or Video</th>
-            <th>URL Image</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Galleries != null && Model.Galleries.Any())
-        {
-            @foreach (var gallery in Model.Galleries)
-            {
-
-                <tr>
-                    <td>@gallery.GalleryId</td>
-                    <td>@gallery.Title</td>
-                    <td>@gallery.Category   </td>
-                    <td>@gallery.Description</td>
-                    <td>@gallery.URLGifOrVideo</td>
-                    <td>@gallery.URLImage</td>
-                    <td>
-
-                        <a asp-action="DetailsMedia" asp-route-id="@gallery.GalleryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
-
-                        @* opens a modal popup to make the changes *@
-                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editMediaModal"
-                                data-id="@gallery.GalleryId"
-                                data-title="@gallery.Title"
-                                data-description="@gallery.Description"
-                                data-category="@gallery.Category"
-                                data-urlgifvid="@gallery.URLGifOrVideo"
-                                data-urlimg="@gallery.URLImage">
-                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
-                            Edit
-                        </button>
+</div>
 
 
 
-                        <form class="d-inline" id="deleteForm-@gallery.GalleryId" method="post" asp-action="DeleteMedia" asp-route-id="@gallery.GalleryId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@gallery.GalleryId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editMediaModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header rounded-top-4">
                 <h5 class="modal-title">Edit About</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
                 <form id="editMediaForm" method="post" asp-action="EditMedia">
                     <input type="hidden" id="galleryId" name="GalleryId">
 
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="Title" required>
+                        <label class="form-label">Title <span class="reqsymbol">*</span></label>
+                        <input type="text" class="form-control focus-ring" id="title" name="Title" required>
                     </div>
 
-                    <div>
-                        <label class="form-label">Category</label>
-                        <select id="category" class="form-control" name="Category" required>
+                    <div class="mb-3">
+                        <label class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <select id="category" class="form-control focus-ring" name="Category" required>
                             <option value="">Select Category</option>
                             <option value="Videos">Videos</option>
                             <option value="Images">Images</option>
@@ -123,29 +157,31 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="8" name="Description" required></textarea>
+                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea class="form-control focus-ring" id="description" rows="8" name="Description" required></textarea>
                     </div>
 
-                    <div>
-                        <label asp-for="NewGallery.URLGifOrVideo"></label>
-                        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control"/>
-                    </div>
-                    <div>
-                        <label asp-for="NewGallery.URLImage"></label>
-                        <input type="text" asp-for="NewGallery.URLImage" class="form-control"/>
-                    </div>
+                    @* <div class="mb-3">
+                        <label asp-for="NewGallery.URLGifOrVideo" class="form-label">GIF or Video URL</label>
+                        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control focus-ring" />
+                    </div> *@
+                    @* <div class="mb-3">
+                        <label asp-for="NewGallery.URLImage" class="form-label">Image URL</label>
+                        <input type="text" asp-for="NewGallery.URLImage" class="form-control focus-ring" />
+                    </div> *@
 
-                    <div>
-                        <label class="form-label">URL Gif/Video</label>
-                        <input type="text" class="form-control" id="urlgifvid" name="URLGifOrVideo" />
+                    <div class="mb-3">
+                        <label class="form-label">Gif/Video URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlgifvid" name="URLGifOrVideo" />
                     </div>
-                    <div>
-                        <label class="form-label">URL Image</label>
-                        <input type="text" class="form-control" id="urlgifvid" name="URLImage" />
+                    <div class="mb-3">
+                        <label class="form-label">Image URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlimg" name="URLImage" />
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
+                    </div>
+                   
                 </form>
             </div>
         </div>
@@ -161,8 +197,10 @@
                     text: "You can always delete or edit the record later.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    cancelButtonColor: "#8D493A",
                     confirmButtonText: "Yes, submit it!"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -180,8 +218,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line

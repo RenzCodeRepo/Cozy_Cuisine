@@ -1,147 +1,185 @@
 ﻿@model Cozy_Cuisine.ViewModels.NewsManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "News";
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">News</div>
+</div>
 
-
-<form id="noticeForm" method="post" asp-controller="Manage" asp-action="CreateNotice" onsubmit="confirmSubmit(event)">
-    <div>
-        <label asp-for="NewNotice.Headline"></label>
-        <input type="text" asp-for="NewNotice.Headline" class="form-control" placeholder="Enter Headline" required />
-    </div>
-    <div>
-        <label asp-for="NewNotice.Category"></label>
-        <select asp-for="NewNotice.Category" class="form-control" required>
-            <option value="">Select Category</option>
-            <option value="News">News</option>
-            <option value="Feature">Feature</option>
-            <option value="Update">Update</option>
-        </select>
-    </div>
-    <div>
-        <label asp-for="NewNotice.Content"></label>
-        <textarea type="text" asp-for="NewNotice.Content" class="form-control" rows="6" placeholder="Enter Content"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>News Image URLs</label>
-        <div id="imageUrlContainer">
-            <div class="input-group mb-2">
-                <input type="text" class="form-control" name="newsImageUrls" placeholder="Enter Image URL" />
-                <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
-            </div>
-        </div>
-        <button type="button" onclick="addImageUrl()" class="btn btn-secondary mt-2">Add Another URL</button>
-    </div>
-
-    <!-- Hidden input to hold the final combined string -->
-    <input type="hidden" id="URLNewsImageList" asp-for="NewNotice.URLNewsImageList" />
-
-
-    <div>
-        <label asp-for="NewNotice.URLVideo"></label>
-        <input type="text" asp-for="NewNotice.URLVideo" class="form-control" placeholder="One GIF link only (Optional):" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Headline</th>
-            <th>Date Posted</th>
-            <th>Category</th>
-            <th>Content</th>
-            <th>URL News Image List</th>
-            <th>URL Video</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Notices != null && Model.Notices.Any())
-        {
-            @foreach (var notice in Model.Notices)
-            {
-
-                <tr>
-                    <td>@notice.NoticeId</td>
-                    <td>@notice.Headline</td>
-                    <td>@notice.PostedDate.ToString("MMMM dd, yyyy")</td>
-                    <td>@notice.Category</td>
-                    <td>@notice.Content</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(notice.URLNewsImageList))
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Headline</th>
+                            <th>Date Posted</th>
+                            <th>Category</th>
+                            <th>Content</th>
+                            <th>News Image URL List</th>
+                            <th>Video URL</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Notices != null && Model.Notices.Any())
                         {
-
-                            var imageUrls = notice.URLNewsImageList.Split(',');
-                            foreach (var url in imageUrls)
+                            @foreach (var notice in Model.Notices)
                             {
-                                <a href="@url" target="_blank">
-                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                </a>
+
+                                <tr>
+                                    <td>@notice.NoticeId</td>
+                                    <td>@notice.Headline</td>
+                                    <td>@notice.PostedDate.ToString("MMMM dd, yyyy")</td>
+                                    <td>@notice.Category</td>
+                                    <td>@notice.Content</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(notice.URLNewsImageList))
+                                        {
+
+                                            var imageUrls = notice.URLNewsImageList.Split(',');
+                                            foreach (var url in imageUrls)
+                                            {
+                                                <a href="@url" target="_blank">
+                                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>No Image Uploaded</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="@notice.URLVideo" alt="Video">@notice.URLVideo</a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="DetailsNotice" asp-route-id="@notice.NoticeId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editNoticeModal"
+                                                data-id="@notice.NoticeId"
+                                                data-headline="@notice.Headline"
+                                                data-postedDate="@notice.PostedDate"
+                                                data-category="@notice.Category"
+                                                data-content="@notice.Content"
+                                                data-urlimg="@notice.URLNewsImageList"
+                                                data-urlvid="@notice.URLVideo">
+                                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                                        </button>
+
+                                        <form class="d-inline" id="deleteForm-@notice.NoticeId" method="post" asp-action="DeleteNotice" asp-route-id="@notice.NoticeId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@notice.NoticeId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
                         }
-                        else
-                        {
-                            <span>No Image Uploaded</span>
-                        }
-                    </td>
-                    <td>
-                        <a href="@notice.URLVideo" alt="Video">@notice.URLVideo</a>
-                    </td>
-                    <td>
-                        <a asp-action="DetailsNotice" asp-route-id="@notice.NoticeId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
+                    </tbody>
+                </table>
 
-                        @* opens a modal popup to make the changes *@
-                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editNoticeModal"
-                                data-id="@notice.NoticeId"
-                                data-headline="@notice.Headline"
-                                data-postedDate="@notice.PostedDate"
-                                data-category="@notice.Category"
-                                data-content="@notice.Content"
-                                data-urlimg="@notice.URLNewsImageList"
-                                data-urlvid="@notice.URLVideo">
-                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
-                            Edit
-                        </button>
+            </div>
 
-                        <form class="d-inline" id="deleteForm-@notice.NoticeId" method="post" asp-action="DeleteNotice" asp-route-id="@notice.NoticeId">
-                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@notice.NoticeId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+
+
+        </div>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="noticeForm" method="post" asp-controller="Manage" asp-action="CreateNotice" onsubmit="confirmSubmit(event)">
+                    <div>
+                        <label asp-for="NewNotice.Headline" class="form-label">Headline <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewNotice.Headline" class="form-control mb-3 focus-ring" placeholder="Enter Headline" required />
+                    </div>
+                    <div>
+                        <label asp-for="NewNotice.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <select asp-for="NewNotice.Category" class="form-control mb-3 focus-ring" required>
+                            <option value="">Select Category</option>
+                            <option value="News">News</option>
+                            <option value="Feature">Feature</option>
+                            <option value="Update">Update</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="NewNotice.Content" class="form-label">Content <span class="reqsymbol">*</span></label>
+                        <textarea type="text" asp-for="NewNotice.Content" class="form-control mb-3 focus-ring" rows="6" placeholder="Enter Content" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">News Image URLs</label>
+                        <div id="imageUrlContainer">
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control mb-1 focus-ring" name="newsImageUrls" placeholder="Enter Image URL" />
+                                <button type="button" class="addremovebtn focus-ring btn mb-1" onclick="removeImageUrl(this)"><i class="fa-solid fa-trash"></i> Remove</button>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" onclick="addImageUrl()" class="addremovebtn focus-ring btn mb-3"><i class="fa-solid fa-square-plus"></i> Add Another URL</button>
+                        </div>
+
+                    </div>
+
+                    <!-- Hidden input to hold the final combined string -->
+                    <input type="hidden" id="URLNewsImageList" asp-for="NewNotice.URLNewsImageList" />
+
+
+                    <div>
+                        <label asp-for="NewNotice.URLVideo" class="form-label">Video URL</label>
+                        <input type="text" asp-for="NewNotice.URLVideo" class="form-control mb-3 focus-ring" placeholder="Enter Video URL" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editNoticeModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header rounded-top-4">
                 <h5 class="modal-title">Edit News</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
                 <form id="editNoticeForm" method="post" asp-action="EditNotice">
                     <input type="hidden" id="noticeId" name="NoticeId">
 
                     <div class="mb-3">
-                        <label class="form-label">Headline</label>
-                        <input type="text" class="form-control" id="headline" name="Headline" required>
+                        <label class="form-label">Headline <span class="reqsymbol">*</span></label>
+                        <input type="text" class="form-control focus-ring" id="headline" name="Headline" required>
                     </div>
 
-                    <div>
-                        <label asp-for="NewNotice.Category"></label>
-                        <select asp-for="NewNotice.Category" id="category" name="Category" class="form-control" required>
+                    <div class="mb-3">
+                        <label asp-for="NewNotice.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
+                        <select asp-for="NewNotice.Category" id="category" name="Category" class="form-control focus-ring" required>
                             <option value="">Select Category</option>
                             <option value="News">News</option>
                             <option value="Feature">Feature</option>
@@ -150,25 +188,27 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea class="form-control" id="content" name="Content" rows="6" required></textarea>
+                        <label class="form-label">Content <span class="reqsymbol">*</span></label>
+                        <textarea class="form-control focus-ring" id="content" name="Content" rows="6" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Date Posted</label>
-                        <input class="form-control" id="postedDate" name="PostedDate" disabled>
+                        <input class="form-control focus-ring" id="postedDate" name="PostedDate" disabled>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Image URLs (one link per new line)</label>
-                        <textarea class="form-control modal-dialog-scrollable" rows="10" id="urlimg" name="URLNewsImageList" placeholder="Image URLs (one per new line)"></textarea>
+                        <textarea class="form-control focus-ring modal-dialog-scrollable" rows="10" id="urlimg" name="URLNewsImageList" placeholder="Image URLs (one per new line)"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">URL Video</label>
-                        <input type="text" class="form-control" id="urlvid" name="URLVideo" >
+                        <label class="form-label">Video URL</label>
+                        <input type="text" class="form-control focus-ring" id="urlvid" name="URLVideo">
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
+                    </div>
+                    
                 </form>
             </div>
         </div>
@@ -185,8 +225,10 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -203,13 +245,13 @@
                 let input = document.createElement("input");
                 input.type = "text";
                 input.name = "newsImageUrls";
-                input.className = "form-control";
+                input.className = "form-control mb-1 focus-ring";
                 input.placeholder = "Enter Image URL";
 
                 let button = document.createElement("button");
                 button.type = "button";
-                button.className = "btn btn-danger";
-                button.innerText = "Remove";
+                button.className = "addremovebtn focus-ring btn mb-1";
+                button.innerHTML = '<i class="fa-solid fa-trash"></i> Remove';
                 button.onclick = function () { removeImageUrl(button); };
 
                 div.appendChild(input);
@@ -244,8 +286,10 @@
                 text: "You can always delete or edit the record later.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
                 confirmButtonText: "Yes, submit it!"
             }).then((result) => {
                 if (result.isConfirmed) {

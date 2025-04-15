@@ -1,17 +1,23 @@
 ﻿body {
     background: #F8EDE3;
 }
-.pgnamecont{
+.pgnamecont {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.pgnamecont2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #D0B8A8;
 }
 .dashboard {
     font-family: "Press Start 2P", system-ui;
     font-weight: 400;
     font-style: normal;
     color: #603F26;
-    text-shadow: 4px 4px #FFDBB5;
+    text-shadow: 4px 4px #FFE2C8;
 }
 .dlcont {
     border: 2px solid #603F26;
@@ -62,6 +68,10 @@
     border-top: 2px solid #D0B8A8;
     font-family: "Inter", sans-serif;
     font-weight: bold;
+    color: rgb(96, 63, 38);
+}
+th {
+    color: rgb(96, 63, 38) !important;
 }
 .recenttabs {
     font-family: "Inter", sans-serif;
@@ -97,15 +107,15 @@ th {
     background: #D0B8A8;
     font-family: "Inter", sans-serif;
 }
-.actionsbtn:hover{
+.actionsbtn:hover, .addremovebtn.active{
     color: #D0B8A8;
     background: #603F26;
 }
-.actionsbtn:active{
+.actionsbtn:active, .addremovebtn:hover{
     color: #D0B8A8 !important;
     background: #603F26 !important;
 }
-.actionsbtn:focus {
+.actionsbtn:focus, .addremovebtn:focus {
     box-shadow: 0 !important; 
     outline: none !important;
 }
@@ -115,6 +125,48 @@ th {
 }
 td img{
     width: 100px !important;
+}
+.addremovebtn {
+    display: block !important;
+    text-align: start;
+    color: #603F26;
+    border: none;
+    background: #D0B8A8;
+    font-family: "Inter", sans-serif;
+}
+button[type="submit"]{
+    right:0;
+}
+.formcont {
+    border: 2px solid #D0B8A8 ;
+}
+:root {
+    --bs-focus-ring-color: rgba(96, 63, 38, 0.25);
+    --bs-focus-ring-width: 0.25rem;
+}
+input, textarea, select{
+    outline: 1px solid #D0B8A8 !important;
+}
+.modal-body {
+    background: #F8EDE3;
+}
+.modal-header {
+    background: #6C4E31;
+    color: #F8EDE3;
+}
+.modal-content{
+    background: none;
+}
+.reqsymbol {
+    color: rgb(96, 63, 38);
+}
+a {
+    color: rgb(96, 63, 38);
+    text-decoration: none;
+    padding-bottom: 3px;
+}
+a:hover{
+    color: rgb(208, 184, 168);
 }
 
 
