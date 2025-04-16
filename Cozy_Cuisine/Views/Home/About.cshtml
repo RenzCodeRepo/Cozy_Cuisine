@@ -14,9 +14,9 @@
             <div class="abtdescrip fs-3">
                 @Model.LatestAbout.Description
             </div>
-            
+
         </div>
-        <img src="~/img/frontdoor.png" alt="Alternate Text"  class="abtpic img-fluid"/>
+        <img src="~/img/frontdoor.png" alt="Alternate Text" class="abtpic img-fluid" />
     </div>
 </div>
 
@@ -27,15 +27,14 @@
             <img src="~/img/sample1.png" alt="Alternate Text" class="img-fluid" />
         </div>
         <div class="bgbb">
-            
         </div>
-        <div class="jointxtcont mt-5">        
+        <div class="jointxtcont mt-5">
             <div class="jointitle text-center display-6 mb-2">
                 JOIN COMMUNITY
             </div>
             <div class="joindescrip text-center fs-4 mb-3">
-                Connect with fellow chefs, share your favorite recipes, and trade tips on 
-                building the coziest kitchen! Be the first to hear about updates, events, 
+                Connect with fellow chefs, share your favorite recipes, and trade tips on
+                building the coziest kitchen! Be the first to hear about updates, events,
                 and exclusive content. Let’s cook up something amazing—together!
             </div>
             <div class="text-center mb-5">
@@ -79,11 +78,11 @@
 
                             @if (!string.IsNullOrEmpty(fileId))
                             {
-                                <iframe src="@previewUrl" width="100%" height="400" style="border: none;" allowfullscreen></iframe>
+                                <iframe src="@previewUrl" style="border: none;" allowfullscreen></iframe>
                             }
                             else
                             {
-                                <span>No Image Available</span>
+                                <span class="fs-4">No Image Available</span>
                             }
                         </div>
 

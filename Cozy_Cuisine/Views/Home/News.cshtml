@@ -146,11 +146,16 @@
                                     }
 
                                     <div class="newstxt p-3">
-                                        <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">@news.Headline</span>
+                                        <span class="newstitle d-inline-block mb-2 px-2 py-1 fs-6"
+                                              onclick="window.location.href='@Url.Action("Article", "Home", new { NoticeId = news.NoticeId })'"
+                                              style="cursor: pointer;">
+                                            @news.Headline
+                                        </span>
                                         <span class="newsdescrip fs-6 d-block" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                             @news.Content
                                         </span>
                                     </div>
+
                                 </div>
                             </a>
                         </div>
@@ -270,119 +275,5 @@
                 }
             </div>
         </div>
-
-
-        @* <div class="d-flex align-items-start">
-            <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link active" id="v14" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Version 1.04</button>
-                <button class="nav-link" id="v13" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Version 1.03</button>
-                <button class="nav-link" id="v12" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Version 1.02</button>
-                <button class="nav-link" id="v11" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Version 1.01</button>
-                <button class="nav-link" id="v10" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Version 1.00</button>
-            </div>
-            <div class="gptabcontent tab-content p-5" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v14" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="patchtitle fs-3">
-                        Patch v1.04 Notes
-                    </div>
-                    <div class="patchdate fs-5">
-                        <span>Game Updates</span>
-                        <span> | </span>
-                        <span>3/12/2025</span>
-                    </div>
-                    <div class="gppiccont container text-center w-100 p-3 my-2">
-                        <img src="~/img/sample1.png" class="patchpic img-fluid w-100" alt="Alternate Text" />
-                    </div>
-                    <div class="patchdescrip mt-3 fs-4">
-                        <ul>
-                            <li>New Recipe: Spaghetti</li>
-                            <li>Improved crafting speed</li>
-                            <li>Added NPC dialogue choices</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v13" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="patchtitle fs-3">
-                        Patch v1.04 Notes
-                    </div>
-                    <div class="patchdate fs-5">
-                        <span>Game Updates</span>
-                        <span> | </span>
-                        <span>3/12/2025</span>
-                    </div>
-                    <div class="gppiccont container text-center w-100 p-3 my-2">
-                        <img src="~/img/sample1.png" class="patchpic img-fluid w-100" alt="Alternate Text" />
-                    </div>
-                    <div class="patchdescrip mt-3 fs-4">
-                        <ul>
-                            <li>New Recipe: Spaghetti</li>
-                            <li>Improved crafting speed</li>
-                            <li>Added NPC dialogue choices</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v12" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="patchtitle fs-3">
-                        Patch v1.04 Notes
-                    </div>
-                    <div class="patchdate fs-5">
-                        <span>Game Updates</span>
-                        <span> | </span>
-                        <span>3/12/2025</span>
-                    </div>
-                    <div class="gppiccont container text-center w-100 p-3 my-2">
-                        <img src="~/img/sample1.png" class="patchpic img-fluid w-100" alt="Alternate Text" />
-                    </div>
-                    <div class="patchdescrip mt-3 fs-4">
-                        <ul>
-                            <li>New Recipe: Spaghetti</li>
-                            <li>Improved crafting speed</li>
-                            <li>Added NPC dialogue choices</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v11" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="patchtitle fs-3">
-                        Patch v1.04 Notes
-                    </div>
-                    <div class="patchdate fs-5">
-                        <span>Game Updates</span>
-                        <span> | </span>
-                        <span>3/12/2025</span>
-                    </div>
-                    <div class="gppiccont container text-center w-100 p-3 my-2">
-                        <img src="~/img/sample1.png" class="patchpic img-fluid w-100" alt="Alternate Text" />
-                    </div>
-                    <div class="patchdescrip mt-3 fs-4">
-                        <ul>
-                            <li>New Recipe: Spaghetti</li>
-                            <li>Improved crafting speed</li>
-                            <li>Added NPC dialogue choices</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v10" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="patchtitle fs-3">
-                        Patch v1.04 Notes
-                    </div>
-                    <div class="patchdate fs-5">
-                        <span>Game Updates</span>
-                        <span> | </span>
-                        <span>3/12/2025</span>
-                    </div>
-                    <div class="gppiccont container text-center w-100 p-3 my-2">
-                        <img src="~/img/sample1.png" class="patchpic img-fluid w-100" alt="Alternate Text" />
-                    </div>
-                    <div class="patchdescrip mt-3 fs-4">
-                        <ul>
-                            <li>New Recipe: Spaghetti</li>
-                            <li>Improved crafting speed</li>
-                            <li>Added NPC dialogue choices</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div> *@
     </div>
 </div>

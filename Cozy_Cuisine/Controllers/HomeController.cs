@@ -204,6 +204,26 @@ namespace Cozy_Cuisine.Controllers
             TempData["Error"] = "Review not Submitted. Something went wrong.";
             return RedirectToAction("Download");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Article(int NoticeId)
+        {
+            var (isSuccess, notice) = await _manageRepository.GetNoticeByIdAsync(NoticeId);
+
+            if (!isSuccess || notice == null)
+            {
+                TempData["Error"] = "Article Not Found, something went wrong.";
+                return RedirectToAction("News", "Home");
+            }
+
+            var APVM = new ArticlePageVM
+            {
+                Article = notice,
+                Articles = await _manageRepository.GetNews()
+            };
+
+            return View(APVM);
+        }
     }
 
 }

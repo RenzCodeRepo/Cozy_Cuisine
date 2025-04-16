@@ -44,6 +44,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task <List<Notice>> GetLatestFourNews();
         Task <Notice> GetLatestUpdate();
         Task <List<Notice>> GetFeaturedNews();
+        Task<List<Notice>> GetNews();
 
         // Visitor (Only Add and Get)
         Task<List<Visitor>> GetAllVisitorsAsync();
