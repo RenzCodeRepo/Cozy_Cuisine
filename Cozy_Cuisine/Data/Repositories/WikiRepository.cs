@@ -1,4 +1,5 @@
-﻿using Cozy_Cuisine.Data.IRepositories;
+﻿using Azure.Core;
+using Cozy_Cuisine.Data.IRepositories;
 using Cozy_Cuisine.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,21 +76,51 @@ namespace Cozy_Cuisine.Data.Repositories
         public async Task<GameMechanics> GetGameMechanicByIdAsync(int id) => await _context.GameMechanics.FindAsync(id);
         public async Task AddGameMechanicAsync(GameMechanics gameMechanic) { await _context.GameMechanics.AddAsync(gameMechanic); await _context.SaveChangesAsync(); }
         public async Task UpdateGameMechanicAsync(GameMechanics gameMechanic) { _context.GameMechanics.Update(gameMechanic); await _context.SaveChangesAsync(); }
-        public async Task DeleteGameMechanicAsync(int id) { var item = await _context.GameMechanics.FindAsync(id); if (item != null) { _context.GameMechanics.Remove(item); await _context.SaveChangesAsync(); } }
+        public async Task <bool> DeleteGameMechanicAsync(int id) 
+        { 
+            var item = await _context.GameMechanics.FindAsync(id); 
+            if (item != null) 
+            { 
+                _context.GameMechanics.Remove(item); 
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
 
         // GAME ITEMS
         public async Task<List<GameItems>> GetAllGameItemsAsync() => await _context.GameItems.ToListAsync();
         public async Task<GameItems> GetGameItemByIdAsync(int id) => await _context.GameItems.FindAsync(id);
         public async Task AddGameItemAsync(GameItems gameItem) { await _context.GameItems.AddAsync(gameItem); await _context.SaveChangesAsync(); }
         public async Task UpdateGameItemAsync(GameItems gameItem) { _context.GameItems.Update(gameItem); await _context.SaveChangesAsync(); }
-        public async Task DeleteGameItemAsync(int id) { var item = await _context.GameItems.FindAsync(id); if (item != null) { _context.GameItems.Remove(item); await _context.SaveChangesAsync(); } }
+        public async Task <bool> DeleteGameItemAsync(int id) 
+        { 
+            var item = await _context.GameItems.FindAsync(id); 
+            if (item != null) 
+            { 
+                _context.GameItems.Remove(item); 
+                await _context.SaveChangesAsync();
+                return true;
+            } 
+            return false;
+        }
 
         // LOCATIONS
         public async Task<List<Locations>> GetAllLocationsAsync() => await _context.Locations.ToListAsync();
         public async Task<Locations> GetLocationByIdAsync(int id) => await _context.Locations.FindAsync(id);
         public async Task AddLocationAsync(Locations location) { await _context.Locations.AddAsync(location); await _context.SaveChangesAsync(); }
         public async Task UpdateLocationAsync(Locations location) { _context.Locations.Update(location); await _context.SaveChangesAsync(); }
-        public async Task DeleteLocationAsync(int id) { var item = await _context.Locations.FindAsync(id); if (item != null) { _context.Locations.Remove(item); await _context.SaveChangesAsync(); } }
+        public async Task <bool> DeleteLocationAsync(int id) 
+        {
+            var item = await _context.Locations.FindAsync(id); 
+            if (item != null) 
+            {
+                _context.Locations.Remove(item); 
+                await _context.SaveChangesAsync();
+                return true;
+            } 
+            return false;
+        }
     }
 
 }

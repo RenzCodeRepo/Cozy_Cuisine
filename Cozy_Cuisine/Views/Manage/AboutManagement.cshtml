@@ -5,45 +5,48 @@
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
-<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
-    <div class="dashboard fs-3 m-0">About</div>
-</div>
 
-<div class="container mt-4">
-    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
-        </li>
-    </ul>
-    <div class="tab-content mt-3" id="myTabContent">
-        <!--list-->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-            <div class="container">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Details ID</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>GIF URL</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Abouts != null && Model.Abouts.Any())
-                        {
-                            @foreach (var about in Model.Abouts)
-                            {
 
-                                <tr>
-                                    <td>@about.DetailsId</td>
-                                    <td>@about.Title</td>
-                                    <td>@about.Description</td>
-                                    <td>@about.URLGif</td>
-                                    <td>
+<form id="aboutForm" method="post" asp-controller="Manage" asp-action="CreateAbout" onsubmit="confirmSubmit(event)">
+    <div>
+        <label asp-for="NewAbout.Title"></label>
+        <input type="text" asp-for="NewAbout.Title" class="form-control" placeholder="Enter Title" required />
+    </div>
+   
+    <div>
+        <label asp-for="NewAbout.Description"></label>
+        <textarea asp-for="NewAbout.Description" class="form-control" rows="7" placeholder="Enter Description" required></textarea>
+    </div>
+    <div>
+        <label asp-for="NewAbout.URLGif"></label>
+        <input type="text" asp-for="NewAbout.URLGif" class="form-control" placeholder="One GIF link only (Optional):" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Details ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>URLGif</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Abouts != null && Model.Abouts.Any())
+        {
+            @foreach (var about in Model.Abouts)
+            {
+
+                <tr>
+                    <td>@about.DetailsId</td>
+                    <td>@about.Title</td>
+                    <td>@about.Description</td>
+                    <td>@about.URLGif</td>
+                    <td>
 
                                         <a asp-action="DetailsAbout" asp-route-id="@about.DetailsId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
 
@@ -69,44 +72,6 @@
                         }
                     </tbody>
                 </table>
-
-            </div>
-
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="aboutForm" method="post" asp-controller="Manage" asp-action="CreateAbout" onsubmit="confirmSubmit(event)">
-                    <div>
-                        <label asp-for="NewAbout.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewAbout.Title" class="form-control mb-3 focus-ring" placeholder="Enter Title" required />
-                    </div>
-
-                    <div>
-                        <label asp-for="NewAbout.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <textarea asp-for="NewAbout.Description" class="form-control mb-3 focus-ring" rows="7" placeholder="Enter Description" required></textarea>
-                    </div>
-                    <div>
-                        <label asp-for="NewAbout.URLGif" class="form-label">GIF URL</label>
-                        <input type="text" asp-for="NewAbout.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL" />
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-
-
-
-
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editAboutModal" tabindex="-1">
@@ -137,7 +102,8 @@
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
-                    
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>

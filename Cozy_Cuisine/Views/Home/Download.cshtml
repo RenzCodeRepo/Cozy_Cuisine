@@ -1,61 +1,67 @@
-﻿@{
+﻿@model Cozy_Cuisine.ViewModels.DownloadPageVM
+@{
     ViewData["Title"] = "Downloads";
 }
+<link rel="stylesheet" href="~/css/modal.css" />
 
 <div class="cont3 container-fluid pt-5 my-5">
     <div class="container p-5">
         <div class="sectitle display-4 mb-3">
             DOWNLOAD
         </div>
+
         <div class="row">
+            <!-- Large patch (latest patch) -->
             <div class="col-lg-7">
-                <div class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none h-75" href="#">
+                <div class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none h-100">
                     <div class="news-thumbnail position-relative">
-                        <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                        <div class="newstxt p-5 text-start">
+                        <iframe src="@GetDrivePreviewUrl(Model.LatestPatch.URLImageList)" class="newsimg img-fluid w-100"></iframe>
+                        <div class="newstxt p-3 text-start">
                             <span>
-                                <button class="playnowbtn btn px-4 py-3 my-3">PLAY NOW</button>
+                                <a class="playnowbtn btn px-4 py-3 my-3" href="@Model.LatestPatch.GameURL">PLAY NOW</a>
                             </span>
-                            <span class="ggtitle fs-6 d-block">Let’s play!</span>
+                            <span class="ggtitle fs-6 d-block">@Model.LatestPatch.PatchName</span>
+                            <span class="ggtitle fs-6 d-block">@Model.LatestPatch.Version</span>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Smaller patches -->
             <div class="col-lg-4">
-                <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none mb-2" href="#">
-                    <div class="news-thumbnail position-relative">
-                        <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                        @* <div class="newstxt p-3">
-                            <span class="ggtitle fs-6 d-block">Game Levels</span>
-                        </div> *@
-                    </div>
-                </a>
-                <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none mb-2" href="#">
-                    <div class="news-thumbnail position-relative">
-                        <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                        @* <div class="newstxt p-3">
-                            <span class="ggtitle fs-6 d-block">Game Levels</span>
-                        </div> *@
-                    </div>
-                </a>
-                <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none mb-2" href="#">
-                    <div class="news-thumbnail position-relative">
-                        <img src="~/img/opening.png" alt="News image" class="newsimg img-fluid w-100" />
-                        @* <div class="newstxt p-3">
-                            <span class="ggtitle fs-6 d-block">Game Levels</span>
-                        </div> *@
-                    </div>
-                </a>
+                @foreach (var patch in Model.Patches)
+                {
+                    <a class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none mb-2" href="@patch.GameURL">
+                        <div class="news-thumbnail position-relative">
+                            <iframe src="@GetDrivePreviewUrl(patch?.URLImageList)" class="newsimg img-fluid w-100"></iframe>
+                            <div class="newstxt p-3">
+                                <span class="ggtitle fs-6 d-block">@patch.PatchName</span>
+                                <span class="ggtitle fs-6 d-block">@patch.Version</span>
+                            </div>
+                        </div>
+                    </a>
+                }
             </div>
+
+
         </div>
+
     </div>
 </div>
+
 
 <div class="cont2 container-fluid mb-5">
     <div class="container p-5">
         <div class="sectitle display-4 mb-5">
             REVIEWS
         </div>
+        <div class="mb-5 d-flex justify-content-center align-items-center">
+            <button class="joinbtn text-white rounded-3 btn px-5 py-3 d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                <i class="fa-solid fa-star fa-2xl me-3" style="color: #ffeac5;"></i> Review our Game
+            </button>
+        </div>
+
+
 
         <div class="row justify-content-center">
             <div class="col-lg-3 d-flex mb-2">
@@ -81,7 +87,7 @@
                 </div>
             </div>
 
-           
+
             <div class="col-lg-3 d-flex mb-2">
                 <div class="review-card w-100">
                     <div class="d-flex align-items-center mb-2">
@@ -105,7 +111,7 @@
                 </div>
             </div>
 
-           
+
             <div class="col-lg-3 d-flex mb-2">
                 <div class="review-card w-100">
                     <div class="d-flex align-items-center mb-2">
@@ -131,5 +137,134 @@
         </div>
     </div>
 </div>
+<!-- MODAL POPUP FOR GAME REVIEW -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 p-4 shadow-sm">
+            <form asp-controller="Home" asp-action="SubmitReview" method="post">
+                <h5 class="text-center mb-3 fs-4">Rate our Game!</h5>
+                <p class="text-center mb-3 fs-3">How was our game?</p>
+
+                <div class="hamburger-rating d-flex justify-content-center mb-3">
+                    <input type="radio" id="hamburger5" name="Rating" value="5" required />
+                    <label for="hamburger5"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="hamburger4" name="Rating" value="4" />
+                    <label for="hamburger4"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="hamburger3" name="Rating" value="3" />
+                    <label for="hamburger3"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="hamburger2" name="Rating" value="2" />
+                    <label for="hamburger2"><i class="fa-solid fa-star"></i></label>
+
+                    <input type="radio" id="hamburger1" name="Rating" value="1" />
+                    <label for="hamburger1"><i class="fa-solid fa-star"></i></label>
+                </div>
 
 
+                <div class="mb-3">
+                    <textarea name="ReviewComment" class="fcbug focus-ring form-control rounded-3 p-3 text-muted" placeholder="Leave a message, if you want" rows="3"></textarea>
+                </div>
+
+                <div class="w-100 mb-2 d-flex justify-content-center">
+                    <button type="submit" class="btn joinbtn w-75">Submit</button>
+                </div>
+                <p class="text-center mt-2">
+                    <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-muted">Maybe later</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+    /* Modal Container Styling */
+    .modal-content {
+        border: 5px solid #603F26;
+        border-radius: 1rem;
+        padding: 2rem;
+        background-color: #FFEAC5;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+        .modal-content h5 {
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #603F26;
+            font-family: "Press Start 2P", system-ui;
+            text-shadow: -4px 4px #D0B8A8;
+        }
+
+        .modal-content p {
+            color: #6C4E31;
+            font-size: 0.95rem;
+            font-family: "VT323", monospace;
+        }
+
+    .hamburger-rating {
+        direction: rtl;
+        gap: 0.5rem; /* spacing between icons */
+        display: flex;
+    }
+
+        .hamburger-rating input[type="radio"] {
+            display: none;
+        }
+
+        .hamburger-rating label {
+            font-size: 2rem;
+            color: rgba(108, 78, 49, 0.5);
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0 0.2rem; /* extra spacing if needed */
+        }
+
+            .hamburger-rating input[type="radio"]:checked ~ label,
+            .hamburger-rating label:hover,
+            .hamburger-rating label:hover ~ label {
+                color: rgb(108, 78, 49);
+            }
+
+
+    /* Textarea Styling */
+    textarea.form-control {
+        border-radius: 0.75rem;
+        border: 2px solid rgb(108, 78, 49);
+        resize: none;
+        font-size: 0.95rem;
+        color: #6C4E31;
+        font-family: "VT323", monospace;
+    }
+
+    /* Maybe Later link */
+    .modal-content a {
+        font-size: 0.9rem;
+        color: #6c757d;
+        text-decoration: none;
+    }
+
+        .modal-content a:hover {
+            text-decoration: underline;
+            color: #495057;
+        }
+</style>
+
+
+@section Scripts {
+    @functions {
+    public string GetDrivePreviewUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url)) return string.Empty;
+
+        var firstUrl = url.Split(',').FirstOrDefault();
+        var parts = firstUrl?.Split('/');
+        if (parts != null && parts.Length >= 6)
+        {
+            return $"https://drive.google.com/file/d/{parts[5]}/preview";
+        }
+
+        return string.Empty;
+    }
+}
+
+}

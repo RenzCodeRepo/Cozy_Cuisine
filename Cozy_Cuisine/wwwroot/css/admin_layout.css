@@ -3,23 +3,29 @@
     margin-top: 56px;
     width: 250px !important;
 }
+
 .abtn {
     border-bottom: 1px solid #D0B8A8;
 }
-.abtn:hover {
-    background: #D0B8A8;
-}
+
+    .abtn:hover {
+        background: #D0B8A8;
+    }
+
 .pgname {
     font-family: "Inter", sans-serif;
     color: #000000;
 }
+
 .i-sec {
     width: 40px;
 }
-nav{
+
+nav {
     background: #603F26;
     z-index: 1024;
 }
+
 .offcanvas-header {
     background: #603F26;
 }
@@ -35,40 +41,18 @@ nav{
 .menu:hover, .nav-link:hover {
     background: rgb(208, 184, 168, 0.15);
 }
+
 .gamename {
     color: white;
     text-decoration: none;
     font-family: "Inter", sans-serif;
 }
+
     .gamename:hover {
         color: rgb(208, 184, 168);
         text-decoration: none;
     }
+
 .navbar-brand img {
     width: 50px;
 }
-.abtn.active {
-    background: #D0B8A8;
-}
-
-::-webkit-scrollbar {
-    width: 7px;
-    height: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(208, 184, 168, 0.4); 
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(96, 63, 38, 0.5); 
-    border-radius: 10px;
-    border: 2px solid rgba(208, 184, 168, 0.6); 
-}
-
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #5a3924; 
-    }
-
-
-

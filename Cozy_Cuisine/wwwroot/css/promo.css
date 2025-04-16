@@ -1,9 +1,12 @@
 ﻿body {
     background: #FFEAC5;
 }
-.logoo{
-    max-height:50px;
+
+
+.logoo {
+    max-height: 50px;
 }
+
 .pnbtn {
     background: #FFEAC5;
     border: 1px solid rgba(96, 63, 38, .54);
@@ -11,35 +14,48 @@
     font-family: "Press Start 2P", system-ui !important;
     transition: .2s;
 }
-.pnbtn:hover {
-    transform: scale(1.1);
-    background: #FFEAC5;
-    border: 1px solid rgba(96, 63, 38, .54);
-    color: #6C4E31 !important;
-}
+
+    .pnbtn:hover {
+        transform: scale(1.1);
+        background: #FFEAC5;
+        border: 1px solid rgba(96, 63, 38, .54);
+        color: #6C4E31 !important;
+    }
+
 .pnav {
     background: #603F26;
 }
+
 .pnav-link {
     color: #FFEAC5;
     font-family: "Roboto Flex", sans-serif;
 }
-.pnav-link:hover {
+
+    .pnav-link:hover {
+        background: rgba(255, 234, 197, 0.3);
+        color: #FFEAC5;
+    }
+
+.pactive {
     background: rgba(255, 234, 197, 0.3);
-     color: #FFEAC5;
+    color: #FFEAC5;
 }
+
 .pw {
     background: #FFEAC5;
     border: 3px solid #6C4E31;
 }
+
 .pw1 {
     font-family: "Press Start 2P", system-ui;
     color: #6C4E31;
 }
+
 .pw2 {
     font-family: "VT323", monospace;
     color: #6C4E31;
 }
+
 .pwbtn {
     font-family: "VT323", monospace;
     color: #6C4E31;
@@ -49,17 +65,27 @@
     width: 45%;
     transition: .2s;
 }
-.pwbtn:hover{
+
+    .pwbtn:hover {
+        transform: scale(1.1);
+        color: #FFDBB5;
+        background: rgba(108, 78, 49, 0.8);
+        border: 2px solid rgba(108, 78, 49, .54);
+    }
+
+.pwactive {
     transform: scale(1.1);
     color: #FFDBB5;
     background: rgba(108, 78, 49, 0.8);
     border: 2px solid rgba(108, 78, 49, .54);
 }
-.pwbtncont{
+
+.pwbtncont {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
+
 .cont1 {
     position: relative;
     height: 100vh;
@@ -75,8 +101,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -1; 
-    opacity: 0.4; 
+    z-index: -1;
+    opacity: 0.4;
 }
 
 .pwrow {
@@ -92,41 +118,47 @@
     font-family: "VT323", monospace;
 }
 
-.meowww{
+.meowww {
     max-height: 150px;
 }
+
 .cont2 {
     background: #FFDBB5;
-    
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .cont2 {
-    
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.steptxt {   
+
+.steptxt {
     color: #6C4E31;
 }
+
 .sectitle {
     font-family: "Press Start 2P", system-ui;
     color: #6C4E31;
     text-shadow: -4px 4px #D0B8A8;
 }
+
 .steptitle {
     font-family: "Press Start 2P", system-ui;
     background: rgba(108, 78, 49, 0.3);
 }
+
 .stepdesc {
     font-family: "VT323", monospace;
     border: 2px solid rgb(108, 78, 49, 0.5);
 }
+
 .howbtn {
     background: #FFEAC5;
 }
+
 .recenttabs {
     font-family: "VT323", monospace;
     color: #6C4E31;
@@ -135,78 +167,91 @@
     border: none !important;
     min-width: 160px;
 }
-.recenttabs:hover {
-    color: #FFEAC5;
-}
-.recenttabs.active {
-    background-color: #603F26 !important;
-    color: #FFEAC5 !important;
-    border-bottom: 1px solid #6C4E31 !important;
-}
+
+    .recenttabs:hover {
+        color: #FFEAC5;
+    }
+
+    .recenttabs.active {
+        background-color: #603F26 !important;
+        color: #FFEAC5 !important;
+        border-bottom: 1px solid #6C4E31 !important;
+    }
+
 .recentnavtabs {
-   
 }
 
 .tabcont {
     background-color: #603F26;
 }
+
 .titletabb {
     color: #FFEAC5;
     font-family: "VT323", monospace;
 }
+
 .fudcol {
     background: #6C4E31;
     border: 1px solid rgb(255, 219, 181, 0.25);
     align-content: center;
 }
-.fudcol:active{
-    background: #FFEAC5;
-}
-.fudcol:hover{
-    background: rgb(255, 234, 197, 0.5);
-}
+
+    .fudcol:active {
+        background: #FFEAC5;
+    }
+
+    .fudcol:hover {
+        background: rgb(255, 234, 197, 0.5);
+    }
+
 .meals {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 /*.fudcol:focus {
-    box-shadow: 0 !important;
-    outline: none !important;
-}*/
+        box-shadow: 0 !important;
+        outline: none !important;
+    }*/
 :root {
     --bs-focus-ring-color: rgba(96, 63, 38, 0) !important;
     --bs-focus-ring-width: 0.25rem;
 }
+
 .fudpiccont {
-    background: #D0B8A8;   
+    background: #D0B8A8;
     border: 2px solid #6C4E31;
 }
+
 .fudpic {
-    max-width: 150px;
+    min-height: 150px;
 }
+
 .fudname {
     background: #603F26;
     color: #FFDBB5;
     font-family: "VT323", monospace;
 }
+
 .fuddesc {
     border: 2px solid #603F26;
     color: #603F26;
     font-family: "VT323", monospace;
 }
+
 .promofooter {
     background: #603F26 !important;
     color: #FFDBB5;
     font-family: "Press Start 2P", system-ui;
 }
+
 .abtcont {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 }
+
 .abtpic {
     position: absolute;
     right: 0;
@@ -215,56 +260,67 @@
     mask-image: linear-gradient(to left, black 20%, transparent 100%);
     -webkit-mask-image: linear-gradient(to left, black 20%, transparent 100%);
 }
+
 .abttitle {
     color: #6C4E31;
     font-family: "Press Start 2P", system-ui;
     text-shadow: -4px 4px #D0B8A8;
     z-index: 0;
 }
+
 .abtdescrip {
     color: #5D4037;
     font-family: "VT323", monospace;
     z-index: 1;
 }
+
 .jointitle {
     color: #6C4E31;
     font-family: "Press Start 2P", system-ui;
 }
+
 .joindescrip {
     color: #5D4037;
     font-family: "VT323", monospace;
 }
+
 .joinbtn {
     font-family: "Press Start 2P", system-ui;
     color: #FFFFFF;
     background: rgba(96, 63, 38,0.85);
     transition: .2s;
 }
-.joinbtn:hover{
-    transform: scale(1.1);
-    background: #603F26;
-}
+
+    .joinbtn:hover {
+        transform: scale(1.1);
+        background: #603F26;
+        color: #FFFFFF;
+    }
+
 .joincont {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
+
 .joinpic {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;  
+    z-index: -1;
 }
-.joinpic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
-}
+
+    .joinpic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
+    }
+
 .bgbb {
     background: rgb(255, 234, 197,0.8);
     position: absolute;
@@ -276,65 +332,85 @@
     mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, black 20%, transparent 100%);
 }
+
 .gameplaytab {
-    width: 40%;  
+    width: 40%;
 }
-.gameplaytab .nav-link {
-    font-family: "VT323", monospace;
-    color: #6C4E31;
-    background: rgba(108, 78, 49, 0.54) !important;
-    border-radius: 0 !important;
-    border-bottom: 2px solid rgba(255, 234, 197, .2) !important;
-    min-width: 160px;
-    text-align: start;
-}
-.gameplaytab .nav-link:hover {
-    color: #FFEAC5;
-}
-.gameplaytab .nav-link.active {
-    background-color: #603F26 !important;
-    color: #FFEAC5 !important;
-    border-bottom: 2px solid #6C4E31 !important;
-}
+
+    .gameplaytab .nav-link {
+        font-family: "VT323", monospace;
+        color: #6C4E31;
+        background: rgba(108, 78, 49, 0.54) !important;
+        border-radius: 0 !important;
+        border-bottom: 2px solid rgba(255, 234, 197, .2) !important;
+        min-width: 160px;
+        text-align: start;
+    }
+
+        .gameplaytab .nav-link:hover {
+            color: #FFEAC5;
+        }
+
+        .gameplaytab .nav-link.active {
+            background-color: #603F26 !important;
+            color: #FFEAC5 !important;
+            border-bottom: 2px solid #6C4E31 !important;
+        }
+
 .gptabcontent {
     background-color: #603F26;
     width: 100%;
     height: 100%;
 }
-.gppic{
+
+.gppic {
     max-height: 500px;
 }
+
 .gppiccont {
     border: 5px solid rgba(108, 78, 49, 0.54);
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffeac5b4;
+    font-family: "VT323", monospace;
 }
-.gpoink{
+
+.gpoink {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .gptxt {
     font-family: "VT323", monospace;
     color: #FFDBB5;
 }
+
 .learnmorebtn {
     font-family: "Press Start 2P", system-ui;
     color: #5D4037;
     background: #F8EDE3;
     transition: .2s;
 }
-.learnmorebtn:hover {
-    transform: scale(1.1);
-    background: #FFD2A9;
-}
-.vidbtn{
+
+    .learnmorebtn:hover {
+        transform: scale(1.1);
+        background: #FFD2A9;
+    }
+
+.vidbtn {
     text-decoration: none;
     background: none;
     border: none;
     transition: .2s;
 }
-.vidbtn:hover {
-    transform: scale(1.1);
-}
+
+    .vidbtn:hover {
+        transform: scale(1.1);
+    }
+
 .vidtitle {
     background: #603F26;
     color: #D0B8A8;
@@ -344,9 +420,11 @@
     justify-content: space-between;
     align-items: center;
 }
-.vidpic{
+
+.vidpic {
     max-height: 220px;
 }
+
 .vid-thumbnail {
     position: relative;
     overflow: hidden;
@@ -370,41 +448,66 @@
     transform: translate(-50%, -50%);
     color: #fff;
     z-index: 2;
-    pointer-events: none; 
+    pointer-events: none;
 }
-.vidimgrow{
+
+.vidimgrow {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
+
 .vidtitletxt {
     text-align: start;
     word-wrap: break-word;
 }
+
 .medcar {
     height: 500px;
 }
+
 .medpic {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
+    min-height: 350px;
+    object-fit: cover;
+    image-rendering: pixelated;
 }
+
+.oinkk {
+    position: relative;
+    border: 5px solid #6C4E31;
+    background: rgba(108, 78, 49, 0.3);
+}
+
+.chartypee {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(108, 78, 49, 0.3);
+    color: #FFEAC5;
+    font-family: "Press Start 2P", system-ui;
+    text-transform: uppercase;
+}
+
 .ccmed {
     background: rgba(108, 78, 49,0.5);
 }
+
 .charname {
     font-family: "Press Start 2P", system-ui;
 }
-.chartype, .chardescrip{
+
+.chartype, .chardescrip {
     font-family: "VT323", monospace;
 }
-.fcaritem{
+
+.fcaritem {
     max-height: 500px;
 }
-.fcaritem img{
-    object-fit: cover;
-    object-position: center;
-}
+
+    .fcaritem img {
+        object-fit: cover;
+        object-position: center;
+    }
 
 .newscont {
     height: 200px;
@@ -443,6 +546,7 @@
     font-size: 0.8rem;
     font-family: "VT323", monospace;
 }
+
 .news-thumbnail img {
     transition: transform 0.4s ease;
 }
@@ -456,10 +560,12 @@
     color: #FFEAC5;
     height: 100%;
 }
+
 .uptitle {
     font-family: "Press Start 2P", system-ui;
     text-align: center;
 }
+
 .uptype, .updesc {
     font-family: "VT323", monospace;
 }
@@ -468,13 +574,16 @@
     font-family: "Press Start 2P", system-ui;
     color: #FFEAC5;
 }
+
 .patchdate {
     font-family: "VT323", monospace;
     color: rgba(255, 234, 197, 0.6);
 }
-.patchpic{
+
+.patchpic {
     max-height: 200px;
 }
+
 .patchdescrip {
     font-family: "VT323", monospace;
     color: #FFEAC5;
@@ -483,29 +592,36 @@
 .outercont {
     background: #6C4E31;
 }
+
 .innercont {
     background: #603F26;
     box-shadow: 0px 0px 10px inset rgb(0, 0, 0, 0.3)
 }
+
 .nidhelp {
     font-family: "Press Start 2P", system-ui;
     color: #FFEAC5;
 }
+
 .nidhelpinput {
     background: #FFEAC5;
     border: none;
 }
-.btnneed i:hover{
+
+.btnneed i:hover {
     color: #ffffff !important;
 }
+
 .ffftitle {
     font-family: "Press Start 2P", system-ui;
     color: #5D4037;
 }
+
 .fffdescrip {
     font-family: "VT323", monospace;
     color: #5D4037;
 }
+
 .vabtn {
     background: #5D4037;
     color: #FFEAC5;
@@ -513,135 +629,164 @@
     font-family: "VT323", monospace;
     transition: .2s;
 }
-.vabtn:hover{
-    transform: scale(1.1);
-    background: #5D4037 !important;
-    color: #FFEAC5;
-}
+
+    .vabtn:hover {
+        transform: scale(1.1);
+        background: #5D4037 !important;
+        color: #FFEAC5;
+    }
+
 .bc {
     border: 2px solid rgba(108, 78, 49, 0.5);
     margin: 10px;
 }
+
 .accordion-button {
     font-family: "VT323", monospace;
     color: #5D4037;
     background: #FFEAC5 !important;
     border: 2px solid rgba(108, 78, 49, 0.2);
 }
-.accordion{
+
+.accordion {
     background: none !important;
     border: none;
 }
+
 .accordion-collapse {
     font-family: "VT323", monospace;
     color: #5D4037;
     background: #FFEAC5 !important;
     box-shadow: 0px 0px 10px inset rgba(0,0,0,.3)
 }
+
 .sampurl {
     color: #5D4037;
 }
+
 .anss {
     background: rgba(108, 78, 49, 0.2);
 }
+
 .bugbtn {
     background: #FFEAC5;
     font-family: "VT323", monospace;
     transition: .2s;
 }
-.bugbtn:hover{
-    transform: scale(1.1);
-    background: #FFEAC5;
-    font-family: "VT323", monospace;
-    color: #5D4037;
-}
+
+    .bugbtn:hover {
+        transform: scale(1.1);
+        background: #FFEAC5;
+        font-family: "VT323", monospace;
+        color: #5D4037;
+    }
+
 .fcbug {
     background: #FFEAC5;
 }
+
 .tttitle {
     font-family: "Press Start 2P", system-ui;
     color: #6C4E31;
 }
+
 .membername {
     font-family: "Press Start 2P", system-ui;
     color: #6C4E31;
     display: block;
 }
+
 .memberrole {
     font-family: "VT323", monospace;
     color: #6C4E31;
 }
+
 .bg-img {
     object-fit: cover;
     top: 0;
     left: 0;
     z-index: 0;
-    opacity: 0.3; 
-    pointer-events: none; 
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .credits-container {
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    min-height: 100vh; 
+    min-height: 100vh;
 }
+
 .tuttabtitle {
     font-family: "Press Start 2P", system-ui;
     color: #FFDBB5;
 }
-.tutimg{
+
+.tutimg {
     max-height: 150px;
 }
+
 .tuttitle {
     font-family: "Press Start 2P", system-ui;
     color: #FFDBB5;
 }
+
 .tutdescrip {
     font-family: "VT323", monospace;
     color: #FFDBB5;
 }
+
 .tutcontt {
     display: flex;
     justify-content: start;
     align-items: center;
     background: #6C4E31;
 }
+
 .ggtitle {
     font-family: "Press Start 2P", system-ui;
     color: #FFDBB5;
 }
+
 .ggdescrip {
     font-family: "VT323", monospace;
     color: #6C4E31;
 }
+
 .ggrow {
     display: flex;
     justify-content: space-evenly;
     align-items: start;
 }
+
 .tipscontt {
     background: #6C4E31;
     margin-top: 1rem;
 }
+
 .tipsimgcont {
     background: rgba(108, 78, 49, .9);
 }
-.tipsimgcont img {
-    max-height: 150px;
-}
+
+    .tipsimgcont img {
+        max-height: 150px;
+    }
+
 .tipstxtcont {
     color: #FFEAC5;
     text-align: left;
     background: rgb(96, 63, 38);
 }
+
 .tipstitle {
     font-family: "Press Start 2P", system-ui;
 }
+
 .tipsdescrip {
     font-family: "VT323", monospace;
     color: rgba(255, 234, 197, .7);
     font-size: 1.3rem;
 }
+
 .playnowbtn {
     background: #FFDBB5;
     border: 2px solid #603F26;
@@ -649,12 +794,14 @@
     color: #603F26;
     transition: .2s;
 }
-.playnowbtn:hover{
-    transform: scale(1.1);
-     background: #FFDBB5;
-    border: 2px solid #603F26;
-     color: #603F26;
-}
+
+    .playnowbtn:hover {
+        transform: scale(1.1);
+        background: #FFDBB5;
+        border: 2px solid #603F26;
+        color: #603F26;
+    }
+
 .review-card {
     background-color: #6C4E31;
     color: #FFEAC5;
@@ -675,12 +822,12 @@
     background: #FFEAC5;
 }
 
-.avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
+    .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
 
 .review-tag {
     font-family: "Press Start 2P", system-ui;
@@ -699,4 +846,7 @@
     color: #FFEAC5;
 }
 
-
+iframe {
+    width: 100% !important;
+    height: 100% !important;
+}

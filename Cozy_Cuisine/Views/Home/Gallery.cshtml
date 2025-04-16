@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Cozy_Cuisine.ViewModels.GalleryPageVM
+
+@{
     ViewData["Title"] = "Gallery";
 }
 <!--gallery-->
@@ -7,132 +9,137 @@
         <div class="sectitle display-4 mb-3">
             VIDEOS
         </div>
-        <div class="vidimgrow row">
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
+        <div id="videoCarousel" class="swiper-container video-swiper position-relative">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.Galleries)
+                {
+                    var videoUrl = item.URLGifOrVideo;
+                    var embedUrl = "";
+                    var fileId = "";
 
-            </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
+                    if (!string.IsNullOrEmpty(videoUrl))
+                    {
+                        if (videoUrl.Contains("youtube.com/watch?v="))
+                        {
+                            var parts = videoUrl.Split("watch?v=");
+                            var videoId = parts.Length > 1 ? parts[1] : "";
+                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                        }
+                        else if (videoUrl.Contains("youtu.be/"))
+                        {
+                            var parts = videoUrl.Split("youtu.be/");
+                            var videoId = parts.Length > 1 ? parts[1] : "";
+                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                        }
+                        else if (videoUrl.Contains("drive.google.com/file/d/"))
+                        {
+                            var parts = videoUrl.Split('/');
+                            if (parts.Length >= 6)
+                            {
+                                fileId = parts[5];
+                                embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                            }
+                        }
+                    }
 
-            </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
+                    if (!string.IsNullOrEmpty(embedUrl))
+                    {
+                        <div class="swiper-slide text-center mb-4">
+                            <a class="vidbtn btn btn-link p-0 shadow" href="@embedUrl" target="_blank">
+                                <div class="vid-thumbnail position-relative">
+                                    <iframe src="@embedUrl" width="200" height="200" style="border: none;" class="rounded-top-4"></iframe>
+                                    <div class="overlay"></div>
+                                    <div class="play-icon">
+                                        <i class="fa-solid fa-play fa-2xl"></i>
+                                    </div>
+                                </div>
+                                <div class="vidtitle p-3 rounded-bottom-4">
+                                    <div class="vidtitletxt">@item.Title</div>
+                                    <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
+                    }
+                }
             </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        <div class="overlay"></div>
-                        <div class="play-icon">
-                            <i class="fa-solid fa-play fa-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Video 1</div>
-                        <div><i class="fa-solid fa-arrow-up-right-from-square fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
-            </div>
+            <!-- Custom Navigation Buttons -->
+            <button class="swiper-button-prev video-prev" type="button">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </button>
+            <button class="swiper-button-next video-next" type="button">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
+                </span>
+            </button>
+            <style>
+                .swiper-button-next::after,
+                .swiper-button-prev::after {
+                    display: none;
+                }
+            </style>
         </div>
         <div class="sectitle display-4 mb-3 mt-5">
             IMAGES
         </div>
-        <div class="vidimgrow row">
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Kiosk Cooking</div>
-                        <div><i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
 
+        <div id="imageCarousel" class="swiper-container image-swiper position-relative">
+            <div class="swiper-wrapper">
+                @foreach (var gallery in Model.Galleries)
+                {
+                    var imageUrl = gallery.URLImage;
+                    var imgFileId = "";
+                    var hasImage = false;
+
+                    if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                    {
+                        var parts = imageUrl.Split('/');
+                        if (parts.Length >= 6)
+                        {
+                            imgFileId = parts[5];
+                            hasImage = true;
+                        }
+                    }
+
+                    var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+
+                    if (hasImage)
+                    {
+                        <div class="swiper-slide text-center mb-4">
+                            <a class="vidbtn btn btn-link p-0 shadow" href="@previewImgUrl" target="_blank">
+                                <div class="vid-thumbnail position-relative">
+                                    <iframe src="@previewImgUrl" width="200" height="200" style="border: none; overflow:hidden" class="rounded-top-4"></iframe>
+                                </div>
+                                <div class="vidtitle p-3 rounded-bottom-4">
+                                    <div class="vidtitletxt">@gallery.Title</div>
+                                    <div>
+                                        <i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
             </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Ingredient Gathering</div>
-                        <div><i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
 
+            <div class="swiper-button-prev image-prev">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i>
+                </span>
             </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                        
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Kiosk Upgrades</div>
-                        <div><i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
-            </div>
-            <div class="col-lg-2 p-0 text-center mb-4">
-                <a class="vidbtn btn btn-link p-0 shadow" href="https://www.youtube.com/watch?v=ot7uXNQskhs">
-                    <div class="vid-thumbnail position-relative">
-                        <img src="~/img/closing.png" alt="Alternate Text" class="vidpic img-fluid rounded-top-4" />
-                    </div>
-                    <div class="vidtitle p-3 rounded-bottom-4">
-                        <div class="vidtitletxt">Community Events</div>
-                        <div><i class="fa-solid fa-download fa-2xl" style="color: #D0B8A8;"></i></div>
-                    </div>
-                </a>
-
+            <div class="swiper-button-next image-next">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true">
+                    <i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i>
+                </span>
             </div>
         </div>
+
     </div>
 </div>
 
 <!--characters-->
-<div class="cont2 container-fluid p-5">
+@* <div class="cont2 container-fluid p-5">
     <div class="container">
         <div class="sectitle display-4 mb-3">
             CHARACTERS
@@ -145,7 +152,7 @@
             </div>
             <div class="carousel-inner">
                 <div class="medcar carousel-item active">
-                    <img src="~/img/closing.png" class="d-block medpic mx-auto" alt="...">
+                    <img src="~/img/idle_front_mc.gif" class="d-block medpic mx-auto pb-5 mb-5" alt="...">
                     <div class="ccmed carousel-caption p-3">
                         <h3 class="charname display-6">Elena</h3>
                         <h6 class="chartype fs-3">Player</h6>
@@ -198,7 +205,273 @@
         </div>
 
     </div>
+</div> *@
+
+
+<!--how-->
+<div class="cont2 container-fluid p-5">
+    <div class="container">
+        <div class="sectitle display-4 mb-3">
+            CHARACTERS
+        </div>
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="8" aria-label="Slide 9"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="9" aria-label="Slide 10"></button>
+
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/elena.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    MAIN CHARACTER
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Elena
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Elena Cruz is a determined woman who follows her
+                                passion for cooking after losing her corporate
+                                job. She opens Elena’s Corner, a small kiosk stall
+                                inspired by her grandmother, turning it into a
+                                warm and thriving business.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/alingnida.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Market Vendor
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Aling Nida
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Elena’s loving but strict grandmother who runs a vegetable stall. She’s hardworking, well-respected in the community, and always has something wise (or funny) to say. She’s proud of Elena but doesn’t always show it directly.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/benjie.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Benjie
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A street-smart kid around Elena’s age who helps carry bags for customers. He’s funny, sneaky, and has a soft spot for animals.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/maya.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Maya
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Elena’s best friend, always by her side. She's kind, artistic, and loves taking photos of everyday life at the market.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/vipboy.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Liam Carter
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A friendly tourist from Australia who’s fascinated by the local culture. He asks lots of questions and is always smiling.
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/vipgirl.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Chloe Bennett
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                Liam’s younger sister, more reserved and camera-shy. She sketches what she sees rather than taking photos.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/lolo.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Lolo Pedro
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A grumpy but lovable elder who’s been shopping at the market since he was a boy. He walks with a cane and always buys the same vegetables every week.
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/younggirl.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Lola Belen
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A sweet old lady known for giving homemade candies to kids in the market. She has a sharp memory and a mysterious past.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/greg.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Tito Greg
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A middle-aged office worker who stops by the market after work. He’s quiet, polite, and always buys fish.
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-6">
+                            <div class="oinkk text-center d-flex justify-content-center align-items-center">
+                                <img src="~/img/nina.gif" class="medpic img-fluid rounded-3" alt="...">
+                                <div class="chartypee p-3 fs-3">
+                                    Customer
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="steptxt col-lg-6">
+                            <div class="steptitle fs-3 p-3 rounded-3 d-block mt-3">
+                                Ate Nina
+                            </div>
+                            <div class="stepdesc p-3 rounded-3 mt-3 fs-3">
+                                A young professional who enjoys cooking on weekends. She’s fashionable and often chats with the vendors about new recipes.
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
 </div>
+
 
 <!--location-->
 <div class="cont2 container-fluid p-5">

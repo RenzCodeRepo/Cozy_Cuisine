@@ -47,7 +47,7 @@
         </nav>
 
 
-       
+
     </header>
     <div class="d-flex">
         <div class="side offcanvas offcanvas-start show" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false" data-bs-scroll="true">
@@ -104,10 +104,16 @@
                         <span class="pgname">Wiki</span>
                     </div>
                 </a>
+               @*  <a href="#" class="text-decoration-none">
+                    <div class="abtn container-fluid p-3">
+                        <span><i class="i-sec fa-solid fa-gamepad fa-xl" style="color: #603f26;"></i></span>
+                        <span class="pgname">Game Development</span>
+                    </div>
+                </a> *@
                 <a asp-action="CharacterManagement" asp-controller="Wiki" class="text-decoration-none">
                     <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "CharacterManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-masks-theater fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Characters</span>
+                        <span class="pgname">Character Management</span>
                     </div>
                 </a>
                 <a asp-action="AboutManagement" asp-controller="Manage" class="text-decoration-none">
@@ -132,13 +138,13 @@
             </div>
         </div>
 
-        <div class="content flex-grow-1 p-3 mt-3">
+        <div class="content flex-grow-1 p-3">
             <main role="main" class="pb-3 mt-5 pt-2">
                 @RenderBody()
             </main>
         </div>
     </div>
-    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -164,10 +170,6 @@
                     title: "Success!",
                     text: message,
                     icon: "success",
-                    background: "#f8f4f1",  
-                    color: "#603f26",  
-                    confirmButtonColor: "#603f26",
-                    confirmButtonText: "OK", 
                     confirmButtonText: "OK"
                 });
             }

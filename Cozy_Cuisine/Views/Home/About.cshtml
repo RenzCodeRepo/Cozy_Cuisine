@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Cozy_Cuisine.ViewModels.AboutPageVM
+
+@{
     ViewData["Title"] = "About";
 }
 
@@ -10,15 +12,11 @@
                 ABOUT
             </div>
             <div class="abtdescrip fs-3">
-                Welcome to Cozy Cuisine, a cozy kiosk
-                crafting game where you gather ingredients
-                and auto-craft meals then ready to serve.
-                Run by Elena, a former corporate worker
-                turned entrepreneur, it's a game about
-                second chances, community, and good food.
+                @Model.LatestAbout.Description
             </div>
+
         </div>
-        <img src="~/img/frontdoor.png" alt="Alternate Text"  class="abtpic img-fluid"/>
+        <img src="~/img/frontdoor.png" alt="Alternate Text" class="abtpic img-fluid" />
     </div>
 </div>
 
@@ -29,15 +27,14 @@
             <img src="~/img/sample1.png" alt="Alternate Text" class="img-fluid" />
         </div>
         <div class="bgbb">
-            
         </div>
-        <div class="jointxtcont mt-5">        
+        <div class="jointxtcont mt-5">
             <div class="jointitle text-center display-6 mb-2">
                 JOIN COMMUNITY
             </div>
             <div class="joindescrip text-center fs-4 mb-3">
-                Connect with fellow chefs, share your favorite recipes, and trade tips on 
-                building the coziest kitchen! Be the first to hear about updates, events, 
+                Connect with fellow chefs, share your favorite recipes, and trade tips on
+                building the coziest kitchen! Be the first to hear about updates, events,
                 and exclusive content. Let’s cook up something amazing—together!
             </div>
             <div class="text-center mb-5">
@@ -48,6 +45,7 @@
     </div>
 </div>
 
+
 <div class="cont3 container-fluid my-5">
     <div class="container p-5">
         <div class="sectitle display-4 mb-3">
@@ -55,119 +53,55 @@
         </div>
         <div class="d-flex align-items-start">
             <div class="gameplaytab fs-3 nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link active" id="craft" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Craft & Serve</button>
-                <button class="nav-link" id="unlock" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Unlock Recipes</button>
-                <button class="nav-link" id="market" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Market Scene</button>
-                <button class="nav-link" id="donate" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Donate Leftovers</button>
-                <button class="nav-link" id="daily" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Daily Challenges</button>
+                @foreach (var mechanic in Model.GameMechanics)
+                {
+                    <button class="nav-link @(mechanic.GameMechId == Model.GameMechanics.First().GameMechId ? "active" : "")" id="@mechanic.GMName.ToLower()" data-bs-toggle="pill" data-bs-target="#v-pills-@mechanic.GameMechId" type="button" role="tab" aria-controls="v-pills-@mechanic.GameMechId" aria-selected="true">
+                        @mechanic.GMName
+                    </button>
+                }
             </div>
             <div class="gptabcontent tab-content p-5" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="craft" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="gppiccont container text-center w-100 p-3">
-                        <img src="~/img/sample2.png" class="gppic img-fluid" alt="Alternate Text" />
-                    </div>
-                    <div class="mt-3">
-                        <div class="gpoink row">
-                            <div class="col-lg-7 gptxt fs-3">
-                                Gather ingredients and auto-craft
-                                meals for customers.
-                            </div>
-                            <div class="col-lg-4 text-end mt-2">
-                                <button class="learnmorebtn btn p-3">
-                                    LEARN MORE
-                                </button>
-                            </div>
-                            
-                        </div>
-                        
-                    </div>
-                   
-                </div>
-                <div class="tab-pane fade" id="unlock" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="gppiccont container text-center w-100 p-3">
-                        <img src="~/img/sample2.png" class="gppic img-fluid" alt="Alternate Text" />
-                    </div>
-                    <div class="mt-3">
-                        <div class="gpoink row">
-                            <div class="col-lg-7 gptxt fs-3">
-                                Gather ingredients and auto-craft
-                                meals for customers.
-                            </div>
-                            <div class="col-lg-4 text-end mt-2">
-                                <button class="learnmorebtn btn p-3">
-                                    LEARN MORE
-                                </button>
-                            </div>
+                @foreach (var mechanic in Model.GameMechanics)
+                {
+                    <div class="tab-pane fade @(mechanic.GameMechId == Model.GameMechanics.First().GameMechId ? "show active" : "")" id="v-pills-@mechanic.GameMechId" role="tabpanel" aria-labelledby="v-pills-@mechanic.GameMechId-tab" tabindex="0">
+                        <div class="gppiccont container text-center w-100 p-3">
+                            @{
+                                var fileId = "";
+                                var parts = mechanic.URLImageList?.Split('/');
+                                if (parts != null && parts.Length >= 6)
+                                {
+                                    fileId = parts[5];
+                                }
 
+                                var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
+                            }
+
+                            @if (!string.IsNullOrEmpty(fileId))
+                            {
+                                <iframe src="@previewUrl" style="border: none;" allowfullscreen></iframe>
+                            }
+                            else
+                            {
+                                <span class="fs-4">No Image Available</span>
+                            }
                         </div>
 
-                    </div>
-
-                </div>
-                <div class="tab-pane fade" id="market" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="gppiccont container text-center w-100 p-3">
-                        <img src="~/img/sample2.png" class="gppic img-fluid" alt="Alternate Text" />
-                    </div>
-                    <div class="mt-3">
-                        <div class="gpoink row">
-                            <div class="col-lg-7 gptxt fs-3">
-                                Gather ingredients and auto-craft
-                                meals for customers.
+                        <div class="mt-3">
+                            <div class="gpoink row">
+                                <div class="col-lg-7 gptxt fs-3">
+                                    @mechanic.Description
+                                </div>
+                                <div class="col-lg-4 text-end mt-2">
+                                    <button class="learnmorebtn btn p-3">
+                                        LEARN MORE
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-lg-4 text-end mt-2">
-                                <button class="learnmorebtn btn p-3">
-                                    LEARN MORE
-                                </button>
-                            </div>
-
                         </div>
-
                     </div>
-
-                </div>
-                <div class="tab-pane fade" id="donate" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="gppiccont container text-center w-100 p-3">
-                        <img src="~/img/sample2.png" class="gppic img-fluid" alt="Alternate Text" />
-                    </div>
-                    <div class="mt-3">
-                        <div class="gpoink row">
-                            <div class="col-lg-7 gptxt fs-3">
-                                Gather ingredients and auto-craft
-                                meals for customers.
-                            </div>
-                            <div class="col-lg-4 text-end mt-2">
-                                <button class="learnmorebtn btn p-3">
-                                    LEARN MORE
-                                </button>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="tab-pane fade" id="daily" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-                    <div class="gppiccont container text-center w-100 p-3">
-                        <img src="~/img/sample2.png" class="gppic img-fluid" alt="Alternate Text" />
-                    </div>
-                    <div class="mt-3">
-                        <div class="gpoink row">
-                            <div class="col-lg-7 gptxt fs-3">
-                                Gather ingredients and auto-craft
-                                meals for customers.
-                            </div>
-                            <div class="col-lg-4 text-end mt-2">
-                                <button class="learnmorebtn btn p-3">
-                                    LEARN MORE
-                                </button>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                }
             </div>
         </div>
     </div>
 </div>
+

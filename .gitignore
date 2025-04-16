@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # Ignore environment-specific configuration
 appsettings.Development.json
+
+
+# Ignore for google api credentials
+DriveSecrets/credentials.json

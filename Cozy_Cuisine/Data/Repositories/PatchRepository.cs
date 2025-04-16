@@ -12,11 +12,17 @@ namespace Cozy_Cuisine.Data.Repositories
         {
             _context = context;
         }
-
+        
         public async Task<Dictionary<string, int>> GetPatchDictionaryAsync()
         {
             var patches = await _context.Patches.ToListAsync();
             return patches.ToDictionary(p => p.Version, p => p.PatchId);
+        }
+
+        public async Task<Patches> GetLatestPatch()
+        {
+            var patches = await _context.Patches.OrderBy(p => p.ReleaseDate).LastAsync();
+            return patches;
         }
 
         // Patches
@@ -54,7 +60,10 @@ namespace Cozy_Cuisine.Data.Repositories
             }
             return false;
         }
-
+        public async Task <List<Patches>> LatestFourPatches()
+        {
+            return await _context.Patches.OrderByDescending(p => p.ReleaseDate).Skip(1).Take(3).ToListAsync();
+        }
         // Bug Reports
         public async Task<List<BugReport>> GetBugReportsByPatchIdAsync(int patchId)
         {

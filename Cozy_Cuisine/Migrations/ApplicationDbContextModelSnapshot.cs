@@ -102,6 +102,9 @@ namespace Cozy_Cuisine.Migrations
                     b.Property<string>("URLGif")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("URLImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("WikiId")
                         .HasColumnType("int");
 
@@ -214,7 +217,6 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FAQURLImageList")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Question")
@@ -293,7 +295,6 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLGif")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLImageList")
@@ -322,10 +323,6 @@ namespace Cozy_Cuisine.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -335,7 +332,6 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLImageList")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("WikiId")
@@ -363,7 +359,6 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewComment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewId");
@@ -379,7 +374,7 @@ namespace Cozy_Cuisine.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationId"));
 
-                    b.Property<string>("Category")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -388,11 +383,9 @@ namespace Cozy_Cuisine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLGif")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("URLImageList")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("WikiId")

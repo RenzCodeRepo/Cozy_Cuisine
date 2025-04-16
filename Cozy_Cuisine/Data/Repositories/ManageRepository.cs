@@ -48,6 +48,7 @@ namespace Cozy_Cuisine.Data.Repositories
         // 🔹 About CRUD
         public async Task<List<About>> GetAllAboutsAsync() => await _context.About.ToListAsync();
         public async Task<About> GetAboutByIdAsync(int id) => await _context.About.FindAsync(id);
+        public async Task<About> GetLatestAbout() => await _context.About.FirstAsync();
         public async Task AddAboutAsync(About about)
         {
             _context.About.Add(about);
@@ -157,7 +158,25 @@ namespace Cozy_Cuisine.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Notice>> GetLatestFourNews()
+        {
+            var latestNotice = await _context.Notice.Where(n => n.Category == "News")
+                .OrderByDescending(n => n.PostedDate).Take(4).ToListAsync();
+            return latestNotice;
+        }
 
+        public async Task<Notice> GetLatestUpdate()
+        {
+          return await _context.Notice.Where(n => n.Category == "Update").OrderByDescending(n => n.PostedDate).FirstAsync();
+        }
+        public async Task<List<Notice>> GetFeaturedNews()
+        {
+            return await _context.Notice.Where(n => n.Category == "Feature").OrderByDescending(n => n.PostedDate).Take(5).ToListAsync();
+        }
+        public async Task<List<Notice>> GetNews()
+        {
+            return await _context.Notice.Where(n => n.Category == "News").OrderByDescending(n => n.PostedDate).ToListAsync();
+        }
         // 🔹 Visitors (Only Add and Get)
         public async Task<List<Visitor>> GetAllVisitorsAsync() => await _context.Visitor.ToListAsync();
         public async Task AddVisitorAsync(Visitor visitor)

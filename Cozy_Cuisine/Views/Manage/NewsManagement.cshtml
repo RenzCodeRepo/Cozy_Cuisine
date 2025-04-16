@@ -41,34 +41,34 @@
                             @foreach (var notice in Model.Notices)
                             {
 
-                                <tr>
-                                    <td>@notice.NoticeId</td>
-                                    <td>@notice.Headline</td>
-                                    <td>@notice.PostedDate.ToString("MMMM dd, yyyy")</td>
-                                    <td>@notice.Category</td>
-                                    <td>@notice.Content</td>
-                                    <td>
-                                        @if (!string.IsNullOrEmpty(notice.URLNewsImageList))
-                                        {
+                <tr>
+                    <td>@notice.NoticeId</td>
+                    <td>@notice.Headline</td>
+                    <td>@notice.PostedDate.ToString("MMMM dd, yyyy")</td>
+                    <td>@notice.Category</td>
+                    <td>@notice.Content</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(notice.URLNewsImageList))
+                        {
 
-                                            var imageUrls = notice.URLNewsImageList.Split(',');
-                                            foreach (var url in imageUrls)
-                                            {
-                                                <a href="@url" target="_blank">
-                                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                                </a>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span>No Image Uploaded</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <a href="@notice.URLVideo" alt="Video">@notice.URLVideo</a>
-                                    </td>
-                                    <td>
-                                        <a asp-action="DetailsNotice" asp-route-id="@notice.NoticeId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+                            var imageUrls = notice.URLNewsImageList.Split(',');
+                            foreach (var url in imageUrls)
+                            {
+                                <a href="@url" target="_blank">
+                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@notice.URLVideo" alt="Video">@notice.URLVideo</a>
+                    </td>
+                    <td>
+                        <a asp-action="DetailsNotice" asp-route-id="@notice.NoticeId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                                         @* opens a modal popup to make the changes *@
                                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
@@ -93,72 +93,6 @@
                         }
                     </tbody>
                 </table>
-
-            </div>
-
-
-
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="noticeForm" method="post" asp-controller="Manage" asp-action="CreateNotice" onsubmit="confirmSubmit(event)">
-                    <div>
-                        <label asp-for="NewNotice.Headline" class="form-label">Headline <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewNotice.Headline" class="form-control mb-3 focus-ring" placeholder="Enter Headline" required />
-                    </div>
-                    <div>
-                        <label asp-for="NewNotice.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
-                        <select asp-for="NewNotice.Category" class="form-control mb-3 focus-ring" required>
-                            <option value="">Select Category</option>
-                            <option value="News">News</option>
-                            <option value="Feature">Feature</option>
-                            <option value="Update">Update</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="NewNotice.Content" class="form-label">Content <span class="reqsymbol">*</span></label>
-                        <textarea type="text" asp-for="NewNotice.Content" class="form-control mb-3 focus-ring" rows="6" placeholder="Enter Content" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">News Image URLs</label>
-                        <div id="imageUrlContainer">
-                            <div class="input-group mb-2">
-                                <input type="text" class="form-control mb-1 focus-ring" name="newsImageUrls" placeholder="Enter Image URL" />
-                                <button type="button" class="addremovebtn focus-ring btn mb-1" onclick="removeImageUrl(this)"><i class="fa-solid fa-trash"></i> Remove</button>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" onclick="addImageUrl()" class="addremovebtn focus-ring btn mb-3"><i class="fa-solid fa-square-plus"></i> Add Another URL</button>
-                        </div>
-
-                    </div>
-
-                    <!-- Hidden input to hold the final combined string -->
-                    <input type="hidden" id="URLNewsImageList" asp-for="NewNotice.URLNewsImageList" />
-
-
-                    <div>
-                        <label asp-for="NewNotice.URLVideo" class="form-label">Video URL</label>
-                        <input type="text" asp-for="NewNotice.URLVideo" class="form-control mb-3 focus-ring" placeholder="Enter Video URL" />
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
-                    </div>
-
-                </form>
-
-            </div>
-
-
-        </div>
-
-    </div>
-</div>
-
-
-
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editNoticeModal" tabindex="-1">
@@ -208,7 +142,8 @@
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
-                    
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>

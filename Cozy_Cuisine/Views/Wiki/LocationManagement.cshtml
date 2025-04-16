@@ -1,0 +1,269 @@
+﻿@model Cozy_Cuisine.ViewModels.LocationManagementVM
+@{
+    Layout = "Admin_Layout";
+    ViewData["Title"] = "Location";
+}
+@* TEMPORARY CSS LANG DASHBOARD *@
+<link href="~/css/dashboard.css" rel="stylesheet" />
+<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
+    <div class="dashboard fs-3 m-0">Location</div>
+</div>
+
+<div class="container mt-4">
+    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
+        </li>
+    </ul>
+    <div class="tab-content mt-3" id="myTabContent">
+        <!--list-->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="container">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Location ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>GIF URL</th>
+                            <th>Image URL</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Locations != null && Model.Locations.Any())
+                        {
+                            @foreach (var locations in Model.Locations)
+                            {
+
+                                <tr>
+                                    <td>@locations.LocationId</td>
+                                    <td>@locations.Name</td>
+                                    <td>@locations.Description</td>
+                                    <td>
+                                        @{
+                                            var gifUrl = locations.URLGif; // assuming this contains a full GDrive URL
+                                            var giffileId = "";
+                                            var gifparts = gifUrl?.Split('/');
+                                            if (gifparts != null && gifparts.Length >= 6)
+                                            {
+                                                giffileId = gifparts[5];
+                                            }
+
+                                            var gifpreviewUrl = $"https://drive.google.com/file/d/{giffileId}/preview";
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(giffileId))
+                                        {
+                                            <iframe src="@gifpreviewUrl" width="300" height="200" style="border: none;"></iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No Image Uploaded</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var imageUrl = locations.URLImageList;
+                                            var imgFileId = "";
+
+                                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                                            {
+                                                var parts = imageUrl.Split('/');
+                                                if (parts.Length >= 6)
+                                                {
+                                                    imgFileId = parts[5];
+                                                }
+                                            }
+
+                                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(imgFileId))
+                                        {
+                                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
+                                        }
+                                        else
+                                        {
+                                            <span>No image available</span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="DetailLocation" asp-route-id="@locations.LocationId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+
+                                        @* opens a modal popup to make the changes *@
+                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editLocationModal"
+                                                data-id="@locations.LocationId"
+                                                data-name="@locations.Name"
+                                                data-description="@locations.Description"
+                                                data-urlimg="@locations.URLImageList"
+                                                data-urlgif="@locations.URLGif">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Edit
+                                        </button>
+
+
+                                        <form class="d-inline" id="deleteForm-@locations.LocationId" method="post" asp-action="DeleteLocation" asp-route-id="@locations.LocationId">
+                                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@locations.LocationId')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <!--add-->
+        <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
+                <form id="locationForm" method="post" asp-controller="Wiki" asp-action="CreateLocation" onsubmit="confirmSubmit(event)">
+                    <div>
+                        <label asp-for="NewLocation.Name" class="form-label">Name <span class="reqsymbol">*</span></label>
+                        <input type="text" asp-for="NewLocation.Name" class="form-control mb-3 focus-ring" required placeholder="Enter Location Name" />
+                    </div>
+                    <div>
+                        <label asp-for="NewLocation.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea asp-for="NewLocation.Description" class="form-control mb-3 focus-ring" rows="3" required placeholder="Enter Location Description"></textarea>
+                    </div>
+                    <div>
+                        <label asp-for="NewLocation.URLGif" class="form-label">GIF URL</label>
+                        <input asp-for="NewLocation.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL">
+                    </div>
+                    <div>
+                        <label asp-for="NewLocation.URLImageList" class="form-label">Image URL <span class="reqsymbol">*</span></label>
+                        <input asp-for="NewLocation.URLImageList" class="form-control mb-3 focus-ring" placeholder="Enter Image URL" required>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+@* MODAL POPUP FOR EDITING RECORD *@
+<div class="modal fade" id="editLocationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header rounded-top-4">
+                <h5 class="modal-title">Edit Location</h5>
+                <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body py-3 px-4 rounded-bottom-4">
+                <form id="editCharacterForm" method="post" asp-action="EditLocation">
+                    <input type="hidden" id="locationid" name="LocationId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Name <span class="reqsymbol">*</span></label>
+                        <input type="text" class="form-control focus-ring" id="name" name="Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
+                        <textarea class="form-control focus-ring" id="description" name="Description" rows="8" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">GIF URL</label>
+                        <input class="form-control focus-ring" id="urlgif" name="URLGif" placeholder="Enter GIF URL">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Image URL <span class="reqsymbol">*</span></label>
+                        <input type="text" class="form-control focus-ring" id="urlimg" name="URlImageList" required>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function confirmSubmit(event) {
+                event.preventDefault(); // Stop form submission
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You can always delete or edit the record later.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    background: "#f8f4f1",
+                    color: "#603f26",
+                    confirmButtonColor: "#603f26",
+                    cancelButtonColor: "#8D493A",
+                    confirmButtonText: "Yes, submit it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                         document.getElementById("locationForm").submit();
+                    }
+                });
+
+                return false; // Prevent immediate submission
+            }
+        function confirmDelete(event, formId) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                background: "#f8f4f1",
+                color: "#603f26",
+                confirmButtonColor: "#603f26",
+                cancelButtonColor: "#8D493A",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                console.log("Swal result:", result); // Debugging line
+                if (result.isConfirmed) {
+                    console.log("Form submission triggered:", formId); // Debugging line
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".actionsbtn").click(function () {
+                let locationid = $(this).data("id");
+                let name = $(this).data("name");
+                let description = $(this).data("description");
+                let urlgif = $(this).data("urlgif");
+                let urlimg = $(this).data("urlimg");
+
+                // Set values in the modal
+                $("#locationid").val(locationid);
+                $("#name").val(name);
+                $("#description").val(description);
+                $("#urlgif").val(urlgif);
+                $("#urlimg").val(urlimg);
+            });
+        });
+
+    </script>
+}   

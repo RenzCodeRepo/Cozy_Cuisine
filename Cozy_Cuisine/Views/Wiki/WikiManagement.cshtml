@@ -10,64 +10,73 @@
     <div class="dashboard fs-3 m-0">Wiki</div>
 </div>
 
-<div class="container mt-4">
-    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
-        </li>
-    </ul>
-    <div class="tab-content mt-3" id="myTabContent">
-        <!--list-->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-            <div class="container">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Wiki ID</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>GIF URL</th>
-                            <th>Image List URLs</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Wikis != null && Model.Wikis.Any())
+
+    <div class="form-group">
+        <label>Wiki Image URLs</label>
+        <div id="imageUrlContainer">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" name="URLImageList" placeholder="Enter Image URL"/>
+                <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addImageUrl()" class="btn btn-secondary mt-2">Add Another URL</button>
+    </div>
+
+    <!-- Hidden input to hold the final combined string -->
+    <input type="hidden" id="URLImageList" asp-for="NewWiki.URLImageList" required />
+    <div>
+        <label asp-for="NewWiki.URLGif"></label>
+        <input type="text" asp-for="NewWiki.URLGif" class="form-control" placeholder="One GIF link only (Optional):" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Wiki ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>URL Gif</th>
+            <th>URL Image Lists</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Wikis != null && Model.Wikis.Any())
+        {
+            @foreach (var wiki in Model.Wikis)
+            {
+
+                <tr>
+                    <td>@wiki.WikiId</td>
+                    <td>@wiki.Title</td>
+                    <td>@wiki.Category</td>
+                    <td>@wiki.Description</td>
+                    <td>@wiki.URLGif</td>
+
+                    <td>
+                        @if (!string.IsNullOrEmpty(wiki.URLImageList))
                         {
-                            @foreach (var wiki in Model.Wikis)
+
+                            var imageUrls = wiki.URLImageList.Split(',');
+                            foreach (var url in imageUrls)
                             {
-
-                                <tr>
-                                    <td>@wiki.WikiId</td>
-                                    <td>@wiki.Title</td>
-                                    <td>@wiki.Category</td>
-                                    <td>@wiki.Description</td>
-                                    <td>@wiki.URLGif</td>
-
-                                    <td>
-                                        @if (!string.IsNullOrEmpty(wiki.URLImageList))
-                                        {
-
-                                            var imageUrls = wiki.URLImageList.Split(',');
-                                            foreach (var url in imageUrls)
-                                            {
-                                                <a href="@url" target="_blank">
-                                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
-                                                </a>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span>No Image Uploaded</span>
-                                        }
-                                    </td>
-                                    <td>
-
-                                        <a asp-action="DetailStoryPlot" asp-route-id="@wiki.WikiId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+                                <a href="@url" target="_blank">
+                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
+                    <td>
+                        
+                        <a asp-action="DetailStoryPlot" asp-route-id="@wiki.WikiId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                                         @* opens a modal popup to make the changes *@
                                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
@@ -92,66 +101,6 @@
                     </tbody>
                 </table>
 
-            </div>
-
-
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="wikiForm" method="post" asp-controller="Wiki" asp-action="WikiCreate" onsubmit="confirmSubmit(event)">
-
-                    <div>
-                        <label asp-for="NewWiki.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewWiki.Title" class="form-control mb-3 focus-ring" placeholder="Enter Wiki Title" required />
-                    </div>
-                    <div>
-                        <label asp-for="NewWiki.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
-                        <input asp-for="NewWiki.Category" class="form-control mb-3 focus-ring" placeholder="Enter Wiki Category" required>
-                    </div>
-                    <div>
-                        <label asp-for="NewWiki.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <textarea asp-for="NewWiki.Description" class="form-control mb-3 focus-ring" rows="7" placeholder="Enter Wiki Description" required></textarea>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="form-label">Wiki Image URLs</label>
-                        <div id="imageUrlContainer">
-                            <div class="input-group mb-2">
-                                <input type="text" class="form-control mb-1 focus-ring" name="URLImageList" placeholder="Enter Image URL" />
-                                <button type="button" class="addremovebtn focus-ring btn mb-1" onclick="removeImageUrl(this)"><i class="fa-solid fa-trash"></i> Remove</button>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" onclick="addImageUrl()" class="addremovebtn focus-ring btn mb-3">Add Another URL</button>
-                        </div>
-
-                    </div>
-
-                    <!-- Hidden input to hold the final combined string -->
-                    <input type="hidden" id="URLImageList" asp-for="NewWiki.URLImageList" required />
-                    <div>
-                        <label asp-for="NewWiki.URLGif" class="form-label">GIF URL</label>
-                        <input type="text" asp-for="NewWiki.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL" />
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
-                    </div>
-
-                </form>
-
-            </div>
-
-
-        </div>
-
-    </div>
-</div>
-
-
-
-
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editWikiModal" tabindex="-1">
     <div class="modal-dialog">
@@ -169,8 +118,8 @@
                         <input class="form-control focus-ring" id="title" name="Title" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <textarea class="form-control focus-ring" id="description" name="Description" rows="8" required></textarea>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="Description" rows="8" required></textarea>
                     </div> 
                     <div class="mb-3">
                         <label class="form-label">GIF URL</label>
@@ -184,12 +133,14 @@
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
-                    
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
         function addImageUrl() {

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<Cozy_Cuisine.Models.Credit>
+@{
     ViewData["Title"] = "Credits";
 }
 
@@ -10,7 +11,16 @@
         <div class="tttitle display-6 my-5">
             CREDITS
         </div>
-        <div class="my-3">
+
+
+        @foreach (var credit in Model)
+        {
+            <div class="my-3">
+                <span class="membername fs-4">@credit.Name</span>
+                <span class="memberrole fs-4">@credit.Role</span>
+            </div>
+        }
+        @* <div class="my-3">
             <span class="membername fs-4">Joshua Cornelia</span>
             <span class="memberrole fs-4">Project Manager</span>
         </div>
@@ -37,7 +47,7 @@
         <div class="my-3">
             <span class="membername fs-4">Ma. Cristina Velasco</span>
             <span class="memberrole fs-4">UI/UX Designer</span>
-        </div>
+        </div> *@
     </div>
 </div>
 

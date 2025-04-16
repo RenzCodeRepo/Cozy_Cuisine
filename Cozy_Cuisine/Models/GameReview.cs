@@ -10,7 +10,7 @@ namespace Cozy_Cuisine.Models
 
         public int Rating { get; set; }
         public DateTime PostedDate { get; set; } = DateTime.Now;
-        public string ReviewComment { get; set; }
+        public string? ReviewComment { get; set; }
 
     }
 }

@@ -19,6 +19,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddAboutAsync(About about);
         Task UpdateAboutAsync(About about);
         Task <bool>DeleteAboutAsync(int id);
+        Task <About> GetLatestAbout();
 
         // Gallery
         Task<List<Gallery>> GetAllGalleryAsync();
@@ -40,6 +41,10 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddNoticeAsync(Notice notice);
         Task UpdateNoticeAsync(Notice notice);
         Task DeleteNoticeAsync(int id);
+        Task <List<Notice>> GetLatestFourNews();
+        Task <Notice> GetLatestUpdate();
+        Task <List<Notice>> GetFeaturedNews();
+        Task<List<Notice>> GetNews();
 
         // Visitor (Only Add and Get)
         Task<List<Visitor>> GetAllVisitorsAsync();
