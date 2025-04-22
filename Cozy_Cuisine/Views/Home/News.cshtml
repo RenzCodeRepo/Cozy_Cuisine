@@ -45,10 +45,18 @@
                             <div class="bg-secondary text-white text-center py-5">No preview available</div>
                         }
                         <div class="ccmed carousel-caption d-none d-md-block">
-                            <h5 class="charname display-6">@newsItem.Headline</h5>
-                            <p class="chardescrip fs-5">@newsItem.Content</p>
-                            @* <a class="chardescrip fs-5 text-white text-center" href="@newsItem.Link">LEARN MORE <i class="fa-solid fa-arrow-up-right-from-square" style="color: #FFFFFF"></i></a> *@
+                            <h5 class="charname display-6"
+                                onclick="window.location.href='@Url.Action("Featured", "Home", new { NoticeId = newsItem.NoticeId })'"
+                                style="cursor: pointer;">
+                                @newsItem.Headline
+                            </h5>
+                            <p class="chardescrip fs-5"
+                               onclick="window.location.href='@Url.Action("Featured", "Home", new { NoticeId = newsItem.NoticeId })'"
+                               style="cursor: pointer;">
+                                @newsItem.Content
+                            </p>
                         </div>
+
                     </div>
                 }
             </div>
@@ -62,45 +70,9 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        @* <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="fcaritem carousel-item active">
-                    <img src="~/img/opening.png" class="fpic d-block w-100" alt="...">
-                    <div class="ccmed carousel-caption d-none d-md-block">
-                        <h5 class="charname display-6">Lorem ipsum</h5>
-                        <p class="chardescrip fs-5">Lorem ipsum</p>
-                        <a class="chardescrip fs-5 text-white text-center" href="#">LEARN MORE <i class="fa-solid fa-arrow-up-right-from-square" style="color: #FFFFFF"></i></a>
-                    </div>
-                </div>
-                <div class="fcaritem carousel-item ">
-                    <img src="~/img/opening.png" class="fpic d-block w-100" alt="...">
-                    <div class="ccmed carousel-caption d-none d-md-block">
-                        <h5 class="charname display-6">Lorem ipsum</h5>
-                        <p class="chardescrip fs-5">Lorem ipsum</p>
-                        
-                    </div>
-                </div>
-                <div class="fcaritem carousel-item ">
-                    <img src="~/img/opening.png" class="fpic d-block w-100" alt="...">
-                    <div class="ccmed carousel-caption d-none d-md-block">
-                        <h5 class="charname display-6">Lorem ipsum</h5>
-                        <p class="chardescrip fs-5">Lorem ipsum</p>
-                    </div>
-                </div>
-            </div>
-            <button class="medcar carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-left fa-2xl" style="color: #603F26;"></i></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="medcar carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                <span class="howbtn p-3 rounded-3" aria-hidden="true"><i class="fa-solid fa-chevron-right fa-2xl" style="color: #603F26;"></i></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
- *@
     </div>
 </div>
-
+    
 <!--news-->
 <div class="cont3 container-fluid p-5 mb-5">
     <div class="container">

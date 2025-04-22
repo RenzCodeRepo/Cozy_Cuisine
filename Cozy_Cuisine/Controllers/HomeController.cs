@@ -18,9 +18,9 @@ namespace Cozy_Cuisine.Controllers
         private readonly IPatchRepository _patchRepository;
         private readonly IWikiRepository _wikiRepository;
         private readonly IEmailService _emailService;
-        public HomeController(ILogger<HomeController> logger, 
-            IManageRepository manageRepository, 
-            IPatchRepository patchRepository, 
+        public HomeController(ILogger<HomeController> logger,
+            IManageRepository manageRepository,
+            IPatchRepository patchRepository,
             IEmailService emailService,
             IWikiRepository wikiRepository)
         {
@@ -30,7 +30,7 @@ namespace Cozy_Cuisine.Controllers
             _emailService = emailService;
             _wikiRepository = wikiRepository;
         }
-       
+
         public async Task<IActionResult> Index()
         {
             var IPVM = new IndexPageVM
@@ -59,7 +59,7 @@ namespace Cozy_Cuisine.Controllers
                 Locations = await _wikiRepository.GetAllLocationsAsync(),
                 Characters = await _wikiRepository.GetAllCharactersAsync()
             };
-                return View(GPVM);
+            return View(GPVM);
         }
         public async Task<IActionResult> News()
         {
@@ -77,9 +77,13 @@ namespace Cozy_Cuisine.Controllers
             var peeps = await _manageRepository.GetAllCreditsAsync();
             return View(peeps);
         }
-        public IActionResult Wiki()
+        public async Task<IActionResult> Wiki()
         {
-            return View();
+            var WPVM = new WikiPageVM
+            {
+                Ingredients = await _wikiRepository.GetAllIngredients()
+            };
+            return View(WPVM);
         }
         public async Task<IActionResult> Download()
         {
@@ -87,7 +91,8 @@ namespace Cozy_Cuisine.Controllers
             {
                 Patches = await _patchRepository.LatestFourPatches(),
                 LatestPatch = await _patchRepository.GetLatestPatch(),
-                GameReview = null
+                GameReview = null,
+                RandomReviews = await _manageRepository.ThreeRandomReviews()
             };
             return View(DPVM);
         }
@@ -123,7 +128,7 @@ namespace Cozy_Cuisine.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendMessage(ContactsVM model)
         {
-           
+
             if (model.NewContacts == null)
             {
                 TempData["Error"] = "Something went wrong. Please try again.";
@@ -174,7 +179,7 @@ namespace Cozy_Cuisine.Controllers
                 string recipientEmail = "unlibugs938@gmail.com"; // Your email
                 string subject = model.NewBugReport.BugTitle;
                 string body = model.NewBugReport.BugDescription;
-                await Task.Delay(2000); 
+                await Task.Delay(2000);
                 // Send email
                 await _emailService.SendEmailAsync(recipientEmail, subject, body);
 
@@ -193,17 +198,27 @@ namespace Cozy_Cuisine.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SubmitReview(GameReview model)
+        public async Task<ActionResult> SubmitReview(GameReview model, string Thoughts)
         {
             if (model != null)
             {
+                // Concatenate the Thoughts with the existing ReviewComment
+                if (!string.IsNullOrEmpty(Thoughts))
+                {
+                    model.ReviewComment = $"{Thoughts} | {model.ReviewComment}";
+                }
+
+                // Save the review to the database
                 await _manageRepository.AddReviewAsync(model);
+
                 TempData["Success"] = "Review Submitted. Thank you for sending us a Review.";
                 return RedirectToAction("Download");
             }
+
             TempData["Error"] = "Review not Submitted. Something went wrong.";
             return RedirectToAction("Download");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Article(int NoticeId)
@@ -224,7 +239,27 @@ namespace Cozy_Cuisine.Controllers
 
             return View(APVM);
         }
-    }
 
+        [HttpGet]
+        public async Task<IActionResult> Featured(int NoticeId)
+        {
+            var (isSuccess, notice) = await _manageRepository.GetNoticeByIdAsync(NoticeId);
+
+            if (!isSuccess || notice == null)
+            {
+                TempData["Error"] = "Featured Not Found, something went wrong.";
+                return RedirectToAction("News", "Home");
+            }
+
+            var FPVM = new FeaturedPageVM
+            {
+                Feature = notice,
+                Features = await _manageRepository.GetFeaturedNews()
+            };
+
+            return View(FPVM);
+        }
+
+    }
 }
 

@@ -38,7 +38,10 @@ namespace Cozy_Cuisine.Data.Repositories
             }
             return false;
         }
-
+        public async Task<List<GameItems>> GetAllIngredients()
+        {
+            return await _context.GameItems.Where(w => w.Category == "Ingredients").ToListAsync();
+        }
         // STORY PLOT
         public async Task<List<StoryPlot>> GetAllStoryPlotsAsync() => await _context.StoryPlot.ToListAsync();
         public async Task<StoryPlot> GetStoryPlotByIdAsync(int id) => await _context.StoryPlot.FindAsync(id);

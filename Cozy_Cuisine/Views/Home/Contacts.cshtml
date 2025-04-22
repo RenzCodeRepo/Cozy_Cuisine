@@ -38,37 +38,38 @@
                 <div class="accordion" id="faqAccordion">
                     @if (Model.FAQs != null && Model.FAQs.Any())
                     {
-                        @foreach (var faq in Model.FAQs)
-                        {
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="heading-@faq.FAQId">
-                                    <button class="accordion-button collapsed fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@faq.FAQId" aria-expanded="false" aria-controls="collapse-@faq.FAQId">
-                                        @faq.Question
-                                    </button>
-                                </h2>
-                                <div id="collapse-@faq.FAQId" class="accordion-collapse collapse" aria-labelledby="heading-@faq.FAQId" data-bs-parent="#faqAccordion">
-                                    <div class="accordion-body fs-5">
-                                        <p class="anss p-3 rounded-3">@faq.Answer</p>
+                            @foreach (var faq in Model.FAQs)
+                            {
+                                <div class="accordion-item mb-3">
+                                    <h2 class="accordion-header" id="heading-@faq.FAQId">
+                                        <button class="accordion-button collapsed fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@faq.FAQId" aria-expanded="false" aria-controls="collapse-@faq.FAQId">
+                                            @faq.Question
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-@faq.FAQId" class="accordion-collapse collapse" aria-labelledby="heading-@faq.FAQId" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body fs-5">
+                                        <p class="anss p-3 rounded-3">@Html.Raw(faq.Answer.Replace("\n", "<br>"))</p>
 
-                                        @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
-                                        {
-                                            <div class="mt-2 px-3">
-                                                Related Links:
-                                                <ul class="list-unstyled">
-                                                    @foreach (var url in faq.FAQURLImageList.Split(','))
-                                                    {
-                                                        <li>
-                                                            <a href="@url" target="_blank" class="sampurl">@url  <i class="ms-2 fa-solid fa-arrow-up-right-from-square fa-sm" style="color: #5D4037;"></i></a>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        }
+
+                                            @if (!string.IsNullOrEmpty(faq.FAQURLImageList))
+                                            {
+                                                <div class="mt-2 px-3">
+                                                    Related Links:
+                                                    <ul class="list-unstyled">
+                                                        @foreach (var url in faq.FAQURLImageList.Split(','))
+                                                        {
+                                                            <li>
+                                                                <a href="@url" target="_blank" class="sampurl">@url  <i class="ms-2 fa-solid fa-arrow-up-right-from-square fa-sm" style="color: #5D4037;"></i></a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
-                        }
+                                </div>
+                            }
                     }
                 </div>
             </div>
