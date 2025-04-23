@@ -1,13 +1,17 @@
 ﻿@model Cozy_Cuisine.ViewModels.MediaManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Media";
 }
-@* TEMPORARY CSS LANG DASHBOARD *@
+
 <link href="~/css/dashboard.css" rel="stylesheet" />
-<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
-    <div class="dashboard fs-3 m-0">Media</div>
-</div>
+
+
+<form id="mediaForm" method="post" asp-controller="Manage" asp-action="CreateMedia" onsubmit="confirmSubmit(event)">
+    <div>
+        <label asp-for="NewGallery.Title"></label>
+        <input type="text" asp-for="NewGallery.Title" class="form-control" placeholder="Enter Title" required />
+    </div>
 
 <div class="container mt-4">
     <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
@@ -40,84 +44,14 @@
                             @foreach (var gallery in Model.Galleries)
                             {
 
-                                <tr>
-                                    <td>@gallery.GalleryId</td>
-                                    <td>@gallery.Title</td>
-                                    <td>@gallery.Category   </td>
-                                    <td>@gallery.Description</td>
-                                    <td>
-                                        @{
-                                            var videoUrl = gallery.URLGifOrVideo;
-                                            var embedUrl = "";
-                                            var fileId = "";
-
-                                            if (!string.IsNullOrEmpty(videoUrl))
-                                            {
-                                                if (videoUrl.Contains("youtube.com/watch?v="))
-                                                {
-                                                    var parts = videoUrl.Split("watch?v=");
-                                                    var videoId = parts.Length > 1 ? parts[1] : "";
-                                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                                                }
-                                                else if (videoUrl.Contains("youtu.be/"))
-                                                {
-                                                    var parts = videoUrl.Split("youtu.be/");
-                                                    var videoId = parts.Length > 1 ? parts[1] : "";
-                                                    embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                                                }
-                                                else if (videoUrl.Contains("drive.google.com/file/d/"))
-                                                {
-                                                    var parts = videoUrl.Split('/');
-                                                    if (parts.Length >= 6)
-                                                    {
-                                                        fileId = parts[5];
-                                                        embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        @if (!string.IsNullOrEmpty(embedUrl))
-                                        {
-                                            <iframe width="300" height="170" src="@embedUrl" frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowfullscreen>
-                                            </iframe>
-                                        }
-                                        else
-                                        {
-                                            <span>No preview available</span>
-                                        }
-                                    </td>
-
-                                    <!-- Image Preview -->
-                                    <td>
-                                        @{
-                                            var imageUrl = gallery.URLImage;
-                                            var imgFileId = "";
-
-                                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
-                                            {
-                                                var parts = imageUrl.Split('/');
-                                                if (parts.Length >= 6)
-                                                {
-                                                    imgFileId = parts[5];
-                                                }
-                                            }
-
-                                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-                                        }
-
-                                        @if (!string.IsNullOrEmpty(imgFileId))
-                                        {
-                                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
-                                        }
-                                        else
-                                        {
-                                            <span>No image available</span>
-                                        }
-                                    </td>
-                                    <td>
+                <tr>
+                    <td>@gallery.GalleryId</td>
+                    <td>@gallery.Title</td>
+                    <td>@gallery.Category   </td>
+                    <td>@gallery.Description</td>
+                    <td>@gallery.URLGifOrVideo</td>
+                    <td>@gallery.URLImage</td>
+                    <td>
 
                                         <a asp-action="DetailsMedia" asp-route-id="@gallery.GalleryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
 
@@ -145,56 +79,6 @@
                         }
                     </tbody>
                 </table>
-
-            </div>
-
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="mediaForm" method="post" asp-controller="Manage" asp-action="CreateMedia" onsubmit="confirmSubmit(event)">
-                    <div>
-                        <label asp-for="NewGallery.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewGallery.Title" class="form-control mb-3 focus-ring" placeholder="Enter Title" required />
-                    </div>
-
-                    <div>
-                        <label asp-for="NewGallery.Category" class="form-label">Category <span class="reqsymbol">*</span></label>
-                        <select asp-for="NewGallery.Category" class="form-control mb-3 focus-ring" required>
-                            <option value="">Select Category</option>
-                            <option value="Videos">Videos</option>
-                            <option value="Images">Images</option>
-                            <option value="Characters">Characters</option>
-                            <option value="Locations">Locations</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="NewGallery.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewGallery.Description" class="form-control mb-3 focus-ring" placeholder="Description" />
-                    </div>
-                    <div>
-                        <label asp-for="NewGallery.URLGifOrVideo" class="form-label">GIF/Video URL</label>
-                        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control mb-3 focus-ring" placeholder="Enter GIF or Video URL" />
-                    </div>
-                    <div>
-                        <label asp-for="NewGallery.URLImage" class="form-label">Image URL</label>
-                        <input type="text" asp-for="NewGallery.URLImage" class="form-control mb-3 focus-ring" placeholder="Enter Image URL" />
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-
-
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editMediaModal" tabindex="-1">
@@ -229,18 +113,25 @@
                         <textarea class="form-control focus-ring" id="description" rows="8" name="Description" required></textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Gif/Video URL</label>
-                        <input type="text" class="form-control focus-ring" id="urlgifvid" name="URLGifOrVideo" />
+                    <div>
+                        <label asp-for="NewGallery.URLGifOrVideo"></label>
+                        <input type="text" asp-for="NewGallery.URLGifOrVideo" class="form-control"/>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Image URL</label>
-                        <input type="text" class="form-control focus-ring" id="urlimg" name="URLImage" />
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
+                    <div>
+                        <label asp-for="NewGallery.URLImage"></label>
+                        <input type="text" asp-for="NewGallery.URLImage" class="form-control"/>
                     </div>
 
+                    <div>
+                        <label class="form-label">URL Gif/Video</label>
+                        <input type="text" class="form-control" id="urlgifvid" name="URLGifOrVideo" />
+                    </div>
+                    <div>
+                        <label class="form-label">URL Image</label>
+                        <input type="text" class="form-control" id="urlgifvid" name="URLImage" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>

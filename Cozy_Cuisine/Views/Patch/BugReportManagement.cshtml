@@ -1,34 +1,28 @@
 ﻿@model Cozy_Cuisine.ViewModels.BugReportManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Bug Reports";
 }
-@* TEMPORARY CSS LANG DASHBOARD *@
+
 <link href="~/css/dashboard.css" rel="stylesheet" />
-<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
-    <div class="dashboard fs-3 m-0">Bug Reports</div>
-</div>
-
-
-<div class="container">
-    <table class="table table-bordered table-hover table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Patch Version</th>
-                <th>Report Date</th>
-                <th>Patch Name</th>
-                <th>Bug Title</th>
-                <th>Bug Description</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.BugReports != null && Model.BugReports.Any())
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Patch Version</th>
+            <th>Report Date</th>
+            <th>Patch Name</th>
+            <th>Bug Title</th>
+            <th>Bug Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.BugReports != null && Model.BugReports.Any())
+        {
+            @foreach (var report in Model.BugReports)
             {
-                @foreach (var report in Model.BugReports)
-                {
 
                     <tr>
                         <td>@report.BugId</td>
@@ -43,16 +37,12 @@
                         <td>
                             <a asp-action="DetailsPatch" asp-route-id="@report.PatchId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
 
-                            <form class="d-inline" id="deleteForm-@report.PatchId" method="post" asp-action="DeletePatch" asp-route-id="@report.PatchId">
-                                <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@report.PatchId')"><i class="fa-solid fa-trash"></i> Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
+                        <form class="d-inline" id="deleteForm-@report.PatchId" method="post" asp-action="DeletePatch" asp-route-id="@report.PatchId">
+                            <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1" onclick="confirmDelete(event, 'deleteForm-@report.PatchId')"><i class="fa-solid fa-trash fa-sm"></i>Delete</button>
+                        </form>
+                    </td>
+                </tr>
             }
-        </tbody>
-    </table>
-
-</div>
-
-<ta
+        }
+    </tbody>
+</table>

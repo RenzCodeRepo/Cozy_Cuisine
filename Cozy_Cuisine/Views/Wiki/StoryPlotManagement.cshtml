@@ -1,44 +1,80 @@
 ﻿@model Cozy_Cuisine.ViewModels.StoryPlotManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Story Plot";
 }
 @* TEMPORARY CSS LANG DASHBOARD *@
 <link href="~/css/dashboard.css" rel="stylesheet" />
-<div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
-    <div class="dashboard fs-3 m-0">Story Plot</div>
-</div>
-<div class="container mt-4">
-    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
-        </li>
-    </ul>
-    <div class="tab-content mt-3" id="myTabContent">
-        <!--list-->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
 
-            <div class="container">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Story ID</th>
-                            <th>Wiki ID</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Content</th>
-                            <th>Image URL Lists</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.StoryPlots != null && Model.StoryPlots.Any())
-                        {
-                            @foreach (var storyPlot in Model.StoryPlots)
-                            {
+
+<form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="CreateStoryPlot" onsubmit="confirmSubmit(event)">
+
+    <label>Wiki Categories</label>
+    @if (Model.WikiCategories.Any())
+    {
+        <!-- Dropdown if categories exist -->
+        <select class="form-control" id="wikiCategory" name="WikiId" >
+            <option value="">Select a Category</option>
+            @foreach (var category in Model.WikiCategories)
+            {
+                <option value="@category.WikiId">@category.Category</option>
+            }
+        </select>
+    }
+    else
+    {
+        <!-- Textbox if no categories exist -->
+        <input type="text" class="form-control" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
+    }
+    <div>
+        <label asp-for="NewStoryPlot.Title"></label>
+        <input type="text" asp-for="NewStoryPlot.Title" class="form-control" required />
+    </div>
+    <div>
+        <label asp-for="NewStoryPlot.Description"></label>
+         <textarea asp-for="NewStoryPlot.Description" class="form-control" rows="3" required></textarea>
+    </div>
+    <div>
+        <label asp-for="NewStoryPlot.Content"></label>
+        <textarea asp-for="NewStoryPlot.Content" class="form-control" rows="7" required></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label>Story Plot Image URLs</label>
+        <div id="imageUrlContainer">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" name="storyPlotImageUrls" placeholder="Enter Image URL" required/>
+                <button type="button" class="btn btn-danger" onclick="removeImageUrl(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addImageUrl()" class="btn btn-secondary mt-2">Add Another URL</button>
+    </div>
+
+    <!-- Hidden input to hold the final combined string -->
+    <input type="hidden" id="URLImageList" asp-for="NewStoryPlot.URLImageList" required />
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Story ID</th>
+            <th>Wiki ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Content</th>
+            <th>URL Image Lists</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.StoryPlots != null && Model.StoryPlots.Any())
+        {
+            @foreach (var storyPlot in Model.StoryPlots)
+            {
 
                                 <tr>
                                     <td>@storyPlot.StoryId</td>
@@ -47,37 +83,26 @@
                                     <td>@storyPlot.Description</td>
                                     <td>@storyPlot.Content</td>
 
+                    <td>
+                        @if (!string.IsNullOrEmpty(storyPlot.URLImageList))
+                        {
 
-                                    <td>
-                                        @if (!string.IsNullOrEmpty(storyPlot.URLImageList))
-                                        {
-                                            var imageUrls = storyPlot.URLImageList.Split(',');
-                                            foreach (var url in imageUrls)
-                                            {
-                                                // Extract File ID from Google Drive URL
-                                                var fileId = "";
-                                                var parts = url.Split('/');
-                                                if (parts.Length >= 6)
-                                                {
-                                                    fileId = parts[5];
-                                                }
-
-                                                if (!string.IsNullOrEmpty(fileId))
-                                                {
-                                                    var previewUrl = $"https://drive.google.com/file/d/{fileId}/preview";
-                                                    <iframe src="@previewUrl" width="300" height="200" style="margin-right: 10px; border: none;"></iframe>
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span>No Image Uploaded</span>
-                                        }
-                                    </td>
-
-                                    <td>
-
-                                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
+                            var imageUrls = storyPlot.URLImageList.Split(',');
+                            foreach (var url in imageUrls)
+                            {
+                                <a href="@url" target="_blank">
+                                    <img src="@url" alt="@url" style="width: 100px; height: auto; margin-right: 5px;" />
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <span>No Image Uploaded</span>
+                        }
+                    </td>
+                    <td>
+                        
+                        <a asp-action="DetailStoryPlot" asp-route-id="@storyPlot.StoryId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
                                         @* opens a modal popup to make the changes *@
                                         <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
@@ -103,19 +128,24 @@
                     </tbody>
                 </table>
 
+@* MODAL POPUP FOR EDITING RECORD *@
+<div class="modal fade" id="editSPModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Story Plot</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <div class="modal-body">
+                <form id="editStoryPlotForm" method="post" asp-action="EditStoryPlot">
+                    <input type="hidden" id="storyId" name="StoryId">
 
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="storyPlotForm" method="post" asp-controller="Wiki" asp-action="CreateStoryPlot" onsubmit="confirmSubmit(event)">
 
                     <label class="form-label">Wiki Categories <span class="reqsymbol">*</span></label>
                     @if (Model.WikiCategories.Any())
                     {
                         <!-- Dropdown if categories exist -->
-                        <select class="form-control mb-3 focus-ring" id="wikiCategory" name="WikiId" required>
+                        <select class="form-control" id="wikiCategory" name="WikiId" required>
                             <option value="">Select a Category</option>
                             @foreach (var category in Model.WikiCategories)
                             {
@@ -126,7 +156,7 @@
                     else
                     {
                         <!-- Textbox if no categories exist -->
-                        <input type="text" class="form-control" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
+                        <input type="text" class="form-control focus-ring" id="wikiCategory" name="WikiCategory" placeholder="There is no Category yet in the Wiki" disabled>
                     }
                     <div>
                         <label asp-for="NewStoryPlot.Title" class="form-label">Title <span class="reqsymbol">*</span></label>
@@ -188,9 +218,9 @@
                         <textarea class="form-control focus-ring" id="title" name="Title" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <textarea class="form-control focus-ring" id="description" name="Description" required></textarea>
-                    </div>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="Description" required></textarea>
+                    </div> 
                     <div class="mb-3">
                         <label class="form-label">Content <span class="reqsymbol">*</span></label>
                         <textarea class="form-control focus-ring" id="content" name="Content" required></textarea>
@@ -204,6 +234,7 @@
                         <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
                     </div>
 
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>

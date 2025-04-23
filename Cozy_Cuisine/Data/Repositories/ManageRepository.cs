@@ -252,18 +252,6 @@ namespace Cozy_Cuisine.Data.Repositories
             }
         }
 
-        public async Task<List<GameReview>> ThreeRandomReviews()
-        {
-            var randomReviews = await _context.GameReview
-                .Where(review => !string.IsNullOrEmpty(review.ReviewComment)) // Filter out reviews with empty or null ReviewComment
-                .OrderBy(_ => Guid.NewGuid()) // Randomly order the reviews
-                .Take(3) // Take 3 reviews
-                .ToListAsync();
-
-            return randomReviews;
-        }
-
-
         // Contacts
 
         public async Task<List<Contacts>> GetAllContactsAsync()

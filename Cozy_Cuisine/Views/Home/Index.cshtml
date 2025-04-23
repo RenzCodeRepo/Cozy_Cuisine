@@ -320,6 +320,7 @@
                                     }
                                 </div>
 
+
                                 <!-- Custom Prev/Next Buttons for Swiper -->
                                 <button class="carousel-control-prev ingredient-prev" type="button">
                                     <span class="howbtn p-3 rounded-3" aria-hidden="true">
@@ -425,37 +426,39 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
-            setTimeout(function() {
-                $(".fudcol").first().click(); // Try clicking the first button after a short delay
-            }, 500); // Delay for 500ms to ensure the DOM is fully loaded
+            // Auto-click the first button inside the meals container when the page loads
+            $(".fudcol").first().click();
 
+            // Button click handler
             $(".fudcol").click(function() {
                 var foodName = $(this).data("name");
                 var foodDesc = $(this).data("desc");
                 var foodImg = $(this).data("img");
 
+                // Log the values to the console
                 console.log("Food Name:", foodName);
                 console.log("Food Description:", foodDesc);
                 console.log("Food Image URL:", foodImg);
 
-                $("#foodName").text(foodName);
-                $("#foodDesc").text(foodDesc);
+                // Update the content in the target div
+                $("#foodName").text(foodName); // Update food name
+                $("#foodDesc").text(foodDesc); // Update description
 
+                // Check if there's an image URL and update iframe accordingly
                 if (foodImg) {
+                    // Set the iframe's src attribute to the food image URL
                     $("#foodImage").attr("src", foodImg);
                 } else {
+                    // If no image, clear the iframe or show a placeholder message
                     $("#foodImage").attr("src", "");
                     $("#foodImage").replaceWith('<span>No image available</span>');
                 }
 
+                // Show the target content display when an item is clicked
                 $("#mealDetails").show();
-
-                $(".fudcol").removeClass('selected');
-                $(this).addClass('selected');
             });
         });
     </script>
-
 
 }
         

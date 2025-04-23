@@ -4,174 +4,161 @@
     ViewData["Title"] = "Article";
 }
 
-<div class="cont3 container-fluid p-5 mt-5">
-    <div class="container">
-        <div class="row" style="padding-top: 5rem;">
-            <!-- Left Main Content -->
-            <div class="col-lg-8">
+<div class="container my-5">
+    <div class="row" style="padding-top: 5rem;">
+        <!-- Left Main Content -->
+        <div class="col-lg-8">
 
-                <div class="sectitle display-4 mb-3">
-                    NEWS
-                </div>
+            <div class="text-danger fw-bold text-uppercase mb-2">News</div>
 
-
-                <h1 class="fw-bold lh-sm mb-2 newsheadlinee fs-3" style="font-size: 2rem;">
-                    @Model.Article.Headline
-                </h1>
-
-                @if (!string.IsNullOrEmpty(Model.Article.URLNewsImageList))
+            <h1 class="fw-bold lh-sm mb-2" style="font-size: 2rem;">
+                @Model.Article.Headline
+            </h1>
+            @if (!string.IsNullOrEmpty(Model.Article.URLNewsImageList))
+            {
+                var imageUrls = Model.Article.URLNewsImageList.Split(',');
+                foreach (var url in imageUrls)
                 {
-                    var imageUrls = Model.Article.URLNewsImageList.Split(',');
-                    foreach (var url in imageUrls)
+                    var imgfileId = "";
+                    var imgparts = url.Split('/');
+                    if (imgparts.Length >= 6)
                     {
-                        var imgfileId = "";
-                        var imgparts = url.Split('/');
-                        if (imgparts.Length >= 6)
-                        {
-                            imgfileId = imgparts[5];
-                        }
-
-                        var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
-
-                        if (!string.IsNullOrEmpty(imgfileId))
-                        {
-                            @* <iframe src="@imgpreviewUrl" width="300" height="auto" style="border: none; margin-right: 5px;"></iframe> *@
-                            <div class="mainart container mb-3">
-
-                                <iframe src="@imgpreviewUrl"
-                                        class="w-100 mb-3 rounded-4"
-                                        style="aspect-ratio: 16/9; border: none;"
-                                        allowfullscreen>
-                                </iframe>
-                            </div>
-
-                        }
-                        else
-                        {
-                            <a href="@url" target="_blank">
-                                <img src="@url" alt="Image" style="width: 100px; height: auto; margin-right: 5px;" />
-                            </a>
-                        }
+                        imgfileId = imgparts[5];
                     }
-                }
 
-                @{
-                    var videoUrl = Model.Article.URLVideo;
-                    var embedUrl = "";
-                    var fileId = "";
+                    var imgpreviewUrl = $"https://drive.google.com/file/d/{imgfileId}/preview";
 
-                    if (!string.IsNullOrEmpty(videoUrl))
+                    if (!string.IsNullOrEmpty(imgfileId))
                     {
-                        if (videoUrl.Contains("youtube.com/watch?v="))
-                        {
-                            var parts = videoUrl.Split("watch?v=");
-                            var videoId = parts.Length > 1 ? parts[1] : "";
-                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                        }
-                        else if (videoUrl.Contains("youtu.be/"))
-                        {
-                            var parts = videoUrl.Split("youtu.be/");
-                            var videoId = parts.Length > 1 ? parts[1] : "";
-                            embedUrl = $"https://www.youtube.com/embed/{videoId}";
-                        }
-                        else if (videoUrl.Contains("drive.google.com/file/d/"))
-                        {
-                            var parts = videoUrl.Split('/');
-                            if (parts.Length >= 6)
-                            {
-                                fileId = parts[5];
-                                embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
-                            }
-                        }
-                    }
-                }
-
-                @if (!string.IsNullOrEmpty(embedUrl))
-                {
-                    <div class="mainart container">
-                        <iframe src="@embedUrl"
-                                class="w-100 mb-3 rounded-4"
+                        @* <iframe src="@imgpreviewUrl" width="300" height="auto" style="border: none; margin-right: 5px;"></iframe> *@
+                        <iframe src="@imgpreviewUrl"
+                                class="w-100 mb-3"
                                 style="aspect-ratio: 16/9; border: none;"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen>
                         </iframe>
-                    </div>
 
-
+                    }
+                    else
+                    {
+                        <a href="@url" target="_blank">
+                            <img src="@url" alt="Image" style="width: 100px; height: auto; margin-right: 5px;" />
+                        </a>
+                    }   
                 }
-                <div class="text-muted mb-4" style="font-size: 0.9rem;">
-                    Published @Model.Article.PostedDate.ToString("MMMM dd, yyyy h:mmtt").ToLower()
-                </div>
+            }
 
-                <div class="mb-4 artcont rounded-4 shadow p-3">
-                    @if (!string.IsNullOrWhiteSpace(Model.Article?.Content))
+            @{
+                var videoUrl = Model.Article.URLVideo;
+                var embedUrl = "";
+                var fileId = "";
+
+                if (!string.IsNullOrEmpty(videoUrl))
+                {
+                    if (videoUrl.Contains("youtube.com/watch?v="))
                     {
-                        var lines = Model.Article.Content.Split('\n');
-                        foreach (var line in lines)
+                        var parts = videoUrl.Split("watch?v=");
+                        var videoId = parts.Length > 1 ? parts[1] : "";
+                        embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                    }
+                    else if (videoUrl.Contains("youtu.be/"))
+                    {
+                        var parts = videoUrl.Split("youtu.be/");
+                        var videoId = parts.Length > 1 ? parts[1] : "";
+                        embedUrl = $"https://www.youtube.com/embed/{videoId}";
+                    }
+                    else if (videoUrl.Contains("drive.google.com/file/d/"))
+                    {
+                        var parts = videoUrl.Split('/');
+                        if (parts.Length >= 6)
                         {
-                            if (!string.IsNullOrWhiteSpace(line))
-                            {
-
-                                <p class="ms-4">@line</p> <!-- Adds indentation -->
-                            }
+                            fileId = parts[5];
+                            embedUrl = $"https://drive.google.com/file/d/{fileId}/preview";
                         }
                     }
-                </div>
+                }
+            }
 
+            @if (!string.IsNullOrEmpty(embedUrl))
+            {
+                <iframe src="@embedUrl"
+                        class="w-100 mb-3"
+                        style="aspect-ratio: 16/9; border: none;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
 
+            }
+            <div class="text-muted mb-4" style="font-size: 0.9rem;">
+                Published @Model.Article.PostedDate.ToString("MMMM dd, yyyy h:mmtt").ToLower()
             </div>
 
-            <!-- Right Sidebar -->
-            <div class="col-lg-4">
-                <div class="mb-4">
-                    <h5 class="newsheadlinee fs-5">Related News</h5>
-
-                    @foreach (var newsItem in Model.Articles
-                    .Where(n => n.NoticeId != Model.Article.NoticeId)
-                    .Take(3))
+            <div class="mb-4">
+                @if (!string.IsNullOrWhiteSpace(Model.Article?.Content))
+                {
+                    var lines = Model.Article.Content.Split('\n');
+                    foreach (var line in lines)
                     {
-                        var imageUrl = newsItem.URLNewsImageList?.Split(',').FirstOrDefault();
-                        var hasImage = false;
-                        var imgFileId = "";
-
-                        if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                        if (!string.IsNullOrWhiteSpace(line))
                         {
-                            var parts = imageUrl.Split('/');
-                            if (parts.Length >= 6)
-                            {
-                                imgFileId = parts[5];
-                                hasImage = true;
-                            }
+                            <p class="ms-4">@line</p> <!-- Adds indentation -->
                         }
-
-                        var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-
-                        <div class="newscont shadow rounded-4 overflow-hidden p-0 d-block text-decoration-none">
-                            @if (hasImage)
-                            {
-                                <iframe src="@previewImgUrl"
-                                        class="card-img-top"
-                                        style="aspect-ratio: 16/9; border: none;"
-                                        allowfullscreen>
-                                </iframe>
-                            }
-
-                            <div class="newstxt p-3">
-                                <h6 class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">
-                                    <a href="@Url.Action("Article", "Home", new { NoticeId = newsItem.NoticeId })"
-                                       class="text-dark text-decoration-none">
-                                        @newsItem.Headline
-                                    </a>
-                                </h6>
-                                <p class="newsdescrip fs-6 d-block text-truncate">
-                                    @newsItem.Content?.Split('\n').FirstOrDefault()
-                                </p>
-                            </div>
-                        </div>
                     }
-                </div>
+                }
             </div>
+
 
         </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-lg-4">
+            <div class="mb-4">
+                <h5 class="text-danger">Related News</h5>
+
+                @foreach (var newsItem in Model.Articles
+                .Where(n => n.NoticeId != Model.Article.NoticeId)
+                .Take(3))
+                {
+                    var imageUrl = newsItem.URLNewsImageList?.Split(',').FirstOrDefault();
+                    var hasImage = false;
+                    var imgFileId = "";
+
+                    if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
+                    {
+                        var parts = imageUrl.Split('/');
+                        if (parts.Length >= 6)
+                        {
+                            imgFileId = parts[5];
+                            hasImage = true;
+                        }
+                    }
+
+                    var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
+
+                    <div class="card mb-3 shadow-sm border-0">
+                        @if (hasImage)
+                        {
+                            <iframe src="@previewImgUrl"
+                                    class="card-img-top"
+                                    style="aspect-ratio: 16/9; border: none;"
+                                    allowfullscreen>
+                            </iframe>
+                        }
+
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold">
+                                <a href="@Url.Action("Article", "Home", new { NoticeId = newsItem.NoticeId })"
+                                   class="text-dark text-decoration-none">
+                                    @newsItem.Headline
+                                </a>
+                            </h6>
+                            <p class="card-text text-muted" style="font-size: 0.9rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                @newsItem.Content?.Split('\n').FirstOrDefault()
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
     </div>
 </div>

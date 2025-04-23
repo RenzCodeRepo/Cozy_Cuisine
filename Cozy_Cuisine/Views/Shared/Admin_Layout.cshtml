@@ -104,28 +104,16 @@
                         <span class="pgname">Wiki</span>
                     </div>
                 </a>
-                <a asp-action="GameplayManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "GameplayManagement" ? "active" : "")">
-                        <span><i class="i-sec fa-solid fa-puzzle-piece fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Gameplay</span>
+               @*  <a href="#" class="text-decoration-none">
+                    <div class="abtn container-fluid p-3">
+                        <span><i class="i-sec fa-solid fa-gamepad fa-xl" style="color: #603f26;"></i></span>
+                        <span class="pgname">Game Development</span>
                     </div>
-                </a>
-                <a asp-action="GameItemsManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "GameItemsManagement" ? "active" : "")">
-                        <span><i class="i-sec fa-solid fa-drumstick-bite fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Game Items</span>
-                    </div>
-                </a>
+                </a> *@
                 <a asp-action="CharacterManagement" asp-controller="Wiki" class="text-decoration-none">
                     <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "CharacterManagement" ? "active" : "")">
                         <span><i class="i-sec fa-solid fa-masks-theater fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Characters</span>
-                    </div>
-                </a>
-                <a asp-action="LocationManagement" asp-controller="Wiki" class="text-decoration-none">
-                    <div class="abtn container-fluid p-3 @(ViewContext.RouteData.Values["action"].ToString() == "LocationManagement" ? "active" : "")">
-                        <span><i class="i-sec fa-solid fa-location-dot fa-xl" style="color: #603f26;"></i></span>
-                        <span class="pgname">Location</span>
+                        <span class="pgname">Character Management</span>
                     </div>
                 </a>
                 <a asp-action="AboutManagement" asp-controller="Manage" class="text-decoration-none">
@@ -146,11 +134,12 @@
                         <span class="pgname">Patches</span>
                     </div>
                 </a>
+
             </div>
         </div>
 
-        <div class="content flex-grow-1 p-3 mt-3">
-            <main role="main" class="pb-3 mt-5 pt-2 ">
+        <div class="content flex-grow-1 p-3">
+            <main role="main" class="pb-3 mt-5 pt-2">
                 @RenderBody()
             </main>
         </div>
@@ -181,10 +170,7 @@
                     title: "Success!",
                     text: message,
                     icon: "success",
-                    background: "#f8f4f1",
-                    color: "#603f26",
-                    confirmButtonColor: "#603f26",
-                    confirmButtonText: "OK",
+                    confirmButtonText: "OK"
                 });
             }
         });

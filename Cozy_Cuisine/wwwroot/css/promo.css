@@ -850,16 +850,3 @@ iframe {
     width: 100% !important;
     height: 100% !important;
 }
-
-.newsheadlinee {
-    font-family: "Press Start 2P", system-ui;
-    color: #603F26;
-}
-
-.mainart {
-    height: 350px;
-}
-
-.artcont {
-    border: 2px solid #603F26;
-}

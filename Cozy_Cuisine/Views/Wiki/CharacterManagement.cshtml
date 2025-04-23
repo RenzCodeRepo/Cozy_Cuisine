@@ -1,116 +1,59 @@
 ﻿@model Cozy_Cuisine.ViewModels.CharacterManagementVM
 @{
     Layout = "Admin_Layout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Characters";
 }
-@* TEMPORARY CSS LANG DASHBOARD *@
+
 <link href="~/css/dashboard.css" rel="stylesheet" />
 
 <div class="pgnamecont2 container mb-3 p-3 rounded-3 shadow">
     <div class="dashboard fs-3 m-0">Characters</div>
 </div>
 
-<div class="container mt-4">
-    <ul class="recentnavtabs nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">List</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="recenttabs nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">Add</button>
-        </li>
-    </ul>
-    <div class="tab-content mt-3" id="myTabContent">
-        <!--list-->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-            <div class="container">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Story ID</th>
-                            <th>Name</th>
-                            <th>Character Category</th>
-                            <th>Description</th>
-                            <th>GIF URL</th>
 
-                            <th>URL Image</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Characters != null && Model.Characters.Any())
-                        {
-                            @foreach (var characters in Model.Characters)
-                            {
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-                                <tr>
-                                    <td>@characters.CharacterId</td>
-                                    <td>@characters.Name</td>
-                                    <td>@characters.Category</td>
-                                    <td>@characters.Description</td>
-                                    <td>
-                                        @{
-                                            var gifUrl = characters.URLGif; // assuming this contains a full GDrive URL
-                                            var giffileId = "";
-                                            var gifparts = gifUrl?.Split('/');
-                                            if (gifparts != null && gifparts.Length >= 6)
-                                            {
-                                                giffileId = gifparts[5];
-                                            }
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Story ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>URL Gif</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Characters != null && Model.Characters.Any())
+        {
+            @foreach (var characters in Model.Characters)
+            {
 
-                                            var gifpreviewUrl = $"https://drive.google.com/file/d/{giffileId}/preview";
-                                        }
+                <tr>
+                    <td>@characters.CharacterId</td>
+                    <td>@characters.Name</td>
+                    <td>@characters.Category</td>
+                    <td>@characters.Description</td>
+                    <td>@characters.URLGif</td>
+                    <td>
 
-                                        @if (!string.IsNullOrEmpty(giffileId))
-                                        {
-                                            <iframe src="@gifpreviewUrl" width="300" height="200" style="border: none;"></iframe>
-                                        }
-                                        else
-                                        {
-                                            <span>No Image Uploaded</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @{
-                                            var imageUrl = characters.URLImage;
-                                            var imgFileId = "";
+                        <a asp-action="DetailStoryPlot" asp-route-id="@characters.CharacterId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye fa-sm"></i>View</a>
 
-                                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
-                                            {
-                                                var parts = imageUrl.Split('/');
-                                                if (parts.Length >= 6)
-                                                {
-                                                    imgFileId = parts[5];
-                                                }
-                                            }
-
-                                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-                                        }
-
-                                        @if (!string.IsNullOrEmpty(imgFileId))
-                                        {
-                                            <iframe src="@previewImgUrl" width="150" height="150" style="border: none;"></iframe>
-                                        }
-                                        else
-                                        {
-                                            <span>No image available</span>
-                                        }
-                                    </td>
-                                    <td>
-
-                                        <a asp-action="DetailStoryPlot" asp-route-id="@characters.CharacterId" class="actionsbtn focus-ring btn btn-sm mb-1"><i class="fa-solid fa-eye"></i> View</a>
-
-                                        @* opens a modal popup to make the changes *@
-                                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editCharacterModal"
-                                                data-id="@characters.CharacterId"
-                                                data-fk="@characters.WikiId"
-                                                data-name="@characters.Name"
-                                                data-category="@characters.Category"
-                                                data-description="@characters.Description"
-                                                data-url="@characters.URLGif">
-                                            <i class="fa-solid fa-pen-to-square"></i> Edit
-                                        </button>
+                        @* opens a modal popup to make the changes *@
+                        <button type="button" class="actionsbtn focus-ring btn btn-sm mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCharacterModal"
+                                data-id="@characters.CharacterId"
+                                data-fk="@characters.WikiId"
+                                data-name="@characters.Name"
+                                data-category="@characters.Category"
+                                data-description="@characters.Description"
+                                data-url="@characters.URLGif">
+                            <i class="fa-solid fa-pen-to-square fa-sm"></i>
+                            Edit
+                        </button>
 
 
                                         <form class="d-inline" id="deleteForm-@characters.CharacterId" method="post" asp-action="DeleteCharacter" asp-route-id="@characters.CharacterId">
@@ -123,44 +66,6 @@
                     </tbody>
                 </table>
 
-            </div>
-
-
-        </div>
-        <!--add-->
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-
-            <div class="formcont container p-4 shadow-sm rounded-3 mb-5">
-                <form id="characterForm" method="post" asp-controller="Wiki" asp-action="CreateCharacter" onsubmit="confirmSubmit(event)">
-                    <div>
-                        <label asp-for="NewCharacter.Name" class="form-label">Name <span class="reqsymbol">*</span></label>
-                        <input type="text" asp-for="NewCharacter.Name" class="form-control mb-3 focus-ring" required />
-                    </div>
-                    <div>
-                        <label asp-for="NewCharacter.Description" class="form-label">Description <span class="reqsymbol">*</span></label>
-                        <textarea asp-for="NewCharacter.Description" class="form-control mb-3 focus-ring" rows="3" required></textarea>
-                    </div>
-                    <div>
-                        <label asp-for="NewCharacter.Category" class="form-label">Character Category <span class="reqsymbol">*</span></label>
-                        <select asp-for="NewCharacter.Category" class="form-control mb-3 focus-ring" required>
-                            <option value="">Select Category</option>
-                            <option value="Vendor">Vendor</option>
-                            <option value="Customer">Customer</option>
-                            <option value="Main Character">Main Character</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="NewCharacter.URLGif" class="form-label">GIF URL</label>
-                        <input asp-for="NewCharacter.URLGif" class="form-control mb-3 focus-ring" placeholder="Enter GIF URL">
-                    </div>
-                    <div>
-                        <label asp-for="NewCharacter.URLImage"></label>
-                        <input asp-for="NewCharacter.URLImage" class="form-control" placeholder="One image link only" required>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Submit</button>
-                    </div>
-                </form>
 
             </div>
 
@@ -169,6 +74,8 @@
 
     </div>
 </div>
+
+
 
 @* MODAL POPUP FOR EDITING RECORD *@
 <div class="modal fade" id="editCharacterModal" tabindex="-1">
@@ -200,13 +107,11 @@
                         <textarea class="form-control focus-ring" id="description" name="Description" rows="8" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">GIF URL</label>
-                        <textarea class="form-control focus-ring" id="urlgif" name="URLGif"></textarea>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="addremovebtn focus-ring btn px-3">Save Changes</button>
+                        <label class="form-label">URLGif</label>
+                        <textarea class="form-control" id="urlgif" name="URLGif" placeholder="One GIF link only (Optional):"></textarea>
                     </div>
 
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -244,10 +149,8 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                background: "#f8f4f1",
-                color: "#603f26",
-                confirmButtonColor: "#603f26",
-                cancelButtonColor: "#8D493A",   
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 console.log("Swal result:", result); // Debugging line
