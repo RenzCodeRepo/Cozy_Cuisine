@@ -62,49 +62,8 @@
         </div>
 
 
-       <div class="row justify-content-center">
-            @foreach (var review in Model.RandomReviews)
-            {
-                @* Split ReviewComment into Thoughts and Comment *@
-        
-                    var parts = review.ReviewComment.Split(" | ");
-                    var thought = parts[0];
-                    var comment = parts.Length > 1 ? parts[1] : null;
-        
 
-                <div class="col-lg-3 d-flex mb-2">
-                    <div class="review-card w-100">
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="avatar me-3">
-                                <img src="~/img/meow.png" class="img-fluid" alt="Avatar" />
-                            </div>
-                            <div>
-                                <div class="stars mb-1">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        if (i <= review.Rating)
-                                        {
-                                            <i class="fa-solid fa-star fa-sm"></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="fa-regular fa-star fa-sm"></i>
-                                        }
-                                    }
-                                </div>
-                                <div class="review-tag">@thought</div> 
-                            </div>
-                        </div>
-                        <div class="review-text">
-                            @comment
-                        </div>
-                    </div>
-                </div>
-            }
-       </div>
-
-
-        @* <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-lg-3 d-flex mb-2">
                 <div class="review-card w-100">
                     <div class="d-flex align-items-center mb-2">
@@ -175,7 +134,7 @@
                     </div>
                 </div>
             </div>
-        </div> *@
+        </div>
     </div>
 </div>
 <!-- MODAL POPUP FOR GAME REVIEW -->
@@ -203,9 +162,7 @@
                     <label for="hamburger1"><i class="fa-solid fa-star"></i></label>
                 </div>
 
-                <div class="mb-3">
-                    <input type="text" name="Thoughts" class="form-control p-3 rounded-3" placeholder="Your main thought..." required />
-                </div>
+
                 <div class="mb-3">
                     <textarea name="ReviewComment" class="fcbug focus-ring form-control rounded-3 p-3 text-muted" placeholder="Leave a message, if you want" rows="3"></textarea>
                 </div>
@@ -221,7 +178,7 @@
     </div>
 </div>
 <style>
-    /* Modal Container Styling */   
+    /* Modal Container Styling */
     .modal-content {
         border: 5px solid #603F26;
         border-radius: 1rem;

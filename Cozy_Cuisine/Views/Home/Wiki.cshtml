@@ -1,6 +1,4 @@
-﻿@model Cozy_Cuisine.ViewModels.WikiPageVM
-
-@{
+﻿@{
     ViewData["Title"] = "Wiki";
 }
 
@@ -64,7 +62,7 @@
                     </div>
 
                 </div>
-@* 
+
                 <!--ingredients-->
                 <div class="tab-pane fade p-4" id="tab2" role="tabpanel">
                     <div class="titletabb fs-3">
@@ -124,67 +122,14 @@
                             </button>
                         </div>
                     </div>
-                </div> *@
-                <!-- Ingredients Tab -->
-                <div class="tab-pane fade p-4" id="tab2" role="tabpanel">
-                    <div class="titletabb fs-3">
-                        Ingredients
-                    </div>
-
-                    <!-- Row of Ingredients -->
-                    <div class="meals row mb-3">
-                        @foreach (var item in Model.Ingredients)
-                        {
-                            var imageUrl = item.URLImageList;
-                            var imgFileId = "";
-
-                            if (!string.IsNullOrEmpty(imageUrl) && imageUrl.Contains("drive.google.com/file/d/"))
-                            {
-                                var parts = imageUrl.Split('/');
-                                if (parts.Length >= 6)
-                                {
-                                    imgFileId = parts[5];
-                                }
-                            }
-
-                            var previewImgUrl = $"https://drive.google.com/file/d/{imgFileId}/preview";
-                            <div class="col-2 d-flex justify-content-center">
-                                <button class="fudcol btn rounded-0" data-img="@previewImgUrl">
-                                    <iframe src="@previewImgUrl" width="100" height="100" style="border: none;"></iframe>
-                                </button>
-                            </div>
-                        }
-                    </div>
-
-                    
                 </div>
+
             </div>
         </div>
     </div>
 
 </div>
-<style>
-    .meals {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 
-    .col-2 {
-        flex: 0 0 20%;
-        margin-bottom: 15px;
-    }
-
-    /* Adjust layout for 5 items per row */
-    .meals .col-2:nth-child(5n+1) {
-        margin-left: 0;
-    }
-
-    /* Center rows with fewer than 5 items */
-    .meals .col-2:nth-last-child(-n+5) {
-        margin-bottom: 0;
-    }
-</style>
 
 <div class="cont2 container-fluid p-5">
     <div class="container">
@@ -248,7 +193,7 @@
     </div>
 </div>
 
-<div class="cont3 container-fluid p-5 mb-5">
+<<div class="cont3 container-fluid p-5 mb-5">
     <div class="container">
         <div class="sectitle display-4 mb-3">
             TIPS
@@ -284,4 +229,3 @@
         </div>
     </div>
 </div>
-    
