@@ -1,7 +1,7 @@
-﻿@model Cozy_Cuisine.ViewModels.ArticlePageVM
+﻿@model Cozy_Cuisine.ViewModels.FeaturedPageVM
 
 @{
-    ViewData["Title"] = "Article";
+    ViewData["Title"] = "Featured";
 }
 
 <div class="cont3 container-fluid p-5 mt-5">
@@ -11,17 +11,17 @@
             <div class="col-lg-8">
 
                 <div class="sectitle display-4 mb-3">
-                    NEWS
+                    FEATURE
                 </div>
 
 
                 <h1 class="fw-bold lh-sm mb-2 newsheadlinee fs-3" style="font-size: 2rem;">
-                    @Model.Article.Headline
+                    @Model.Feature.Headline
                 </h1>
 
-                @if (!string.IsNullOrEmpty(Model.Article.URLNewsImageList))
+                @if (!string.IsNullOrEmpty(Model.Feature.URLNewsImageList))
                 {
-                    var imageUrls = Model.Article.URLNewsImageList.Split(',');
+                    var imageUrls = Model.Feature.URLNewsImageList.Split(',');
                     foreach (var url in imageUrls)
                     {
                         var imgfileId = "";
@@ -56,7 +56,7 @@
                 }
 
                 @{
-                    var videoUrl = Model.Article.URLVideo;
+                    var videoUrl = Model.Feature.URLVideo;
                     var embedUrl = "";
                     var fileId = "";
 
@@ -100,13 +100,13 @@
 
                 }
                 <div class="text-muted mb-4" style="font-size: 0.9rem;">
-                    Published @Model.Article.PostedDate.ToString("MMMM dd, yyyy h:mmtt").ToLower()
+                    Published @Model.Feature.PostedDate.ToString("MMMM dd, yyyy h:mmtt").ToLower()
                 </div>
 
                 <div class="mb-4 artcont rounded-4 shadow p-3">
-                    @if (!string.IsNullOrWhiteSpace(Model.Article?.Content))
+                    @if (!string.IsNullOrWhiteSpace(Model.Feature?.Content))
                     {
-                        var lines = Model.Article.Content.Split('\n');
+                        var lines = Model.Feature.Content.Split('\n');
                         foreach (var line in lines)
                         {
                             if (!string.IsNullOrWhiteSpace(line))
@@ -124,10 +124,10 @@
             <!-- Right Sidebar -->
             <div class="col-lg-4">
                 <div class="mb-4">
-                    <h5 class="newsheadlinee fs-5">Related News</h5>
+                    <h5 class="newsheadlinee fs-5">Related Features</h5>
 
-                    @foreach (var newsItem in Model.Articles
-                    .Where(n => n.NoticeId != Model.Article.NoticeId)
+                    @foreach (var newsItem in Model.Features
+                    .Where(n => n.NoticeId != Model.Feature.NoticeId)
                     .Take(3))
                     {
                         var imageUrl = newsItem.URLNewsImageList?.Split(',').FirstOrDefault();
@@ -158,7 +158,7 @@
 
                             <div class="newstxt p-3">
                                 <h6 class="newstitle d-inline-block mb-2 px-2 py-1 fs-6">
-                                    <a href="@Url.Action("Article", "Home", new { NoticeId = newsItem.NoticeId })"
+                                    <a href="@Url.Action("Featured  ", "Home", new { NoticeId = newsItem.NoticeId })"
                                        class="text-dark text-decoration-none">
                                         @newsItem.Headline
                                     </a>

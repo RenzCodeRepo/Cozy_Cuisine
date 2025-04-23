@@ -9,6 +9,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddWikiAsync(Wiki wiki);
         Task UpdateWikiAsync(Wiki wiki);
         Task <bool> DeleteWikiAsync(int id);
+   
 
         Task<List<StoryPlot>> GetAllStoryPlotsAsync();
         Task<StoryPlot> GetStoryPlotByIdAsync(int id);
@@ -33,6 +34,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddGameItemAsync(GameItems gameItem);
         Task UpdateGameItemAsync(GameItems gameItem);
         Task <bool> DeleteGameItemAsync(int id);
+        Task<List<GameItems>> GetAllIngredients();
 
         Task<List<Locations>> GetAllLocationsAsync();
         Task<Locations> GetLocationByIdAsync(int id);

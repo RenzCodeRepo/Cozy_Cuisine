@@ -63,6 +63,7 @@ namespace Cozy_Cuisine.Data.IRepositories
         Task AddReviewAsync(GameReview review);
         Task UpdateReviewAsync(GameReview review);
         Task DeleteReviewAsync(int reviewId);
+        Task<List<GameReview>> ThreeRandomReviews();
 
         // Contacts
         Task<List<Contacts>> GetAllContactsAsync();
